@@ -1,0 +1,57 @@
+/*  ------------------------------------------------------------------------
+    Copyright (C) 2000 COMNEON GmbH & Co. OHG. All rights reserved.
+    ------------------------------------------------------------------------
+    This document contains proprietary information belonging to COMNEON.
+    Passing on and copying of this document, use and communication of its
+    contents is not permitted without prior written authorisation.
+    ------------------------------------------------------------------------ */
+#if !defined(BtDunService_hpp)
+#define BtDunService_hpp
+
+#include <Bluetooth/BtService.hpp>
+#include <Bluetooth/DUN/BtDunDisconnectRequest.hpp>
+
+class BtDunService: public BtService
+{
+    private:
+        typedef BtService Base;
+
+    public:
+        BtDunService();
+
+        virtual ~BtDunService();
+
+
+        virtual BtProfile GetProfile() const;
+
+
+        virtual BtRequestState GetRequestState(BtRequestType request_type) const;
+
+
+        BOOLEAN IsConnected() const;
+
+
+        BtRequestState DisconnectRequest();
+
+    protected:
+
+        virtual void RequestStateChangeCallback(BtServiceRequest* request, BtRequestState old_request_state, BtRequestState new_request_state);
+
+
+        virtual void RegisterMessages() const;
+
+
+        virtual void UnregisterMessages() const;
+
+
+        virtual BOOLEAN OnMessage(const Message& message);
+
+    private:
+        BtDunDisconnectRequest m_dun_disconnect_request;
+
+        BOOLEAN m_dispatcher_added;
+};
+
+#endif  // BtDunService_hpp
+
+
