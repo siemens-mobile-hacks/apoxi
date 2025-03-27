@@ -1,0 +1,74 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<title>Services Overview</title>
+<style type="text/css">
+<!--
+.Stil1 {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: xx-large;
+	font-weight: bold;
+}
+.Stil4 {
+	font-size: large;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-weight: bold;
+}
+.Stil6 {font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 12px;}
+.Stil20 {font-family: Verdana, Arial, Helvetica, sans-serif; font-size: large; }
+.Stil21 {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: medium;
+	font-weight: bold;
+}
+.Stil22 {font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 12px; font-weight: bold; }
+-->
+</style>
+</head>
+
+<body>
+<div align="center">
+  <p align="center" class="Stil1">Services Overview </p>
+  <p align="justify" class="Stil4">1 Introduction </p>
+  <p align="justify" class="Stil6">A service in APOXI is used by applications to provide functionality to other applications. This avoids dependencies 
+    between applications. In software engineering terms this is called loose coupling. Services initiate actions in 
+  other applications.</p>
+  <p align="justify" class="Stil4">2 Service Broker</p>
+  <p align="justify" class="Stil6">Every service has a Global Unique ID. So there must be one instance which oversees all available services within 
+    APOXI. This instance is the Service Broker. It knows about all services, and applications can query it for specific 
+    services. There are some analogies in this concept, when comparing it to other well-known object management 
+  models such as CORBA or Microsoft's COM.</p>
+  <p align="justify" class="Stil6">    Each service needs to register to the service Broker inorder to be available for other applications. The calling 
+    application has to make sure that the requested service is available before executing a service-call. However an 
+available service can be temporarly inaccesible to the user.</p>
+  <p align="justify" class="Stil4">3 Service Concept</p>
+  <p align="justify" class="Stil6">The following example illustrates the service concept:</p>
+  
+<div align="justify">
+      <ol>
+        <li class="Stil6">A WAP Browser shows a page with a mail to link</li>
+          <li class="Stil6">The user clicks on it</li>
+          <li class="Stil6">The WAP application asks the Service Broker whether there is a SendMail service available</li>
+          <li class="Stil6">If available, invoking the service results in opening a &quot;Send Mail&quot; Window</li>
+      </ol>
+</div>
+  <p align="justify"><br>
+    <span class="Stil6">The WAP application in this example does not know which object has implemented the SendMail service. The 
+    Service Broker hides this information. The WAP application just knows about the interface the service is offering. </span><span class="Stil6">To be independent from the service mplementation, the WAP application should not have knowledge about the 
+  specific service-implementing class (object) at compile-time. 
+  </span></p>
+  <p align="justify"><span class="Stil6">Services are mainly used to exchange data or invoke actions at a foreign application without the need of returning 
+    a result.</span></p>
+  <p align="justify"><span class="Stil6">  Asynchronous execution is realized by internally forwarding the service-call by a post-message to the service 
+  implementing the application itself.</span></p>
+  <p align="justify"><span class="Stil6">  It is recommended to implement the service interface utilizing the facade-design pattern. The facade pattern 
+  provides a simple unified interface and the lower level implementation is Application depended and hidden to the 
+user. E.g. the SMS and EMS service implementations use the same common service interface.</span></p>
+  <p align="justify" class="Stil4">4  Implementing a Service</p>
+  <p align="justify" class="Stil6">    All the MMI services available in the system are defined in the file MmiServices. Each service has a system wide 
+unique ID. All the service IDs are defined in the MmiServices file.</p>
+  <p align="justify" class="Stil20">&nbsp;</p>
+</body>
+</html>

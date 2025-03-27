@@ -1,0 +1,162 @@
+ <html>
+  <head>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8">
+	<title>Supplementary Services Architecture</title>
+
+	<link rel="stylesheet" type="text/css" href="doxygen.css">
+  </head>
+
+  <body>
+	<h1>Supplementary Services</h1>
+
+	<h2>1 Overview</h2>
+	<p>
+	  This part of the documentation deals with the API for Call Independent Supplementary Services. These are Call Forwarding, Call Waiting, Call Barring, CLIP, CLIR, COLP, COLR and USSD. The Supplementary Service API makes use of the handler/dispatcher concept, that is widely known also in other parts of APOXI. <br>
+
+	  For each Supplementary Service there is one handler, that provides the interface necessary for working with the service. All Supplementary Service requests sent by the MMI are done via the Supplementary Service handlers. Operations allowed on a Supplementary Service is always a subset of the following:
+	  <ul>
+	  	<li>Registration</li>
+	  	<li>Activation</li>
+	  	<li>Deactivation</li>
+	  	<li>Erasure</li>
+	  	<li>Status Request (Interrogation)</li>
+	  </ul>
+
+	  For Call Barring also change of the call barring net password is supported. For USSD these operations don't apply, the USSD Handlers provide only an interface for sending MO USSD requests and answering to MT USSD reqeusts.<br><br>
+
+	  Each request sent by a Supplementary Service handler causes a response from the GSM stack and/or network in form of stack signals. The stack signal content for Supplementary Services is wrapped into <code>FromStackMsg</code>s and <code>StackMsgArg</code>s by the APC layer. These messages are received by the <code>SupplementaryServiceDispatcher</code>. The dispatcher then analyses the content of the messages with help of the handler that was used to send the intial request. A corresponding message is then sent to the MMI. This way, all logic regarding a certain Supplementary Service is grouped in the handler.
+    </p>
+    <p>
+      <a href="pics/ss_important_classes.gif" target="_SS_CLASSES"><img src="pics/ss_important_classes_overview.gif"></img></a><br>
+      Figure 1: Overview of central classes for Supplementary Service handling
+
+	<h2>2 Performing a request</h2>
+	<p>
+	  The actual sending of any request is initiated by one of the special handlers (like the <code>CallForwardingHandler</code>). Based on the specific method call and the parameters of that method, the handler will generate a specific Supplementary Service control sequence. The control sequence is then passed to the <code>SsMainHandler</code> which sends it to the GSM stack. By sending an request to the GSM stack an Supplementary Service transaction is started. The transaction is now in a setup state. Until this transaction is completed or aborted no other Supplementary Service transaction can be started. The handler is responsible for storing all information (e.g. parameters) of the request that is needed for the further processing of the request.
+	</p>
+
+	<a href="pics/simple_request_flow.gif" target="_SS_FLOWS"><img src="pics/simple_request_flow.gif" width=700></img></a><br>
+	Figure 2: Control flow for a simple Call Forwarding interrogation
+	<p>
+	  After the request was processed by the GSM stack and/or network, a signal with the result for the request is sent to APOXI by the GSM Stack. This signal is picked up in the APC layer by the <code>CommonSignalProcessor</code>. The following methods are responsible for processing the signals:
+	</p>
+	<br>
+	  <table border=1>
+	    <tr><th>Signal Name</th><th>Method</th></tr>
+	    <tr><td>MN_SS_BEGIN_ACC</td><td>PostSsBeginAcc()</td></tr>
+	    <tr><td>MN_SS_FACILITY_REJ</td><td>PostSsFacilityRej()</td></tr>
+	    <tr><td>MN_SS_FORWARDING_IND</td><td>PostSsForwardingInd()</td></tr>
+	    <tr><td>MN_SS_BARRING_IND</td><td>PostSsBarringInd</td></tr>
+	    <tr><td>MN_SS_DATA_IND</td><td>PostSsDataInd()</td></tr>
+	    <tr><td>MN_SS_NOTIFYSS_IND</td><td>PostSsNotifyInd()</td></tr>
+	    <tr><td>MN_SS_INTERROGATE_IND</td><td>PostSsInterrogateInd()</td></tr>
+	    <tr><td>MN_SS_PASSWORD_IND</td><td>PostSsPasswordInd()</td></tr>
+	    <tr><td>MN_SS_UNSTRUCT_IND</td><td>PostSsUnstructInd()</td></tr>
+	    <tr><td>MN_SS_FORWCHECK_IND</td><td>PostSsForwcheckInd()</td></tr>
+	    <tr><td>MN_SS_RET_RES_IND</td><td>PostSsRetResInd()</td></tr>
+	    <tr><td>MN_SS_END_IND</td><td>PostSsEndInd()</td></tr>
+	    <tr><td>MN_SS_REJ</td><td>PostSsRej()</td></tr>
+	    <tr><td>MN_SS_ERR_IND</td><td>PostSsErrInd()</td></tr>
+	    <tr><td>MN_SS_GET_PASSWORD_IND</td><td>PostSsGetPasswordInd()</td></tr>
+	    <tr><td>MN_SS_GET_PASSWORD_REJ</td><td>PostSsGetPasswordRej()</td></tr>
+	    <tr><td>MN_SS_USSD_IND</td><td>PostSsUssdInd()</td></tr>
+	    <tr><td>MN_SS_USSD_RESENT_INT</td><td>PostSsUssdResentInd()</td></tr>
+	  </table>
+	  Table 1: Signal overview
+
+	<br>
+	<p>
+		The results received by the GSM stack (contained in the signals) are initially wrapped in a specific <code>StackMsgArg</code> object and then dispatched using the regular Apoxi dispatch mechanism. If the argument is in any way Supplementary Service related it is picked up by the <code>SupplementaryServiceDispatcher</code>. See the argument map of the class for a list of arguments which are actually picked up. The <code>SupplementaryServiceDispatcher</code> then starts to process the argument.
+	</p>
+	<p>
+		The first signal always is MN_SS_BEGIN_ACC. This signal contains the TiPd of the Supplementary Service transaction which is used as identifier for the transaction. This TiPd is now included in every signal coming from the GSM stack, that belongs to this transaction.
+		All data of the signal is wrapped into an <code>SsBeginAccArg</code> and sent to the <code>SupplementaryServiceDispatcher</code>, which sends an <code>SsRequestAcceptedMsg</code> to the MMI. Also the Supplementary Service transaction is brought from setup into established state. This step connects the handler that has sent the request with the TiPd of the transaction. This is needed for processing further results delivered by the GSM stack.
+	</p>
+	<p>
+		The second signal coming is the one that contains the actual (interesting) data (in our example MN_SS_INTERROGATE_IND). The <code>CommonSignalProcessor</code> wraps the data of this signal into a <code>SsInterrogateIndArg</code> and sends it to the <code>SupplementaryServiceDispatcher</code>.
+	</p>
+	<p>
+		The <code>SupplementaryServiceDispatcher</code> first wraps the argument in a <code>SsStackMsgArgument</code>. The purpose of this wrapper class is to cache often needed parameters of the argument like the TiPd or the release-complete flag. Unfortunately it is not possible to define a common super class for a certain set of arguments (like e.g. Supplementary Service arguments) to provide a common interface to access common member variables. Therefore to access e.g. the TiPd of the argument, which in fact is part of every Supplementary Service argument, the argument has to be identified first, then cast into its specific class and the apropriate get-method called. Clearly this process is cumbersome and extremely costly in terms of performance, let alone the duplicate code this would introduce.
+	</p>
+	<p>
+		After wrapping, the data is passed on the handler that was used for the initial request (here it's <code>CallForwardingHandler</code>). The code for parsing the contents of the argument and creating the result messages, which will be sent to the MMI is located at the specific handler, which was responsible for initiating the request in the first place. So the handlers are responsible for sending the request as well as processing the received results. Furthermore the handler is the only place to sensibly store additional data related to the transaction like the parameters of the initial request, which are needed for the result message as well.
+	</p>
+	<p>
+		The idea behind the separation of the logic for creating a message for MMI and for sending it is, that the system can be easily extended. All the logic that is special to a Supplementary Service is within the handler class. The whole transaction management is done in <code>SupplementaryServiceDispatcher</code> and <code>SsMainHandler</code>. This way, if a new Supplementary Service has to be added, it is sufficent to write a new handler and connect it to the rest of the system.
+	</p>
+	<p>
+		Finally the dispatcher checks with the handler if there is any message that needs to be sent. The dispatcher then retrieves the message and sends it on to the MMI using the <code>MessageRouter</code>. Each result signal contains a "release complete" flag, that indicates, if the transaction is over by arrival of the signal. If this flag is set in the result, the transaction is released and all data stored in the <code>SsMainHandler</code> and in the Supplementary Service handler is freed.
+	</p>
+
+	<h2>3 Supplementary Service notifications</h2>
+	<p>
+		Under some circumstances the GSM network may send notifications to the mobile station. The process for these notify messages is slightly different, since these notifications are not the result of a request sent by a handler, but are triggered by the network. Therefore the whole process of finding an associated handler and getting the argument parsed there is not necessary. The <code>Supplementary ServiceDispatcher</code> itself parses the argument and generates the result message. The message then will be sent to the MMI using the <code>MessageRouter</code>.
+	</p>
+
+	<h2>4 Call Control By Sim</h2>
+
+	<p>
+		Call Control by SIM means, that the SIM card is changing an outgoing call, a Supplementary Service or an USSD request into either an outgoing call, a Supplementary Service or an USSD request. The Supplementary Service implementation has to react to these changes. If something is changed to an Supplementary Service or an USSD request, the according handler has to be installed. If a Supplementary Service or an USSD is changed to a call, an started transaction has to be aborted.
+	</p>
+	<p>
+		When the SIM wants to change a MOC, Supplementary Service or USSD request, the requests sent to the GSM network are intercepted. The GSM stack sends one of the three signals:
+		<ul>
+		  <li>MN_CALL_CONTROL_SETUP_IND - A call setup, Supplementary Service or USSD request is changed into a call
+		  <li>MN_CALL_CONTROL_SS_IND - A call setup, Supplementary Service or USSD request is changed into a Supplementary Service request
+		  <li>MN_CALL_CONTROL_USSD_IND - A call setup, Supplementary Service or USSD request is changed into a USSD request
+		</ul>
+
+		The Call Control by SIM signal indicates, that the sent request was modified and sent to the GSM network. The signal contains the new request. This request must not be sent by APOXI, the signal is merely an information that Call Control by SIM occured.
+	</p>
+	<p>
+		<img src="pics/call_control_by_sim.gif"></img><br>
+		Figure 3: Control flow for Call Control By Sim
+	</p>
+	<p>
+		If a Call Control by SIM signal arrives and a Supplementary Service or an USSD request are changed either to a Supplementary Service or an USSD request, the currently active handler (which was used to send the request in the first place) has to be exchanged by another one, which is appropriate for the changed request. How the changed request looks like can be seen from the data contained in the signal. The <code>SsMainHandler</code> releases all data of the active handler. Then the request is parsed using the <code>InputAnalyzer</code> resp. <code>InputAction</code>. These classes are also used by the MMI to parse user input. The parsing process delivers an instance of a subclass of <code>InputAction</code> (in the upper example its <code>SsCallForwardingActionImpl</code>). The <code>Execute()</code> method then calls the appropriate handler. From this point on, the request is handled the same way as if the changed request would have been sent in the first place. The control flow would now continue with an MN_SS_BEGIN_ACC signal.
+	</p>
+
+	<h2>5 Some words about Supplementary Service strings</h2>
+
+	<p>
+		This section should give you a little bit information about the requests - and the request strings. This section is not thought to exhaust the matter of Supplementary Service strings totally, but should merely give an free narrated overview of Supplementary Service strings and the problems encountered. Furthermore it is assumed that the reader has a basic knowledge about Supplementary Service strings. He ought to know how they look like and what their general meaning is.
+	</p>
+	<p>
+		The greatest challenge is to decide if an entered Supplementary Service string is a "normal" Supplementary Service or an USSD. 3GPP 22.030 can give you a good idea about that, nevertheless there is (or seems to be) room for interpretation. Most important is, that the GSM stack and the APOXI Supplementary Service implementation have the same ideas about what's a Supplementary Service and what's an USSD. If not, it may happen, that the GSM stack is sending a request as USSD which was meant to be a Supplementary Service in APOXI and the wrong handler gets activated. The handler than is not able to deal with the upcoming signals and has to throw an error.
+	</p>
+	<p>
+		First thing is, that there is no distinction between correct Supplementary Service string, wrong Supplementary String and USSD string. A request string is either a (correct) Supplementary Service string or an USSD string. When sending the request to the network, somewhere there is a bit that tells the network, if the string is for a "normal" Supplementary Service or5	 an USSD.
+	</p>
+	<p>
+		The general decision that now has been taken is, that everything that forms a correct Supplementary Service string is sent as Supplementary Service, the rest is USSD. The following criterias have to be met to make as string a correct Supplementary Service string:
+
+		<ul>
+			<li>defined Supplementary Service code (see 3GPP TS 22.030)
+			<li>correct number of parameters, but needed parameters may be missing
+			<li>correct operation code (*, **, #, ## or *#)
+		</ul>
+	</p>
+	<p>
+
+		To explain this some examples may come handy:<br><br>
+
+		<table border=1>
+		  <tr><th>Supp. Service.</th><th>USSD</th>				<th>Description</th></tr>
+		  <tr><td>*#21#</td>		<td>#*21#</td>				<td>Wrong operation code</td></tr>
+		  <tr><td>*21*0123456*10#	<td>*21*0123455*10*17#</td>	<td>Too much parameters</td></tr>
+		  <tr><td>*21#</td>			<td></td>					<td>Parameters missing, doesn't matter</td></tr>
+		  <tr><td>*21**#</td>		<td>*21***#</td>			<td>Too much parameters</td></tr>
+		  <tr><td>*61***#</td>		<td>*61****#</td>			<td>Too much parameters</td></tr>
+		  <tr><td></td>				<td>*999#</td>				<td>Undefined Service code</td></tr>
+		</table>
+		Table 2: Supplementary Service string examples
+
+
+
+	<h2>6 Known Issues</h2>
+
+	<p>
+	  <b>Facility Reject:</b><br>There are multiple occasions when the GSM stack can issue a <code>FACILITY_REJ</code> signal. Either to reject the initiation of a transaction or to reject an already accepted transaction. Unfortunately the <code>FACILITY_REJ</code> signal does not carry any transaction related data (like the TiPd) at all. In the case of two or more active transaction or an active transaction while another one is currently being initiated it is not possible to deduce which transaction the signal relates to.
+	</p>
+  </body>
+</html>

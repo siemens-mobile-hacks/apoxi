@@ -1,0 +1,152 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<title>Sockets Overview</title>
+<style type="text/css">
+<!--
+.Stil1 {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: xx-large;
+	font-weight: bold;
+}
+.Stil4 {
+	font-size: large;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-weight: bold;
+}
+.Stil6 {font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 12px;}
+.Stil20 {font-family: Verdana, Arial, Helvetica, sans-serif; font-size: large; }
+.Stil22 {font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 12px; font-weight: bold; }
+-->
+</style>
+</head>
+
+<body>
+<div align="center">
+  <p align="center" class="Stil1">Sockets Overview </p>
+  <p align="justify" class="Stil4">1 Introduction </p>
+  <p align="justify" class="Stil6">APOXI Socket classes provide a generic interface to IP based protocols. The interfaces are based on the BSD 
+  Socket interface. The Socket module is an add-on APOXI module and can be added on demand.</p>
+  <p align="justify" class="Stil4">    2 System Architecture</p>
+  <p align="justify" class="Stil6">    With the help from APOXI Socket module, programmers can develop their own applications independent of the 
+    native TCP/IP protocol stack and use the common C++ coding style of APOXI. The TCP/IP protocol stack 
+    supported now is WINDOWS socket under the host simulator environment and lwIP on the target. APOXI Sockets 
+    provide easy to use C++ interfaces and they are easily portable to other systems.<br>
+APOXI Sockets will care for proper data connections such as:</p>
+  
+<div align="justify">
+      <ul>
+        <li class="Stil6"><strong>CSD</strong> (Circuit Switched Data - GSM)</li>
+          <li class="Stil6"><strong>PSD</strong> (Package Switched Data - GPRS)</li>
+          <li class="Stil6"><strong>Serial</strong> (e.g. from mobile phone to PC via the serial interface)</li>
+      </ul>
+</div>
+  <p align="justify">    <span class="Stil6">APOXI Sockets do not implement UDP or TCP protocols themselves. They are utilizing an existing IP stack system 
+  with a BSD style socket interface. On top of this BSD style socket interface, APOXI Socket cares for correct 
+  connection handling and interaction with the rest of the system. The native BSD style socket interface is abstracted 
+  by class SysSocket, the native DNS resolution is abstracted by class SysDnsClient. Current implementations for 
+  SysSocket and SysDnsClient exist for Winsocks (Windows host simulation) and lwIP. Any other BSD style socket 
+interface can easily be interfaced to by providing dedicated implementations of class SysSocket and<br>
+    SysDnsClient.</span></p>
+  <p align="justify"><span class="Stil6">  The position of Sockets in APOXI is given in Figure 1.</span></p>
+  
+<div align="justify">
+  <table width="98%"  border="1" align="center" cellpadding="0" cellspacing="0" bordercolor="#000000">
+    <tr>
+      <td height="484"><div align="center"><img src="figures/Archi_Sockets.png" width="394" height="451"></div></td>
+    </tr>
+  </table>
+</div>
+  <p align="justify"><strong>Figure&nbsp;1. Position of Socket module in APOXI</strong></p>
+  <p align="justify" class="Stil6">Currently, APOXI is using different implementations for UDP/IP and TCP/IP protocols as shown in Figure 2.</p>
+  
+<div align="justify">
+  <table width="98%"  border="1" align="center" cellpadding="0" cellspacing="0" bordercolor="#000000">
+    <tr>
+      <td height="141"><div align="center"><img src="figures/Sockets.png" width="466" height="123"></div></td>
+    </tr>
+  </table>
+</div>
+  <p align="justify" class="Stil22">Figure&nbsp;2. APOXI Sockets</p>
+  <p align="justify" class="Stil4">3 Sockets</p>
+  <p align="justify" class="Stil6">Most important classes of APOXI Sockets are InetSocket and its derived classes <em>UdpSocket</em>, <em>TcpSocket</em>, and 
+    <em>TcpServerSocket</em>. These classes expose the main interfaces to open the socket, send and receive data, and close 
+  the socket.</p>
+  <p align="justify" class="Stil6">    APOXI Sockets can be configured to work in non-blocking mode (default) and in blocking mode (deprecated). 
+    The socket class library available in APOXI is shown in Figure 3.</p>
+  
+<div align="justify">
+  <table width="98%"  border="1" align="center" cellpadding="0" cellspacing="0" bordercolor="#000000">
+    <tr>
+      <td height="184"><div align="center"><img src="figures/Socket_Class_Diagram.png" width="260" height="160"></div></td>
+    </tr>
+  </table>
+</div>
+  <p align="justify" class="Stil22">Figure&nbsp;3.  Class diagram of Sockets</p>
+  
+<ul><li><div align="left" class="Stil6">
+      <div align="justify"><strong>InetSocket</strong>: <em>InetSocket</em> is the base class of other socket classes. InetSocket and its sub-classes are the main interfaces towards applications. </div>
+    </div>
+    </li>
+    <li>
+      <div align="left" class="Stil6">
+        <div align="justify"><strong>UdpSocket</strong>: Class <em>UdpSocket</em> is designed for UDP/IP. This is the client UDP socket base class and the programmer has to derive an own Socket class and overwrite <em>OnAsyncEvent()</em> for reading from/writing to the Socket.</div>
+      </div>
+    </li>
+    <li>
+      <div align="left" class="Stil6">
+        <div align="justify"><strong>TcpSocket</strong>: Class <em>TcpSocket</em> is designed for TCP/IP. This is the client TCP socket base class and the programmer has to derive an own Socket class and overwrite <em>OnAsyncEvent()</em> for reading from/writing to the Socket.</div>
+      </div>
+    </li>
+    <li>
+      <div align="left" class="Stil6">
+        <div align="justify"><strong>TcpServerSocket</strong>: Class <em>TcpServerSocket</em> is the client server socket base class. The programmer has to derive an own class and overwrite <em>OnAsyncEvent() </em>for accepting an incoming connection request, which is passed via a TcpSocket.</div>
+      </div>
+    </li>
+</ul>
+  <p align="justify" class="Stil4">4 Data Connection</p>
+  <p align="justify" class="Stil6">The notion of a data connection is one of the fundaments of APOXI Sockets. It defines a bearer for a socket, i.e. 
+  for an IP-connection over CSD, PSD, or Serial. The attributes of a data connection are defined in <em>DataConnProfile</em>  and its derived classes. All the data connections are controlled by the <em>DataConnManager</em>.</p>
+  <p align="justify" class="Stil6">    A data connection uses two timers, an idle and a linger timer:</p>
+  
+<div align="justify">
+      <ul>
+        <li class="Stil6">If sockets are attached to the data connection but no socket is transferring data for the amount of time specified by the idle timer then the data connection will close down automatically.</li>
+          <li class="Stil6">When the last socket detaches from the data connection then the data connection will not close down immediately. It will only close down after the amount of time specified by the linger timer has elapsed. When a socket tries to attach during linger state the data connection is still open and attaching is possible without any delay.</li>
+      </ul>
+</div>
+<p align="justify" class="Stil4">5 Data Connection Manager</p>
+  <p align="justify" class="Stil6">    The data connection manager is used to manage different data connections that may exist in the system. It allows 
+  to register, unregister, and access the currently available data connections.</p>
+  <p align="justify" class="Stil4">6 Data Connection Profile, Data Connection Profile Manager, and Data Connection Profile Storage</p>
+  <p align="justify" class="Stil6">    <em>DataConnProfile</em> is the base class of data connection bearer settings. The data connection profiles are controlled 
+    by the <em>DataConnProfileManager</em>. The data connection profile manager stores persistent profiles using a 
+    <em>DataConnProfileStorage</em>. It also controls temporary profiles which are not stored.</p>
+  <p align="justify" class="Stil6">    <em>DataConnProfileStorage</em> defines an interface to a storage for <em>DataConnProfile</em> objects. It is used by 
+    <em>DataConnProfileManager</em> to store and retrieve <em>DataConnProfile</em> settings. Where to store the connection profile is 
+    up to the user of APOXI Sockets. <em>DataConnProfileStorage</em> functionality will be used exclusively by the 
+    <em>DataConnProfileManager</em>. In order to avoid dependencies on specifics of storing the profiles, APOXI does not 
+    provide an implementation of profile storage.</p>
+  <p align="justify" class="Stil4">    7 Connection Management - Control Flow</p>
+  <p align="justify" class="Stil6">    When an application opens a socket, the <em>DataConnManager</em> will care to setup the proper data connection 
+    according to the <em>DataConnProfile</em> that is referenced by the socket. If a socket is not referencing a specific 
+    <em>DataConnProfile</em> the DataConnManager uses the default <em>DataConnProfile</em>.</p>
+  <p align="justify" class="Stil6">    If a socket operation requires to open a data connection, the socket will internally request from <em>DataConnManager</em>    to setup the data connection. If an appropriate connection already exists it will be shared. If not, 
+    <em>DataConnManager</em> sets up the connection according to the settings defined in the data connection profile.</p>
+  <p align="justify" class="Stil6">    A data connection can be shared between multiple sockets and applications. If a socket is opened and a data 
+    connection is already established for the same connection profile, the socket will use the existing data connection. When the last socket using the data connection has been closed, the data connection will be shut down 
+    automatically.</p>
+  <p align="justify" class="Stil6">    If a connection request conflicts with existing data connection, voice calls, or other system resources, the 
+    application will get an appropriate error code.</p>
+  <p align="justify" class="Stil4">8 Data Transfer - Data Flow</p>
+  <p align="justify" class="Stil6">    When data is available for reading or the underlying system is able to send data, the <em>OnAsyncEvent()</em> method of 
+    the socket is invoked with the according event type. For this the RTOS task represented by class <em>SocketRxThread</em>    is waiting on a BSD select for all existing sockets. If a socket event occurs, <em>SocketRxThread</em> will wake up and send 
+    a <em>SocketControlMsg</em> to the application that owns the socket. <em>SocketHandler</em>, a mandatory member of each 
+    application that wants to use APOXI Socket interfaces, will listen for the <em>SocketControlMsg</em> and call the 
+    <em>OnAsyncEvent()</em> method of the corresponding socket. Send or connect requests invoke directly the according 
+    <em>SysSocket</em> methods.</p>
+  <p align="justify" class="Stil20">&nbsp;</p>
+</body>
+</html>

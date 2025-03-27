@@ -1,0 +1,117 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+<HEAD>
+    <meta http-equiv=Content-Type content="text/html; charset=windows-1252">
+    <link href="doxygen.css" rel="stylesheet" type="text/css">
+	<TITLE>Application Memory Meter</TITLE>
+</HEAD>
+<BODY>
+<H1>Application Memory Meter</H1>
+<h2>1 Introduction</h2>
+<h3>1.1 Scope</h3>
+<P>
+    This document describes the usage of the application memory meter of the APOXI 
+    framework on SGOLD. The application memory meter gives a snapshot of the current 
+    stack memory used by all Apoxi applications and by all Apoxi application containers. 
+    The document also contains some hints concerning memory optimization.
+</P>
+<h3>1.2 SGold Stack Memory Overview</h3>
+<p>
+    Usage of operating system Nucleus32 on SGOLD leads to following stack memory scenario: 
+</p>
+<p>
+<ul>
+    <li>Every application and every application container has its own stack memory region.</li>
+    <li>Every stack memory region is allocated separately for every application and separately 
+    for every application container at runtime using operator new. </li>
+    <li>Within its stack memory region every application and every application container stores 
+    all its temporary data, i.e. all local variables, but also the call hierarchy (stack frame). 
+    There exists only one stack memory region per application and per application container:</li>
+</ul>
+</p>
+<p>
+    <img src="pics/amm_appcontainer.jpg" alt="AppContainer"/>
+</p>
+<h2>2 Application Stack Memory Meter</h2>
+<h3>2.1 Usage</h3>
+<p>
+    There are two ways to obtain the current stack memory usage: either via Trace (DbgOut) or via Lauterbach Debugger.
+</p>
+<h4>2.1.1 Read Memory Usage via Trace</h4>
+<p>
+    To read memory usage via trace connect a trace terminal (for example tp-190.exe) to UART1 on the SGlobe(light) board. 
+    After booting Apoxi the SW goes to idle screen. By pressing the up-key (up-arrow) in the idle screen the current application 
+    stack memory usage is written to the current trace file. Attention: DbgOut has to be activated in the SW.
+</p>
+<h4>2.1.2 Read Memory Usage via Lauterbach Debugger</h4>
+<p>
+    To read memory usage via Lauterbach debugger attach the Lauterbach debugger to the ARM controller on the SGold 
+    and load corresponding debug information (axf-file). After booting Apoxi, break the program flow in the debugger and do 
+    cmm-file "\lnz_mmi\Mmi\etc\t32\Edge\SG_stackmemoryusage.cmm". The current application stack memory usage is written to 
+    the Message Area of Lauterbach (View-->Message Area).
+</p>
+<h3>2.2 Output</h3>
+<p>
+    The output is identical for both trace output and Lauterbach output. The output looks as follows:
+</p>
+<p>
+<img src="pics/amm_output.jpg" alt="Output"/>
+</p>
+<p>
+    The output contains the stack base ("StackBase"), the stack size ("StackSize") and a snapshot of the current memory usage 
+    ("Used") for every application and for every application container. As the stack is written from higher to lower addresses 
+    (stack pointer SP is decremented when writing to the stack), the stack actually starts at StackBase + StackSize and grows 
+    down towards StackBase. On SGold one StackAtom is 4 bytes.
+</p>
+<h2>3 Hints for Memory Optimization</h2>
+<p>
+    The application stack memory meter can be used to optimize RAM memory usage.
+</p>
+<h3>3.1 Stack Memory Optimization for one Application</h3>
+<p>
+    Every application's stack memory peak (overall maximum stack memory used by an application) can be obtained by 
+    stressing the application and afterwards reading out the application's stack memory usage using the application stack 
+    memory meter as described in the previous section.
+</p>
+<p>
+    After obtaining the application's stack memory peak the size of the application's stack memory region can be adapted either 
+    directly in the application (see for example the setting of the stack size for the SoundBrowserApplication to 3600 bytes):
+</p>
+<pre>
+    SoundBrowserApp::SoundBrowserApp() : 
+        Base(L"Sound Browser", 3600)
+    {   	
+        m_media_needs_refresh = FALSE;
+    } // SoundBrowserApp
+</pre>
+<p>
+    or in file "\lnz_projects\Project\Config\StartUpConfig.cpp" (see for example the setting of the stack size for the 
+    SoundBrowserApplication to 6142*4 bytes):
+</p>
+<pre>
+    <a href="classStartup.html">StartUp::Table*</a> <a href="classStartUpConfig.html">StartUpConfig::GetStartupTable</a>(const <a href="classStartUp.html">StartUp::Data</a> &amp; startup_data)
+    {
+        static StartUp::Table normal_on_table[] = {
+    …
+            #if defined(APPLICATION_SNDBROWSER)
+                {TRUE, SoundBrowserApp::GetInstance(),		1, 6142*4},
+            #endif
+    …
+    }
+</pre>
+<p>
+    The setting in StartUpConfig overwrites the setting done within the application.
+</p>
+<h3>3.2 Overall RAM Optimization</h3>
+<p>
+    After the stack memory has been optimized for every single application as described in the previous section (and after 
+    optimizing stack memory usage for every application container), the overall RAM usage can be optimized in file 
+    "\lnz_projects\Project\Config\MemoryConfig.cpp".
+</p>
+<p>
+    For further information please see documents "MemoryManagement.pdf" (and "MemoryManagement.doc") in subfolders 
+    of "\lnz_doc\NonDisclosables".
+</p>
+
+</BODY>
+</HTML>

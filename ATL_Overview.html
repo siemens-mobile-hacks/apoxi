@@ -1,0 +1,152 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<title>ATL Overview</title>
+<style type="text/css">
+<!--
+.Stil1 {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: xx-large;
+	font-weight: bold;
+}
+.Stil4 {
+	font-size: large;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-weight: bold;
+}
+.Stil6 {font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 12px;}
+.Stil8 {font-family: Verdana, Arial, Helvetica, sans-serif; font-size: larger;}
+.Stil11 {font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 12px; font-weight: bold; }
+-->
+</style>
+</head>
+
+<body>
+<div align="center">
+  <p align="center" class="Stil1">ATL Overview </p>
+  <p align="left" class="Stil4">1 Introduction</p>
+  <p align="justify" class="Stil6">APOXI module &quot;ATL (Application Template Layer)&quot; provides basic application management and customization 
+  functionality on top of APOXI.</p>
+  <p align="justify" class="Stil6">The most important aims of the ATL module are the following:</p>
+  <ul>
+    <li class="Stil6">
+      <div align="left">Support factory customization of central parts of the user experience of a phone software</div>
+    </li>
+    <li class="Stil6">
+      <div align="left">Support code size savings for applications</div>
+    </li>
+  </ul>
+  <p align="justify" class="Stil4">2 ATL Architecture</p>
+  <p align="justify" class="Stil8">2.1 ATL Application and Application Plugin</p>
+  <p align="justify" class="Stil6">The ATL application is the mandatory base class for an application intending to use ATL concepts. The ATL 
+  application plugin is the base class for implementing lightweight add-ons to an ATL application.</p>
+  <p align="justify" class="Stil8">2.2 ATL GUI Controls</p>
+  <p align="justify" class="Stil6">All ATL GUI controls extend existing APOXI GUI classes. The APOXI window extensions provided by ATL are:</p>
+  <ul>
+    <li class="Stil6">
+      <div align="left"><span class="Stil11">ATL Window</span> as mandatory base class for any application window.</div>
+    </li>
+    <li class="Stil6">
+      <div align="left"><span class="Stil11">List Window</span> for displaying data of an APOXI Provider. </div>
+    </li>
+    <li class="Stil6">
+      <div align="left"><span class="Stil11">Menu Window</span>, which is used by the ATL framework for displaying and handling full screen as well as popup menus. There is no need for an application developer to use this class directly.</div>
+    </li>
+    <li class="Stil6">
+      <div align="left"><span class="Stil11">Property Editor</span>, which is the base class for any window to be used for viewing and changing setting values according to the Settings Framework specification.</div>
+    </li>
+  </ul>
+  <p align="left" class="Stil4">3 Feature Handling</p>
+  <p align="justify" class="Stil6">Features are functional entities provided by ATL applications or plugins. With the ATL Feature Broker, particular 
+    features of an application may be exported in order to be available globally and used as menu entries, shortcuts 
+  or other event triggered actions.</p>
+  <p align="justify" class="Stil6">    A feature is identified by a Feature ID, and it is linked to an application which handles the feature. Such an 
+    application is called Feature-providing application. When the feature is executed, the feature-providing application 
+executes the functionality corresponding to the feature.</p>
+  <p align="left" class="Stil6">    The different types of features provided by ATL are:</p>
+  
+<ul class="Stil6">
+  <li class="Stil6">
+    <div align="justify"><strong>Context independent Features</strong>: Context independent features can be triggered by a menu or any other asynchronous event without the need to supply additional information. These features are typically used to open particular dialogs of applications (e.g. write an SMS, Open Phonebook, &hellip;.).</div>
+  </li>
+        <li class="Stil6">
+          <div align="justify"><strong>Context aware Features</strong>: These are features require a feature invocation argument. This argument is the context information, when they are invoked. E.g, to establish a call, a phone number has to be supplied. Then, a context aware feature &quot;Setup Call&quot; is initialized with a phone number as context information, before it is executed. </div>
+        </li>
+        <li class="Stil6">
+          <div align="left"><strong>Platform Features</strong>: Platform Features are features not linked to a particular application, because they are provided by the platform. As an example, features using a service interface do not need to know which application implements the service.</div>
+        </li>
+</ul>
+<p align="left" class="Stil8">3.1 Feature Broker
+</p>
+<p align="left" class="Stil6">The Feature Broker provides access to all globally available features of a phone. It serves the following purposes:</p>
+<ul class="Stil8">
+  <li class="Stil6">
+    <div align="left"><strong>Feature registration</strong>: In order to be able to access all features on the phone, feature-providing applications must register their features to the Feature Broker. </div>
+  </li>
+  <li class="Stil6"><strong>Feature retrieval</strong>: In order for client objects to use a feature, they must request the feature from the Feature Broker by specifying the Feature ID.</li>
+</ul>
+<p align="left" class="Stil8">3.2 Menu Configuration</p>
+<p align="justify" class="Stil6">ATL menu structures are specified by menu descriptions. A menu description maps application features to menu 
+  items of the phone. According to the menu description, ATL creates feature items and item containers, which 
+  provide menu display as well as menu hierarchy information. GUI components use them for drawing as well as 
+traversing through hierarchies.</p>
+<p align="left" class="Stil8">3.3 Menu Window</p>
+<p align="justify" class="Stil6">ATL provides a menu window, which uses a menu description to display a menu node and let the user traverse 
+  through the hierarchy. The menu description has to be set by the client. Unavailable menu items are not displayed 
+  at all, disabled menu items are displayed as grayed.<br>
+The menu window listens for two virtual keys, namely:</p>
+<ul>
+  <li>
+    <div align="left">Select Key triggers the selected menu item.</div>
+  </li>
+  <li>
+    <div align="left">Back Key steps the hierarchy one level up. On level = 0 it closes the window.</div>
+  </li>
+</ul>
+<p align="left" class="Stil4">4 Context Handling</p>
+<p align="justify" class="Stil6">A context specifies a particular state of the user interface. For each context, project configuration is able to assign 
+  a specific set of user experience elements.<br>
+  A context is uniquely identified by a Context ID. In ATL, at least each window within the system possess a context. 
+  It is also possible to define more than one context for a window according to particular states of the window. The 
+  configurable user experience elements are key mappings, Window properties like window title, softkey 
+assignments for the softkey bar.</p>
+<p align="left" class="Stil8">4.1 Key Map Configuration</p>
+<p class="Stil6">With context handling, the set of virtual keys, which are not represented by existing hardware keys, can be 
+emulated per every context. The available key mappings are:</p>
+<ul>
+  <li class="Stil6">
+    <div align="justify"><span class="Stil11">Mapping of hardware keys to virtual keys</span>: The hardware keys can be mapped to virtual keys for doing different actions. For example, a particular hardware key may act as the virtual key <em>Delete Key</em> in one context and as virtual key <em>Cancel Key</em> in another context. </div>
+  </li>
+  <li class="Stil6">
+    <div align="justify"><span class="Stil11">Mapping of virtual keys to trigger a feature</span>: A virtual key can be mapped to trigger a particular feature. This virtual key is called feature key. With the Feature ID specified for the feature key, the key handling is able to fetch the feature from the Feature Broker and execute it if it is available. It is also possible to map a long or very long, or a sequence of hardware keys to a feature.</div>
+  </li>
+</ul>
+<p align="left" class="Stil8">4.2 Softkey Configuration</p>
+<p align="left" class="Stil6">The softkey configurations are described in the following:</p>
+<ul>
+  <li class="Stil6">
+    <div align="justify"><span class="Stil11">Feature assigned to Softkey</span>: If the Context Manager detects a feature configuration for a softkey, it fetches the feature from the Feature Broker and if that feature is available applies it to the global softkey bar. When the softkey is pressed, the mapped feature is executed.</div>
+  </li>
+  <li class="Stil6">
+    <div align="justify"><span class="Stil11">Context Menu assigned to Softkey</span>: Menus are identified by Menu ID. The Context Manager can use Menu IDs in order to fetch the corresponding menu description from the Feature Broker. A special feature indicating the text and possibly icon of the menu root node must be used to be applied to the global softkey bar. If that feature is triggered, a menu window parameterized with the menu description of the context menu will be opened.</div>
+  </li>
+</ul>
+<p align="left" class="Stil8">4.3 Context Switching</p>
+<p align="justify" class="Stil6">A window based on the ATL window base class is contextable. If an ATL window becomes focused, the context 
+  of the window is set to the Context Manager. The context manager is responsible to fetch the corresponding 
+  context configuration data from the project configuration and to apply the configured user experience elements to 
+the active context.</p>
+<p align="left" class="Stil4">5 Settings Framework</p>
+<p align="justify" class="Stil6">The ATL Settings Framework provides properties. A property represents a particular setting maintained by an ATL 
+  application. Properties are special features and are available globally. They can be used as menu items, whereby 
+  a matching property editor must be configured. If the property item is triggered, the configured editor is used to 
+  view and change the property value. Storage of a changed property value is handled by the ATL application 
+responsible for the property.</p>
+<ul class="Stil6">
+</ul>
+  <ul>
+  </ul>
+</body>
+</html>

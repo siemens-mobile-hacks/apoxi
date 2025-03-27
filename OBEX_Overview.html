@@ -1,0 +1,173 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<title>OBEX Overview</title>
+<style type="text/css">
+<!--
+.Stil1 {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: xx-large;
+	font-weight: bold;
+}
+.Stil4 {
+	font-size: large;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-weight: bold;
+}
+.Stil6 {font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 12px;}
+.Stil22 {font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 12px; font-weight: bold; }
+.Stil23 {font-family: Verdana, Arial, Helvetica, sans-serif; font-size: large;}
+-->
+</style>
+</head>
+
+<body>
+<div align="center">
+  <p align="center" class="Stil1">OBEX Overview </p>
+  <p align="justify" class="Stil4">1 Introduction </p>
+  <p align="justify" class="Stil6">OBEX stands for OBject EXchange protocol. It runs on top of Bluetooth, IrDA, USB and/or IP protocol. It is a 
+    protocol for exchanging objects which was initially designed by the Infrared Data Association, but has been 
+  adopted by Bluetooth and can also be used with USB, RS232 and WAP.</p>
+  <p align="justify" class="Stil4">    2 Overview </p>
+  <p align="justify" class="Stil6">    
+    OBEX is a standardized way of exchanging data with other mobile or desktop computing devices across platform 
+    boundaries. OBEX-aware applications like phonebooks or organizers can either exchange industry-standard 
+    object formats like vCard or vCal which are characterized by their mime type or directly connect to a special 
+    application service offered by the server device under a target address.</p>
+  <p align="justify" class="Stil6">    Higher-level protocols such as SyncML can use OBEX as a platform-independent transport layer while OBEX itself 
+    can be run over various transport protocols such as Bluetooth, IrDA, USB and IP.</p>
+  <p align="justify" class="Stil6">    The position of OBEX within APOXI is shown in Figure 1.</p>
+  
+<div align="justify">
+  <table width="98%"  border="1" align="center" cellpadding="0" cellspacing="0" bordercolor="#000000">
+    <tr>
+      <td height="326"><div align="center"><img src="figures/OBEX_Architecture.png" width="534" height="284"></div></td>
+    </tr>
+  </table>
+</div>
+  <p align="justify" class="Stil22">Figure&nbsp;1.  Position of OBEX within APOXI</p>
+  <p align="justify" class="Stil6">The APOXI OBEX extension provides an API which supports reception and transmission of arbitrary data using 
+    the OBEX protocol over different transports (e.g. Bluetooth, IrDA, USB) while isolating the different transport stack 
+  interfaces from the application layer.</p>
+  <p align="justify" class="Stil4">3 Application Interface</p>
+  <p align="justify" class="Stil6">    Application interfaces are significant for OBEX Client and Server implementers (such as a SyncML-DS client). The 
+application interfaces provided by OBEX are described in this section. </p>
+  <p align="justify" class="Stil23">    3.1 OBEX Server API</p>
+  <p align="justify" class="Stil6">    An OBEX server handles incoming requests and issues responses. Each response carries a response code which 
+    indicates the result of processing the request. The functionalities provided by OBEX Server is listed in the 
+following: </p>
+  
+<div align="justify">
+      <ul>
+        <li class="Stil6">Bind server to mime type, default server may be registered for unknown types</li>
+          <li class="Stil6">Bind server to Target, default server may be registered for unknown target addresses</li>
+          <li class="Stil6">Specify security settings (transport security)</li>
+          <li class="Stil6">Accept connection without authentication</li>
+          <li class="Stil6">Handle &rsquo;Connect&rsquo;, 'Put', 'Get', &rsquo;Abort&rsquo;,SetPath&rsquo;, and &rsquo;Disconnect&rsquo; requests</li>
+          <li class="Stil6">Access transport-specific server information</li>
+      </ul>
+</div>
+  <p align="justify" class="Stil23">3.2  ObexOppServer</p>
+  <p align="justify" class="Stil6">    <em>ObexOppServer</em> provides OPP protocol support as a server. By overriding the virtual 
+    On&lt;whatever_event_occured&gt; methods an application developer can respond to OPP Push or Pull requests and 
+submit the corresponding responses.</p>
+  <p align="justify" class="Stil23">3.3 OBEX Client API</p>
+  <p align="justify" class="Stil6">    An OBEX client issues requests to a server and handles the resulting responses. The functionalities provided by 
+Obex Client are listed in the following:</p>
+  
+<div align="justify">
+      <ul>
+        <li class="Stil6">
+          Open transport connection</li>
+          <li class="Stil6">
+            Establish connection using 'Connect' without authentication</li>
+          <li class="Stil6">
+            Issue 'Put' request</li>
+          <li class="Stil6">
+            Issue 'Get' request</li>
+          <li class="Stil6">
+            Abort pending operation</li>
+          <li class="Stil6">
+            Issue 'SetPath' request</li>
+          <li class="Stil6">
+            Disconnect </li>
+          <li class="Stil6">
+            Close transport connection</li>
+          <li class="Stil6">
+            Access transport-specific client information</li>
+      </ul>
+</div>
+  <p align="justify" class="Stil23">3.4 ObexOppClient</p>
+  <p align="justify" class="Stil6">    ObexOppClient enables application to act as an OPP client, which implies connecting to a remote server, issuing 
+requests and collecting the responses. </p>
+  <p align="justify"><span class="Stil23">3.5  Utility</span></p>
+  <p align="justify" class="Stil6">  The OBEX application interface utilities are listed in the following:</p>
+  
+<ul><li><div align="left" class="Stil6">
+      <div align="justify"><strong>ObexObject</strong>: ObexObject manages an internal shared data object which contains a list of OBEX headers as well as optional flags and a response code.</div>
+    </div>
+    </li>
+    <li>
+      <div align="left" class="Stil6">
+        <div align="justify"><strong>ObexResult</strong>: Indicates success or failure of OBEX API functions and operations. </div>
+      </div>
+    </li>
+    <li>
+      <div align="left" class="Stil6">
+        <div align="justify"><strong>ObexBuffer</strong>: Provides exclusive access to a data buffer.</div>
+      </div>
+    </li>
+    <li>
+      <div align="left" class="Stil6">
+        <div align="justify"><strong>ObexHeader</strong>: Represents an OBEX header which consist of a Header identifier and the associated header data.</div>
+      </div>
+    </li>
+    <li>
+      <div align="left" class="Stil6">
+        <div align="justify"><strong>ObexHeaderList</strong>: List of OBEX headers</div>
+      </div>
+    </li>
+  </ul>
+  <p align="justify" class="Stil4">4 Transport Interface</p>
+  <p align="justify" class="Stil6">    The transport interface provided by OBEX is described in this section.</p>
+  <p align="justify" class="Stil23">    4.1 ObexLayer</p>
+  <p align="justify" class="Stil6">    <em>ObexLayer</em> is the Interface for direct access to the OBEX layer. Every transport adapter must provide an 
+implementation of this interface.</p>
+  <p align="justify" class="Stil23">    4.2 ObexAbstractTransport</p>
+  <p align="justify" class="Stil6">    <em>ObexAbstractTransport</em> is the abstract interface for OBEX transports. This interface must be implemented for 
+    every transport protocol like Bluetooth, IrDA, etc. This interface provides access to the stack-specific OBEX 
+    implementation (and possibly to other profiles when supported by the stack) and abstracts transport stack and 
+underlying hardware. </p>
+  <p align="justify" class="Stil23">4.3 ObexProtocol</p>
+  <p align="justify" class="Stil6">    ObexProtocol is the interface base class for protocol layer access and handles the transport-centric aspects of 
+    them.<br>
+    <br>
+    <span class="Stil23">4.4 AbstractTransport</span></p>
+  <p align="justify" class="Stil6">    <em>AbstractTransport</em> is the abstract representation of communication hardware. This interface must be implemented 
+    for every transport subsystem like Bluetooth, IrDA, etc.</p>
+  <p align="justify" class="Stil23">    4.5 Low-level transport interface</p>
+  <p align="justify" class="Stil6">    The low-level transport interface is used to glue the transport protocol stacks to APOXI OBEX. Therefore the 
+    transport must be able to issue and handle all standard OBEX operations (Connect, Put, Get, SetPath, Abort, 
+    Disconnect) and to assemble and serialize all four OBEX header formats. Low-level Transport Interface is shown 
+in Figure 2.</p>
+  
+<div align="justify">
+  <table width="98%"  border="1" align="center" cellpadding="0" cellspacing="0" bordercolor="#000000">
+    <tr>
+      <td height="224"><div align="center"><img src="figures/OBEX_Transport.png" width="444" height="195"></div></td>
+    </tr>
+          </table>
+</div>
+  <p align="justify" class="Stil22"> Figure&nbsp;2. Low-level Transport Interface</p>
+  <p align="justify" class="Stil6">Both client- and server applications must register with the transport. Servers must remain registered as long as they are listening for incoming connection requests. Clients only need to be registered for the lifetime of a connection.</p>
+  <div align="justify">
+      <ul>
+      </ul>
+</div>
+  <p align="justify" class="Stil6">&nbsp;</p>
+  <p align="justify" class="Stil6">&nbsp;</p>
+  <p align="justify" class="Stil6">&nbsp;</p>
+</body>
+</html>

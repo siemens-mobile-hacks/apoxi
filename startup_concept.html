@@ -1,0 +1,149 @@
+﻿<html>
+  <head>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8">
+	<title>Start-Up Concept</title>
+
+	<link rel="stylesheet" type="text/css" href="doxygen.css">
+  </head>
+
+  <body>
+	<h1>APOXI Start-Up Concept</h1>
+
+	<h2>1 Introduction</h2>
+	<p>
+	  Because of the growing size of the file MainStartup.cpp a new start-up concept is introduced, to start 
+	  Applications embedded in AppContainers in a more comfortable and automated manner.
+	  With APOXI-1.10 there is a simple way to define a list of Applications which are started automatically 
+	  by the system.
+	</p>
+
+	<h2>2 Overview</h2>
+	<p>
+		To start APOXI the protocol stack (PMI process) is calling the function Apoxi_startup which analyses 
+		the start-up cause and calls <a href="classStartup.html">StartUp::Start</a>. Here all the initialization and start of APOXI modules 
+		is triggered. In cooperation with the new project configuration file StartUpConfig also a start-up table 
+		is parsed to attach all Applications to the desired AppContainers and run them (start the threads).
+	</p>
+	<p>
+		Also it is possible to add some additional start-up code into the start process by implementing special 
+		methods in <a href="classStartUpConfig.html">StartUpConfig</a>. This allows to do some
+		additional initialization in the very early start phase without changing APOXI code.
+	</p>
+	
+	<center><img src="pics/startup_concept.gif" alt="Architecture Overview"/></center>
+	
+	<h2>3 Architecture</h2>
+	<p>
+		The involved classes for starting APOXI are:
+		<ul>
+			<li><a href="classStartup.html">StartUp</a> in Apoxi/Devices</li>
+			<li><a href="classStartUpConfig.html">StartUpConfig</a> in Project/Config</li>
+			<li><a href="classAppContainer.html">AppContainer</a> in Kernel</li>
+			<li><a href="classApplication.html">Application</a>	in Kernel</li>
+		</ul>
+	</p>
+	
+	<h3>3.1 StartUp Device</h3>
+	<p>
+		In StartUp::Start the start-up sequence is implemented as following:
+		<ol>
+			<li>Call of <a href="classStartUpConfig.html">StartUpConfig::PreInitialization</a>.<br/>
+				This is the first place where the customer can add some additional start-up code. 
+				Because of no static object are initialized only C-Code can be called!</li>
+			<li>Initialization of all static objects.</li>
+			<li>Start of SubSystems with BootSequenceState ‘c_run_level_1’</li>
+			<li>Initialization of all static Apoxi Devices.<br/>
+				Currently these are: Keyboard, RealTimeClock, Audio, Charger, Led</li>
+			<li>Initialization of the communication interface to the protocol stack (Apc/SignalHandler).</li>
+			<li>Call of <a href="classSystem.html">System::Init</a>;</li>
+			<li>Start of SubSystems with BootSequenceState c_run_level_3</li>
+			<li>Call of <a href="classStartUpConfig.html">StartUpConfig::Initialization</a>.<br/>
+				Another place where the customer can add some start-up code. Now also C++ Code can be executed and static objects can be used.</li>
+			<li>Parsing the start-up table.<br/>
+		Every Application is attached to the desired AppContainer (this also invokes the call of <a href="classApplication.html">Application::OnStartup</a>) and then all AppContainers are started.</li>
+		</ol>
+	</p>
+	
+	<h3>3.2 StartUpConfig</h3>
+	<p>
+		The following methods have to be implemented similar to the example:
+		<pre>
+void StartUpConfig::PreInitialization()
+{
+	StartUp::Data startup_data = StartUp::GetStartupData();
+
+	if (startup_data.IsCause(StartUp::NormalOn)) {
+		PowerHandler::PowerUp();
+		PowerHandler::StartMobileNetwork();
+	}
+
+	IntSramConfig::InitSram();	// initialize internal SRAM
+}
+
+void StartUpConfig::Initialization()
+{
+	ExtractSmsTextPlugin* extractsmstext_plugin =
+		ExtractSmsTextPlugin::GetInstance();
+	extractsmstext_plugin->Init(SmsApp::GetInstance());
+	extractsmstext_plugin->Attach();
+
+	NvRamStorage::SetNvRamStorageInfo(c_nv_ram_block_info);
+}
+
+AppContainer* StartUpConfig::GetAppContainerArray()
+{
+    static AppContainer app_cont[3];
+    return app_cont;
+}
+
+INT StartUpConfig::GetAppContainerCount()
+{
+    return 3;
+}
+
+StartUp::Table* StartUpConfig::GetStartupTable(const StartUp::Data &startup_data)
+{
+    static StartUp::Table normal_on_table[] = {
+        //  enabled, Application*, AppContainer ID, stacksize
+        {TRUE, StartupShutdownApp::GetInstance(),   0, 0},
+        {TRUE, MainApp::GetInstance(),              0, 0},
+        {TRUE, CallHandlingApp::GetInstance(),      0, 0},
+        {TRUE, BasicPbApp::GetInstance(),           0, 0},
+        {TRUE, SmsApp::GetInstance(),               0, 0},
+        {TRUE, StkApp::GetInstance(),               0, 0},
+        {TRUE, SimLockApp::GetInstance(),           1, 0},
+        {TRUE, CbsApp::GetInstance(),               1, 0},
+        {TRUE, CallRecordsManager::GetInstance(),   1, 0},
+        {TRUE, MmiChargingApp::GetInstance(),       2, 0},
+        {FALSE, 0, 0, 0}        // mandatory last entry;
+    };
+
+    static StartUp::Table charger_on_table[] = {
+        {TRUE, MmiChargingApp::GetInstance(),       2, 0},
+        {FALSE, 0, 0, 0}        // mandatory last entry;
+    };
+
+    if (startup_data.IsCause(StartUp::NormalOn))
+        return normal_on_table;
+    else if (startup_data.IsCause(StartUp::ChargerOn))
+        return charger_on_table;
+    else
+        return 0;
+}
+		</pre>
+	</p>
+	
+	<h3>3.3 AppContainer</h3>
+	<p>
+		The first starting AppContainer also starts the SubSystems with BootSequenceState ‘c_run_level_5’. 
+		This allows SubSystems to start in the context of an AppContainer.
+	</p>
+	
+	<h3>3.4 Application</h3>
+	<p>
+		The first Application which runs its OnOpen method starts the SubSystems with BootSequenceState 
+		c_run_level_7. This allows SubSystems to start in the context of an Application.	
+	</p>
+	
+  </body>
+</html>

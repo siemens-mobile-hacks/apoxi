@@ -1,0 +1,192 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<title>Audio Overview</title>
+<style type="text/css">
+<!--
+.Stil1 {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: xx-large;
+	font-weight: bold;
+}
+.Stil4 {
+	font-size: large;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-weight: bold;
+}
+.Stil6 {font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 12px;}
+.Stil8 {font-family: Verdana, Arial, Helvetica, sans-serif; font-size: larger;}
+.Stil15 {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: medium;
+	font-weight: bold;
+}
+.Stil16 {font-family: Verdana, Arial, Helvetica, sans-serif; font-size: medium; }
+-->
+</style>
+</head>
+
+<body>
+<div align="center">
+  <p align="center" class="Stil1">Audio Overview </p>
+  <p align="left" class="Stil4">1 Overview </p>
+  <p align="justify" class="Stil6">APOXI Audio is an abstract layer to Audio Driver. The APOXI audio functionalities are listed in the following:</p>
+  <ul>
+    <li>
+      <div align="left" class="Stil6">Hide the specific low-level implementation and specific details of the hardware.</div>
+    </li>
+    <li>
+      <div align="left" class="Stil6">Allow applications to use the audio API without coordinating/negotiating with each other.</div>
+    </li>
+    <li>
+      <div align="left" class="Stil6">Allow runtime discovery of properties that are specific to certain targets or factory customizations. For instance, presets.</div>
+    </li>
+    <li>
+      <div align="left" class="Stil6">Make it easy to play sounds. All sounds should be playable via the same simple method or syntax.</div>
+    </li>
+    <li>
+      <div align="left" class="Stil6">Implement a priority system: If a sound is already playing, with a lower or equal priority then it should be suspended and the new sound will play instead.</div>
+    </li>
+    <li>
+      <div align="left" class="Stil6">For SMAF phrases, which can play simultaneously on 4 channels, the priorities will be per-channel.</div>
+    </li>
+    <li>
+      <div align="left" class="Stil6">Allow accessories to be linked to &quot;sources&quot;, after discovering which can be linked. The sources are &quot;DSP&quot; and &quot;Ringer&quot;. Apparently each type of sound (e.g. <em>AudioDevice</em>) plays through one, and only one, of these sources. Accessories can only be linked to one source.</div>
+    </li>
+  </ul>
+  <p align="justify" class="Stil4">2 Polymorphic AudioReferences</p>
+  <p align="justify" class="Stil6">The Audio API use a polymorphic hierarchy of AudioReferences to allow creation and use of specific sounds, but 
+  it will allow these to be manipulated polymorphically through the simple base class.</p>
+  <p align="justify" class="Stil8">2.1 Creating an AudioReference</p>
+  <p align="justify" class="Stil6">    Some sounds do require special information to specify them, but those information should only need to be 
+  specified when creating the sound, and not afterward.</p>
+  <p align="justify" class="Stil8">    2.2 Playing an AudioReference</p>
+  <p align="justify" class="Stil6">    After the <em>AudioReference</em> is created, it is not needed to worry about what type of sound it is. For instance, the 
+    sounds can be played with a simple call of <em>AudioDeviceManager::Play(*fileRef)</em>.</p>
+  <p align="justify" class="Stil8">    2.3 Controlling a Playing Sound</p>
+  <p align="justify" class="Stil6"><em>AudioReferences</em> are also polymorphic when needed to stop them. <em>AudioDeviceManager::Play()</em> returns an 
+    AudioActiveReference. Calling <em>Stop() </em>on <em>thisAudioActiveReference</em> will stop the sound, regardless of the type of 
+  sound.</p>
+  <p align="justify" class="Stil4">3 Recording a Sound </p>
+  <p align="justify" class="Stil6">The API provides the possibility to record a sound in AMR(Voice memo) or PCM format. The 
+  <em>StreamAudioReference</em> and <em>StreamAudioPlayer</em> are used for this purpose.</p>
+  <p align="justify" class="Stil8">3.1 Enabling Voice Recognition for Training/Recognition</p>
+  <p align="justify" class="Stil6">When voice training/recognition has to be performed, the PCM recording has to be activated in the audio driver.</p>
+  <p align="justify" class="Stil4">4 Playing/Recording a Sound using Advanced Frameworks</p>
+  <p align="justify" class="Stil6">In addition to the already described ways to play a sound the AMR, PCM and MP3 audio formats can be played 
+    in so called streaming mode. The streaming mode requires existence of an advanced framework that is able to 
+    pass frames to the driver and can handle the synchronization issues. The <em>StreamAudioReference</em> and 
+    <em>StreamAudioPlayer</em> are the classes implemented to provide the needed functionalities to the framework to deal 
+    with such mode. The most important aspect is registration of the callback function that will be invoked by the driver 
+  whenever a new frame(s) has to be fetched by the driver.</p>
+  <p align="justify" class="Stil4">5 Notification</p>
+  <p align="justify" class="Stil6">Some applications need to know when a sound has been stopped. For instance, an MP3-playing application might 
+  want to show when something is playing, and when it is not.</p>
+  <p align="justify" class="Stil6">    The new audio API will send the &quot;<em>AudioStoppedMsg</em>&quot; APOXI message when a sound has stopped because it has 
+    reached its end. It will not send this message if the application explicitly stops the sound with the <em>Stop() </em>method.</p>
+  <p align="justify" class="Stil6">    This APOXI message will contain the <em>AudioActiveReference</em> so that the application can discover exactly which 
+    sound has stopped.<br>
+    The suspension of a sound is also notified by the audio system. The &quot;<em>AudioSuspendedMsg</em>&quot; containing the 
+    <em>AudioActiveReference</em> information will be sent when the priority manager suspends a sound due to a priority 
+    conflict.</p>
+  <p align="justify" class="Stil6">    The &quot;<em>AudioErrorMsg</em>&quot; message is sent when an error has been returned by the driver. The list of available errors 
+    is handled by the <em>AudioError</em> class.</p>
+  <p align="justify" class="Stil6">    It is also possible that the application register its own callback to APOXI in order to get the audio notifications. But 
+    the way to get the audio notifications has to be the APOXI message system, callback method has to be used only 
+    if there are some reasons that the calling module is not able to receive APOXI messages.</p>
+  <p align="justify" class="Stil4">6 Volume and Mute Concept</p>
+  <p align="justify" class="Stil6">The simplest way to adjust the volume in percentages for any sound played on any audio device is using the  
+  <em>AudioDeviceManager::SetMasterVolume()</em>.</p>
+  <p align="justify" class="Stil6">    Based on the audio device, it is possible to adjust the volume in percentages for each available device using 
+    <em>AudioDeviceBase::SetVolume</em> method. The master volume is like a mixer - where each input has its own volume 
+    control (device volume), and the outputs are mixed together with the global volume (master volume).</p>
+  <p align="justify" class="Stil6">    Using the <em>AudioDeviceBase::SetVolume()</em> to adjust the volume is not recommended. Best solution is always to 
+    use the master volume to control the volume and to leave the device volume to its default value.</p>
+  <p align="justify" class="Stil6">    Device volume should be used when it is necessary to reduce or increase only some specific type of sound without 
+    any effect on other devices. For instance, when reducing the tone volume without effecting the speech volume 
+    during the call.</p>
+  <p align="justify" class="Stil6">    It is also possible to set the device volume for only one playback instance. The <em>AudioReference::SetVolume()</em>    method has to be used if device volume is to be set before playing the sound. To set it while playing, 
+    <em>AudioActiveReference::SetVolume()</em> should be used. This is useful for playing a sound at certain volume level, but 
+    with device volume staying at the same volume level after the playing as it was before.</p>
+  <p align="justify" class="Stil4">7 Audio Path Manager</p>
+  <p align="justify" class="Stil6">Due to more complex requirements of the audio paths and accessory linking the audio path manager is defined in 
+  order to cover the following tasks:</p>
+  <ul>
+    <li>
+      <div align="left" class="Stil6">
+        <div align="left">Allow runtime discovery of target-specific or factory-customized audio accessories.</div>
+      </div>
+    </li>
+    <li>
+      <div align="left" class="Stil6">
+        <div align="left">Allow runtime discovery of connected and available audio accessories. (Detection of headset and CTM).</div>
+      </div>
+    </li>
+    <li>
+      <div align="left" class="Stil6">
+        <div align="left">Provide human-readable canonical names for these audio accessories. This should include secondary names where appropriate. For instance, bluetooth headsets have their own specific ID name as well as a general accessory-type name. </div>
+      </div>
+    </li>
+    <li>
+      <div align="left" class="Stil6">
+        <div align="left">Provide accessory priority system that allows to enable an accessory considering its priority, whether is active and available.</div>
+      </div>
+    </li>
+    <li>
+          <div align="left"><span class="Stil6">
+        <div align="left">
+        Audio system responds to a change of the activated accessories. For instance, a button press on the bluetooth headset means:
+            </span>
+              <ul>
+                <li class="Stil6">This accessory is now active</li>
+                <li class="Stil6">This accessory should take all sounds that it is able to take, including already-playing sounds (when in-band ringers will be support</li>
+              </ul>
+          </div>
+      <ul>
+      </ul>
+    </li>
+  </ul>
+
+  <p align="left" class="Stil8">7.1  Accessories</p>
+  <p align="justify" class="Stil6">There are no restrictions of what accessories are supported by the current audio system. Any combination of audio 
+    paths uplink/downlink can be taken as being an accessory. Usually, accessories consist of one downlink and one
+  uplink path, but it is also possible to define more then one downlink or uplink path for each accessory.</p>
+  <p align="justify" class="Stil6">    The available accessories are defined for each project in the Config file. The order of the registration is very 
+    important since the priority decreases from top to the bottom of the accessory list, the first added accessory having 
+    the highest priority. At the power up the accessories are loaded to the list and cannot be deleted afterwards.</p>
+  <p align="justify" class="Stil6">    When the accessory is activated, the audio paths are enabled and the audio manager will update install the audio 
+    paths. It is possible that some accessories, such as bluetooth, are activated and only in case of specific actions 
+    the audio paths should be setup.</p>
+  <p align="justify" class="Stil6">    During the creation, the conflict table of each accessory has to be specified. The table is used to determine what  
+    accessories can be active at the same time. The path manager takes into account the priority given to each 
+    registered accessory and using this matrix it will enable/disable the appropriate audio paths.</p>
+  <p align="left" class="Stil15">7.1.1 Mode Concept for Paths/Accessories</p>
+  <p align="justify" class="Stil6">In the &quot;mode&quot; approach, an AudioReference has a mode member; this mode and the current availability state of 
+    accessories together determine which accessories should be used for rendering the sound. The desired 
+    accessories as a function of mode and availability are defined in a lookup table in the project-specific file 
+  AudioAccessoriesRegistration.cpp.</p>
+  <p align="left" class="Stil16">    7.1.1.1 Definitions</p>
+  <p align="justify" class="Stil6">    <strong>Accessory availability</strong>: Availability is affected by calls to <em>AudioAccessoryDetails::SetConnected</em> for an 
+accessory, &quot;being available&quot; does not mean that the corresponding paths are installed. </p>
+  <p align="justify" class="Stil6">    <strong>Mode</strong>: Semantically, mode corresponds to a usage, purpose / intention, or use case, of a sound, e.g. using a 
+    sound as a ringer may define one mode, using a sound in a media application might be another.</p>
+  <p align="justify" class="Stil6"><strong> Desired accessories</strong>: Determined by mode and accessory availability. When rendering a sound, the paths 
+    corresponding to the desired accessories are installed.</p>
+  <p align="left" class="Stil16">    7.1.1.2 Details of applying the path control lookup table</p>
+  <p align="justify" class="Stil6">    After obtaining the desired accessories from the lookup table, APOXI will remove the currently used accessories, 
+    and install the desired accessories.</p>
+  <p align="justify" class="Stil6">    The order of installation is given by the ordering of accessories in <em>AudioAccessoriesRegistration</em> the accessory 
+    with the highest priority is installed first. This ordering is important to obtain correct gain settings.</p>
+  <p align="justify" class="Stil6">    The results of the attempt of installing an accessory depend on the priority and conflict settings in 
+    <em>AudioAccessoriesRegistration</em>. For example, if both accessory A and B are in the desired accessories; A has 
+    higher priority than B (according to the positions in the accessory list); A cannot be used together with B (according 
+    to A's conflict/cooperation settings); then an attempt to install B will be made, but it will have no effect.</p>
+  <p align="left" class="Stil4">8 Priorities</p>
+  <p align="justify" class="Stil6">Each sound should have a priority. If an application tries to play a second sound on the same &quot;channel&quot; while an 
+    existing sound is still playing, then the priority system will handle the conflict. For more information about priorities, 
+  please refer, UG_Devices_Audio_Priority_Manager.pdf.</p>
+  <p align="left" class="Stil6">&nbsp;</p>
+</body>
+</html>

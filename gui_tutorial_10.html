@@ -1,0 +1,317 @@
+<html>
+	<head>
+		<link href="doxygen.css" rel="stylesheet" type="text/css">
+		<title>10 Aragon</title>
+	</head>
+	
+	<body>
+		[ Previous: <a href="gui_tutorial_09.html">Multilingual Support</a> ] [ Next: <a href="gui_tutorial_11.html">Image Handling</a> ]
+		
+		<h1>10 Aragon</h1>
+		
+		<p>
+		  The GUI editor called APOXI Aragon Tool generates resource files which can be read out by APOXI GUI objects to initialize
+		  their properties themselves. The benefits of this approach are:
+		  <ul>
+		    <li>The behavior in applications is strictly separated from the look and layout of GUI objects.</li>
+		    <li>The code of an application does not need to be changed, if the look or layout of GUI objects is modified.</li>
+		    <li>The code size is decreased, as the resource file usually is smaller than the coded counterpart.</li>
+		  </ul>
+		  
+		  Drawbacks:
+		  <ul>
+		    <li>Not everything what can be solved with code can be described within a resource file.</li>
+		    <li>Decreased performance, as the parsing requires some time.</li>
+		  </ul>
+		</p>
+		
+		<h2>10.1 Creating GUI Objects</h2>
+		
+		<p>
+			One resource file might contain a variable number of GUI objects and images. Usually it makes sense to embedd all
+			GUI objects and images belonging to one application into one resource file, but it is also possible to use several
+			resource files for one application.
+		</p>
+		
+		<p>Example: Given is a resource file named "my_app_resources.rc" containing three windows and one JPEG image. Each GUI object
+		  which is part of the resource files gets a unique ID. In this example the ID for the first window is 100, for the second 200 and
+		  for the third 300 (the IDs can be assigned with the GUI editor). Creating and opening the window 1 can be done the following way:
+		</p>
+<pre>
+Window* win = (Window*)ResourceManager::GetInstance().Construct(L"/ffs/my_app_resources.rc!100");
+if (win != 0) {
+    win->OpenModal();</pre>		
+  
+    <p>
+      The class <a href="classResourceManager.html">ResourceManager</a> is a singleton which is able to construct any
+      GUI object out of a given resource file. For every call to Construct, a new object is created. Note that the ID of the object is added after the name of the resource
+      file by <em>!100</em>.
+    </p>
+    
+    <h2>10.2 Interacting with Created Objects</h3>
+    
+    <p>
+      The created window 1 may contain a variable number of embedded GUI objects like e. g. a line editor, textlines or image boxes.
+      Those GUI objects are described inside the resource file and have been created with the GUI editor. To interact with
+      them the object ID is the key: each GUI object gets a unique ID assigned inside the GUI editor. Assuming that window 1
+      contains two line editors with the ID 101 and 102 the content of those editors can be read out the following way:
+    </p>
+<pre>
+Window* win = (Window*)ResourceManager::GetInstance().Construct(L"/ffs/my_app_resources.rc!100");
+if (win != 0) {
+    win->OpenModal();
+
+    const LineEditor* editor1 = (LineEditor*)win->GetComponent(101);
+    const WString& text1 = editor1->GetText();
+
+    const LineEditor* editor2 = (LineEditor*)win->GetComponent(102);
+    const WString& text2 = editor2->GetText();
+}</pre>
+		
+		<h2>10.3 Destructing Created Objects</h2>
+		
+		<p>
+		  The <a href="classResourceManager.html">ResourceManager</a> internally keeps a list of created objects, hence when
+		  invoking 
+		</p>
+<pre>
+ResourceManager::GetInstance().Destruct(L"/ffs/my_app_resources.rc!100");
+</pre>
+    <p>
+      all the object specified by this URI will be destructed. To destroy only a single instance created from this URI, 
+      the destruct method must also receive the object as the second parameter:
+<pre>
+Window* win = (Window*)ResourceManager::GetInstance().Construct(L"/ffs/my_app_resources.rc!100");
+...
+...
+...
+ResourceManager::GetInstance().Destruct(L"/ffs/my_app_resources.rc!100", (void*)win);
+</pre>
+      As this method presents a clear and present danger to inadvertedly delete more objects than really intended, this
+      particular method has been marked as deprecated. The new, safer method for destructing an object and its associated
+      objects only receives the object as the parameter:
+<pre>
+Window* win = (Window*)ResourceManager::GetInstance().Construct(L"/ffs/my_app_resources.rc!100");
+...
+...
+...
+ResourceManager::GetInstance().Destruct((void*)win);
+</pre>
+      It is important that no other objects refer to this object anymore. For example
+      an instance of the class window must be closed first before destructing it. Otherwise the application the window
+      belongs to would access an already destructed object.
+		</p>
+		
+		<h2>10.4 Accessing Embedded Images</h3>
+		
+		<p>
+		  In the example mentioned in 10.1 one GUI object is a JPEG image. Assuming that the image has the object ID 400,
+		  this image can assigned to an <a href="classImageBox.html">image box</a> (in the example represented by m_image_box)
+		  the following way:
+		</p>
+<pre>
+ImageObtainer* img_obtainer = (ImageObtainer*)ResourceManager::GetInstance().Construct(L"/ffs/my_app_resources.rc!400");
+if (img_obtainer != 0)
+    m_image_box.SetImageObtainer(*img_obtainer);
+</pre>
+
+    But it is also possible that the image box is already a resource (e. g. and has the object ID 401) and internally accesses to the image with the
+    object ID 400:
+<pre>
+ImageBox* img_box = (ImageBox*)ResourceManager::GetInstance().Construct(L"/ffs/my_app_resources.rc!401");</pre>
+
+    <p>
+      In the GUI editor the image property of the image box is specified by the object ID 400. This is hidden for
+      the application in this case.
+    </p>
+		
+	<h2>10.5 Extending the GuiObjectFactory</h2>
+	<h3>10.5.1 Adding new ClassTypes</h3>
+	<p>
+		If you want to add new classes that need to be generated by the GuiObjectFactory, a series of steps must be executed:
+		<ol>
+			<li>
+				Add a new entry at the end of the ClassType enum in GuiObjectFactory.hpp. Custom class types start with 2000:<br>
+				Before:
+<pre>
+enum ClassType {
+	UnknownClassType = 255,
+	ObjectReference = 0,
+	...
+	PredefinedClassTypesCount = 68,			// number of class types that have been defined by APOXI
+	ProgressPropertyDescriptorClassType = 2000,
+	PasswordPropertyDescriptorClassType = 2001,
+	// add new custom class types here and increase the next enum value accordingly
+	CustomDefinedClassTypesCount = 2002		// one higher than the last customer defined class type
+}
+</pre>
+				After:
+<pre>
+enum ClassType {
+	UnknownClassType = 255,
+	ObjectReference = 0,
+	...
+	PredefinedClassTypesCount = 68,			// number of class types that have been defined by APOXI
+	ProgressPropertyDescriptorClassType = 2000,
+	PasswordPropertyDescriptorClassType = 2001,<b>
+	NewClassType = 2002,</b>
+	// add new custom class types here and increase the next enum value accordingly<b>
+	CustomDefinedClassTypesCount = 2003		// one higher than the last customer defined class type</b>
+}
+</pre>
+
+			</li>
+			<li>
+				In the ::Create(...) method in GuiObjectFactory.cpp, add the calls to create the class and to call its SetProperty method.
+			</li>
+			<li>
+				In the ::Destroy(...) method in GuiObjectFactory.cpp, add the call to delete the object.
+			</li>
+			<li>
+				If your object uses forward referencing in the resource file, i.e. referencing objects that are created after the rest of 
+				the object's properties are read, then add the setting of the affected property in the ::Finalize(...) method.
+			</li>
+		</ol>
+	</p>
+	<h3>10.5.2 Adding new PropertyIDs</h3>
+	<p>
+		If you want to add new properties that can be set by ARAGON, please follow the steps below:
+		<ol>
+			<li>
+				Add a new entry at the end of the PropertyId enum in GuiObjectFactory.hpp. Custom property IDs start with 2000:<br>
+				Before:
+<pre>
+enum ClassType {
+	UnknownClassType = 255,
+	ObjectReference = 0,
+	...
+	PredefinedPropCount = 133,		// number of property IDs that have been defined by APOXI
+	// add new custom property IDs here and increase the next enum value accordingly
+	CustomDefinedPropCount = 2000		// one higher than the last customer defined property count
+}
+</pre>
+				After:
+<pre>
+enum ClassType {
+	UnknownClassType = 255,
+	ObjectReference = 0,
+	...
+	PredefinedPropCount = 133,		// number of property IDs that have been defined by APOXI<b>
+	NewProp = 2000,</b>
+	// add new custom property IDs here and increase the next enum value accordingly<b>
+	CustomDefinedPropCount = 2001		// one higher than the last customer defined property count</b>
+}
+</pre>
+			</li>
+			<li>
+				In order for the ResourceParser to parse the new property, it must know of what type this property is. This
+				is set in the GuiObjectFactory::MapPropertyIdToParseType(...) method. If the NewProp defined above
+				is e.g. a UINT8 property, add it to the appropriate case block in the big switch statement.
+				Before:
+<pre>
+	// UINT8 properties:
+	case GuiObjectFactory::TopLineGapProp:
+	case GuiObjectFactory::BottomLineGapProp:
+	case GuiObjectFactory::FocusPriorityProp:
+	case GuiObjectFactory::FrameLayoutHintProp:
+		return GuiObjectFactory::UInt8Type;
+</pre>
+				After:
+<pre>
+	// UINT8 properties:
+	case GuiObjectFactory::TopLineGapProp:
+	case GuiObjectFactory::BottomLineGapProp:
+	case GuiObjectFactory::FocusPriorityProp:
+	case GuiObjectFactory::FrameLayoutHintProp:<b>
+	case GuiObjectFactory::NewProp:</b>
+		return GuiObjectFactory::UInt8Type;
+</pre>
+				
+			</li>
+		</ol>
+	</p>
+	<h3>10.5.3 Adding new parsing types</h3>
+	<p>
+		If a new property was added that the ResourceParser cannot parse (e.g. structs), the GuiObjectFactory can be
+		extended to read those, without the need to extend the ResourceParser itself. This can be achieved as follows:
+		<ol>
+			<li>
+				Assume that a new class has been created (<code>NewClass</code>), which contains a struct:
+<pre>
+struct NewClassProps {
+	WString m_wstring;
+	UINT16 m_uint16;
+}
+</pre>
+			</li>
+			<li>
+				Add a new ParsingType to the GuiObjectFactory. <br>Before:
+<pre>
+enum ParseType {
+	UnknownType,
+	...,
+	TextIconPairType,
+	AlignInfoPropsType
+};	
+</pre>
+				After:
+<pre>
+enum ParseType {
+	UnknownType,
+	...,
+	TextIconPairType,
+	AlignInfoPropsType,<b>
+	NewClassPropsType</b>
+};	
+</pre>
+			</li>
+			<li>
+				Add a new ClassType as described above (i.e. the ClassTypes enum will then contain a NewClassType value).
+			</li>
+			<li>
+				Add a new PropertyId as described above (i.e. the PropertyId enum will then contain a NewClassProps value, and
+				the GuiObjectFactory::MapPropertyIdToParseType(...) contains an entry that will map the NewClassProps to 
+				NewClassPropsType).
+			</li>
+			<li>
+				Implement the parsing of the NewClassProps in GuiObjectFactory::GetPropertyValue(...). This method is called
+				by the ResourceParser when it detects that it cannot parse the NewClassProps by itself. Parsing the properties
+				will look something like this:
+<pre>
+/* ------------------------------------------------------------------------
+   GetPropertyValue
+   ------------------------------------------------------------------------ */
+BOOLEAN GuiObjectFactory::GetPropertyValue(ResourceParser& parser, GuiObjectFactory::ParseType parse_type, void* value)
+{
+#ifdef APOXI_ARAGON_SUPPORT
+	BOOLEAN success = FALSE;
+	
+	switch (parse_type) {
+		...
+		case GuiObjectFactory::NewClassPropsType: {
+			DBG_OUT((5008, L"NewClassProps\n"));
+		
+			NewClass::NewClassProps* res = (NewClass::NewClassProps*)value;
+			res->m_wstring = parser.ReadWString();
+			res->m_uint16 = parser.ReadUInt16();
+			
+			success = TRUE;
+			
+			break;
+		}
+		...
+	}
+	return success;
+#else
+	return FALSE;
+#endif
+} // GetPropertyValue
+</pre>
+			</li>
+	</p>
+	
+		
+		[ Previous: <a href="gui_tutorial_09.html">Multilingual Support</a> ] [ Next: <a href="gui_tutorial_11.html">Image Handling</a> ]
+		
+	</body>
+</html>

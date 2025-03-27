@@ -1,0 +1,118 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<title>IrDA Overview</title>
+<style type="text/css">
+<!--
+.Stil1 {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: xx-large;
+	font-weight: bold;
+}
+.Stil4 {
+	font-size: large;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-weight: bold;
+}
+.Stil6 {font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 12px;}
+.Stil22 {font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 12px; font-weight: bold; }
+.Stil23 {font-family: Verdana, Arial, Helvetica, sans-serif; font-size: large;}
+.Stil29 {font-family: Verdana, Arial, Helvetica, sans-serif; font-size: medium; font-weight: bold; }
+-->
+</style>
+</head>
+
+<body>
+<div align="center">
+  <p align="center" class="Stil1">IrDA Overview </p>
+  <p align="justify" class="Stil4">1 Introduction </p>
+  <p align="justify" class="Stil6">IrDA stands for Infrared Data Association. Currently APOXI supports general transport related functionality like 
+    enabling or disabling the infrared port hardware for power saving purposes, setting the device nickname and 
+  setting IrDA hint bits. </p>
+  <p align="justify" class="Stil6">    Besides that APOXI IrDA can be used as transport for OBEX transfers. The OBEX transport adapter is used by 
+the APOXI OBEX implementation. It should only be used through the APOXI OBEX interfaces not directly.</p>
+  <p align="justify" class="Stil4">    2 Overview</p>
+  <p align="justify" class="Stil6">    
+    The following figure gives an overview of the APOXI IrDA components and their interaction with other system components.</p>
+  
+<div align="justify">
+  <table width="98%"  border="1" align="center" cellpadding="0" cellspacing="0" bordercolor="#000000">
+    <tr>
+      <td height="400"><div align="center"><img src="figures/IrDA_Architecture.png" width="605" height="371"></div></td>
+    </tr>
+  </table>
+</div>
+  <p align="justify" class="Stil22">Figure&nbsp;1 APOXI IrDA Components</p>
+  <p align="justify" class="Stil4">3 Architecture</p>
+  <p align="justify" class="Stil6">The APOXI IrDA module consists of two main function blocks. They are:</p>
+  
+<ul><li><div align="left" class="Stil6">
+      <div align="justify">Generic transport implementation IrdaTransport</div>
+    </div>
+    </li>
+    <li>
+      <div align="left" class="Stil6">
+        <div align="justify">OBEX related implementation consisting of <em>IrdaObexTransport,</em> <em>IrdaObexAddr</em> (both client and server) and <em>IrdaObexImpl</em></div>
+      </div>
+    </li>
+  </ul>
+  <p align="justify" class="Stil23">3.1 IrdaTransport</p>
+  <p align="justify" class="Stil6"><em>IrdaTransport</em> is inherited from <em>AbstractTransport</em> and extends the functionality by adding IrDA stack specific 
+    methods. <em>IrdaTransport</em> is a singleton class that is used to access the underlying IrDA stack implementation. When 
+  OBEX is supported it also contains an <em>IrdaObexTransport</em> instance.</p>
+  <p align="justify" class="Stil29">3.1.1 Timer</p>
+  <p align="justify" class="Stil6">The default time out for switching off the IrDA hardware is set to 10 minutes. This switching of of IrDA hardware 
+  helps to save the battery power during idle time.</p>
+  <p align="justify" class="Stil23">3.2 IrdaObexTransport</p>
+  <p align="justify" class="Stil6">The IrdaObexTransport class implements IrDA specific OBEX transport related functions and protocols. Address 
+    resolution is done by this class. It is also responsible for registering the IrDA OBEX implementation with the APOXI 
+  OBEX ObexMngr.</p>
+  <p align="justify" class="Stil23">3.3 IrdaObexAddr</p>
+  <p align="justify" class="Stil6">The <em>IrdaObexClientAddr</em> and <em>IrdaObexServerAddr</em> classes are used to specify an OBEX client or server address.</p>
+  <p align="justify" class="Stil23">3.4  IrdaObexImpl</p>
+  <p align="justify" class="Stil6">    The <em>IrdaObexImpl</em> class is responsible of implementing the abstract <em>ObexLayer</em> interface. This interface is used 
+    by the APOXI OBEX module to start OBEX client commands and to get notified about incoming server commands.</p>
+  <p align="justify" class="Stil6">    In order to manage different client and server contexts there are two private helper classes inside IrdaObexImpl 
+    These helper classes include the data structures that are required by the IrDA stack internally. Besides private 
+    structs it also provides a buffer that is used by the IrDA stack to build outgoing headers.</p>
+  <p align="justify" class="Stil6">    As the context is passed to several callback functions by the IrDA stack, a reference to the <em>IrdaObexImpl</em> object 
+    included. The object also holds several variables that describe the current state of the context: <em>ObexOperationId</em> 
+    of the current operation and a flag whether an operation is currently running. </p>
+  <p align="justify" class="Stil6">    The <em>IrdaObexImpl</em> class holds an array of both APOXI_IRDA_OBEX_MAX_CHANNELS client and server channel 
+    pointers. Every time a new channel is requested by a client or server, an according object is created and the slot 
+    is filled with the new object.</p>
+  <p align="justify" class="Stil23">    3.5 Auto switch off of IrDA hardware</p>
+  <p align="justify" class="Stil6">    The auto switch off of IrDA hardware helps to save battery power during idle time. A timer is started when 
+    <em>IrdaTransport::OnAvStateChanged()</em> is called, and the following coditions are met:</p>
+  
+<ul><li><div align="left" class="Stil6">
+      <div align="justify"><em>IrLAP</em> is not connected </div>
+    </div>
+    </li>
+    <li>
+      <div align="left" class="Stil6">
+        <div align="justify"><em>IrDA</em> monitoring is idle </div>
+      </div>
+  </li>
+    <li>
+      <div align="left" class="Stil6">
+        <div align="justify"><em>IrComm</em> has no active connections </div>
+      </div>
+  </li>
+    <li>
+      <div align="left" class="Stil6">
+        <div align="justify"><em>IrDAObex</em> has no active connections</div>
+      </div>
+  </li>
+  </ul>
+  <p align="justify" class="Stil6">The default time out for switching off the IrDA hardware is set to 10 minutes. This default time out can be 
+  overwritten by a function call from an application to set a new value, but use of this function is optional.</p>
+  <p align="justify" class="Stil6">    The time out specifies the amount of milliseconds the IrDA hardware remains active after last activity on the 
+    interface. The hardware will be switched off when the time out elapses.</p>
+  <p align="justify" class="Stil6">    Setting time out value to 0 milliseconds has a special meaning, this setting disables the time out and the IrDA 
+    hardware will not be switched off when it is idle. Application could use this feature, for instance, when the phone 
+    is connected to power supply and no power saving features are needed.</p>
+</body>
+</html>

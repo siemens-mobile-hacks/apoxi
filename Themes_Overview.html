@@ -1,0 +1,75 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<title>Themes Overview</title>
+<style type="text/css">
+<!--
+.Stil1 {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: xx-large;
+	font-weight: bold;
+}
+.Stil4 {
+	font-size: large;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-weight: bold;
+}
+.Stil6 {font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 12px;}
+.Stil8 {font-family: Verdana, Arial, Helvetica, sans-serif; font-size: larger;}
+.Stil11 {font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 12px; font-weight: bold; }
+-->
+</style>
+</head>
+
+<body>
+<div align="center">
+  <p align="center" class="Stil1">Themes Overview </p>
+  <p align="left" class="Stil4">1 Introduction</p>
+  <p align="justify" class="Stil6">A Theme is a container for view-objects. Look of each component is defined by an instance of a view-object. For 
+    each component type (e.g. PushButton) there is a corresponding view type (e.g. <em>PushButtonView</em>). The look of a 
+    component changes automatically when changing the theme and this changing of theme can be done during 
+  runtime.</p>
+  <p align="justify" class="Stil4">2 Theme-configuration</p>
+  <p align="justify" class="Stil6">APOXI allows having a variable number of themes, which define the look of the used components like windows, 
+    push-buttons, softkeybars etc. Per default APOXI offers the themes Default Theme and Foggy Theme, which are 
+    located in APOXI/GlobalThemes. To use a theme, it must be embedded into the implementation of the class 
+  ThemeConfig, which specifies the theme-configuration.</p>
+  <table width="98%"  border="1" align="center" cellpadding="0" cellspacing="0" bordercolor="#000000">
+    <tr>
+      <td height="375"><div align="center"><img src="figures/APOXI_Themes.png" width="522" height="326"></div></td>
+    </tr>
+  </table>
+  <p align="justify" class="Stil11">Figure&nbsp;1. APOXI Themes</p>
+  <p align="justify" class="Stil6">Every Theme derives from <em>AbstractTheme</em> and if derived from implemented Theme, not all views have to be re-implemented. This is shown in the following figure.</p>
+  <table width="98%"  border="1" align="center" cellpadding="0" cellspacing="0" bordercolor="#000000">
+    <tr>
+      <td height="285"><div align="center"><img src="figures/Theme_Config.png" width="752" height="240"></div></td>
+    </tr>
+  </table>
+  <p align="justify" class="Stil4">3 Creating a New Theme</p>
+  <p align="justify" class="Stil6">When creating a new theme, the following steps are necessary:</p>
+  <ul>
+    <li class="Stil6">
+      <div align="left">A class derived from <em>Theme</em> (e. g. <em>MyTheme</em>), must be implemented. The implementations for Default Theme and Foggy Theme of APOXI may be a reference.</div>
+    </li>
+    <li class="Stil6">
+      <div align="left">This class <em>MyTheme</em> must be referenced by implementing the methods <em>ThemeConfig::GetTheme</em> and <em>ThemeConfig::GetThemeCount</em>.</div>
+    </li>
+  </ul>
+  <p align="justify" class="Stil4">4 Implementing a View</p>
+  <p align="justify" class="Stil6">All components of APOXI delegate the drawing to their view-object. All instances of a component may share one 
+    instance of a view. For example one instance of the pushbutton-view is owned by the Default Theme and all 
+  instances of a pushbutton will use this instance for drawing themselves as shown in the following figure.</p>
+  <table width="98%"  border="1" align="center" cellpadding="0" cellspacing="0" bordercolor="#000000">
+    <tr>
+      <td height="278"><div align="center"><img src="figures/themes.png" width="708" height="247"></div></td>
+    </tr>
+  </table>
+  <p align="justify" class="Stil11">Figure&nbsp;2. Implementing a View</p>
+  <p align="justify" class="Stil6">The class <em>Theme</em> offers an abstract method <em>GetPushButtonView()</em>, which must return a pointer to an instance of 
+  the class <em>PushButtonView</em>.</p>
+  <p align="justify" class="Stil8">&nbsp;</p>
+</body>
+</html>

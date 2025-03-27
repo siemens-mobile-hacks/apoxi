@@ -1,0 +1,154 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<title>DRM Overview</title>
+<style type="text/css">
+<!--
+.Stil1 {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: xx-large;
+	font-weight: bold;
+}
+.Stil4 {
+	font-size: large;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-weight: bold;
+}
+.Stil6 {font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 12px;}
+.Stil22 {font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 12px; font-weight: bold; }
+.Stil29 {font-family: Verdana, Arial, Helvetica, sans-serif; font-size: large; }
+-->
+</style>
+</head>
+
+<body>
+<div align="center">
+  <p align="center" class="Stil1">DRM Overview </p>
+  <p align="justify" class="Stil4">1 Introduction </p>
+  <p align="justify" class="Stil6">APOXI DRM enables the programmers to create DRM (Digital Rights Management) enabled applications. APOXI 
+  DRM complies with OMA DRM (Open Mobile Alliance DRM) standards.</p>
+  <p align="justify" class="Stil4">    2 Architecture</p>
+  <p align="justify" class="Stil6">    
+    OMA DRM in APOXI processes DRM Messages, provides a central storage of rights objects and makes the 
+    applications aware of constraints/restrictions on DRM operations (play, print, execute, display).</p>
+  
+<div align="justify">
+  <table width="98%"  border="1" align="center" cellpadding="0" cellspacing="0" bordercolor="#000000">
+    <tr>
+      <td height="501"><div align="center"><img src="figures/DRM_Architecture.png" width="469" height="461"></div></td>
+    </tr>
+  </table>
+</div>
+  <p align="justify" class="Stil22">Figure&nbsp;1. DRM Architecture</p>
+  <p align="justify" class="Stil6">APOXI DRM provides interfaces for:</p>
+  
+<div align="justify">
+      <ul>
+        <li class="Stil6">
+          Processing DRM Messages</li>
+          <li class="Stil6">
+            Validating access for a DRM asset</li>
+          <li class="Stil6">
+            Rights management APIs</li>
+          <li class="Stil6">
+            Media object access APIs (with decryption)</li>
+          <li class="Stil6">
+            Configuration APIs</li>
+          <li class="Stil6">
+            APOXI DRM sample application and API reference</li>
+      </ul>
+</div>
+<p align="justify" class="Stil29">2.1  Trust Model</p>
+  <p align="justify" class="Stil6">    Applications (Image browser, sound browser, MMS applications, WAP applications etc.) have to be adapted to 
+    support DRM. Applications need tight integration with APOXI DRM to validate rights before consuming DRM 
+  content. DRM enabled applications in APOXI are trusted to enforce rights by using APOXI DRM API.</p>
+  <p align="justify" class="Stil29">2.2 APOXI Scope</p>
+  <p align="justify" class="Stil6">    The APOXI scope for DRM are listed in the following:</p>
+  
+<ul><li><div align="left" class="Stil6">
+      <div align="justify">APIs to process DRM messages</div>
+    </div>
+    </li>
+    <li>
+      <div align="left" class="Stil6">
+        <div align="justify">DRM Asset abstraction</div>
+      </div>
+    </li>
+    <li>
+      <div align="left" class="Stil6">
+        <div align="justify">Persistence of DRM Rights</div>
+      </div>
+    </li>
+    <li>
+      <div align="left" class="Stil6">
+        <div align="justify">DRM (Push) user agent - to process rights messages for SD</div>
+      </div>
+    </li>
+    <li>
+      <div align="left" class="Stil6">
+        <div align="justify">APIs to validate asset </div>
+      </div>
+    </li>
+    <li>
+      <div align="left" class="Stil6">
+        <div align="justify">APIs to update rights on content consumption</div>
+      </div>
+    </li>
+</ul>
+  <p align="justify" class="Stil29">2.3 Application Scope</p>
+<p align="justify" class="Stil6">    The application scope for DRM are given in the following list:</p>
+
+<div align="justify">
+    <ul>
+      <li>
+        Acquisition of assets (content)</li>
+        <li>
+          Use APOXI DRM API to process message</li>
+        <li>
+          Storage of processed message (asset) along with a key to access rights</li>
+        <li>
+          Enforcing rights by calling APOXI API</li>
+        <li>
+          Deletion of rights on expiry or on user request</li>
+        <li>
+          Provide appropriate user interface to user for rights related information</li>
+    </ul>
+</div>
+<p align="justify" class="Stil4">3  APOXI DRM - Components/Modules</p>
+  <p align="justify" class="Stil6">    All those modules which are part of or interact with DRM are shown in the following figure.</p>
+  
+<div align="justify">
+  <table width="98%"  border="1" align="center" cellpadding="0" cellspacing="0" bordercolor="#000000">
+    <tr>
+      <td height="423"><div align="center"><img src="figures/DRM_Components.png" width="503" height="383"></div></td>
+    </tr>
+  </table>
+</div>
+  <p align="justify" class="Stil22">Figure&nbsp;2. APOXI DRM - Components/Modules</p>
+  <p align="justify" class="Stil4">4 APOXI DRM Interfaces</p>
+  <p align="justify" class="Stil6">    APOXI DRM has two key classes, <em>DRMAsset</em> and <em>DRMMessage</em> abstracting the asset (content) and the incoming 
+    DRM message (FL, CD or SD) respectively. In addition to this it has a range of classes that abstracts the 
+    constraint, permission, rights object and the rights object store which are internal to the APOXI DRM Core.</p>
+  <p align="justify" class="Stil29">4.1  DRMAsset</p>
+  <p align="justify" class="Stil6">    <em>DRMAsset</em> abstracts the DRM content, meaning the entire DRM Message. All DRM content (like Image, 
+    Mp3sound etc.) classes are (also) expected to derive from this class. It is a light-weight mix-in class that has only 
+    one data member - the local ID. It has APIs to validate rights and access/update data from the rights objects.</p>
+  <p align="justify" class="Stil29">    4.2 DRMMessage</p>
+  <p align="justify" class="Stil6">    <em>DRMMessage</em> is a message processor which can parse and store rights from an incoming DRM Message. The 
+    message could be FL, CD or SD (DCF). Applications will use this interface to process DRM Messages (including 
+    rights message, in case of SD). After processing the message, it returns a local ID, which the application stores 
+    in the Asset.</p>
+  <p align="justify" class="Stil29">    4.3 DRM Local ID</p>
+  <p align="justify" class="Stil6">    DRM Local ID is an internally generated ID to minimize the handling of UID, which is a long string. UID is defined 
+    by the DRM specification as content ID which is referred in the content as well as the rights object. A particular 
+    asset may be associated with multiple rights object (only in case of separate delivery) but still has the same local id. </p>
+  <p align="justify" class="Stil6"> APOXI DRM returns a local ID when the application processes the incoming DRM message. Applications are 
+    required to store this ID and use it as a key to DRM subsystem for further API calls. For this purpose, the FFS is 
+    extended to include DRM Local ID and the DRM Mime Type as file attributes. This also helps applications to 
+    distinguish DRM enabled content from regular content. </p>
+  <p align="justify" class="Stil6">     A value 0 indicates invalid DRM Local ID (thereby indicates that this may not be a valid DRM asset). APOXI DRM 
+    has maximum possible local IDs, which is configurable.</p>
+</body>
+</html>

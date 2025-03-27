@@ -1,0 +1,91 @@
+<html>
+  <head>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8">
+	<title>Message Routing</title>
+
+	<link rel="stylesheet" type="text/css" href="doxygen.css">
+  </head>
+
+  <body>
+	<h1>APOXI Message Routing</h1>
+
+	<h2>1 Introduction</h2>
+	<p>
+	  In APOXI messages are treated by any instance of the class <a href="classDispatcher.html">Dispatcher</a>. Typical dispatchers are
+	  the classes <a href="classApplication.html">Application</a> and <a href="classControl.html">Control</a>.
+	</p>
+
+	<h2>2 Application</h2>
+	<p>
+		When an application gets a message, the method <b>Application::RouteMessage</b> is invoked,
+		which treats the message the following way:
+	</p>
+	
+	<img src="pics/message_routing_application.gif" alt="Application"/>
+	
+	<p>
+		<table border="0"><tr><td bgcolor="#ffaaaa"><b>Step 1:</b></td></tr></table>
+		The message is forwarded to the method <a href="classApplication.html">Application::OnMessage</a>, which may be overwritten
+		to dispatch the message. Usually TRUE is returned, if the message has been dispatched and should
+		not be routed anymore.
+	</p>
+
+	<p>
+		<table border="0"><tr><td bgcolor="#ffffaa"><b>Step 2:</b></td></tr></table>
+		The message is forwarded to each embedded <a href="classUserDispatcher.html">UserDispatcher</a> until one dispatcher returns TRUE
+		or no dispatcher is left anymore. A <a href="classUserDispatcher.html">UserDispatcher</a> may be embedded into
+		the application by <a href="classApplication.html">Application::AddDispatcher</a>.
+	</p>
+
+	<p>
+		<table border="0"><tr><td bgcolor="#aaffaa"><b>Step 3:</b></td></tr></table>
+		The routing of the message depends from the message category:
+		<ul>
+			<li>MC_FOCUS: The message is forwarded to the focused <a href="classWindow.html">Window</a>.</li>
+			<li>MC_CONTROL: The message is forwarded to the <a href="classControl.html">Control</a> which should 
+			get the message</li>
+			<li>For messages which another category the message is broadcasted to all embedded controls of the application
+			until one control returns TRUE or no control is left anymore.</li>
+		</ul>
+	</p>
+
+	<p>
+		<table border="0"><tr><td bgcolor="#aaccff"><b>Step 4:</b></td></tr></table>
+		For all messages where the class <a href="classApplication.html">Application</a> offers OnXxx-methods (e. g. OnGetFocus)
+		the corresponding OnXxx-method is invoked.
+	</p>
+
+	<h2>3 Control</h2>
+	<p>
+		When a control gets a message, the method <b>Control::RouteMessage</b> is invoked,
+		which treats the message the following way:
+	</p>
+
+	<img src="pics/message_routing_control.gif" alt="Control"/>
+
+	<p>
+		<table border="0"><tr><td bgcolor="#ffaaaa"><b>Step 1:</b></td></tr></table>
+		The message is forwarded to the method <a href="classControl.html">Control::OnMessage</a>, which may be overwritten
+		to dispatch the message. Usually TRUE is returned, if the message has been dispatched and should
+		not be routed anymore.
+	</p>
+
+	<p>
+		<table border="0"><tr><td bgcolor="#aaffaa"><b>Step 2:</b></td></tr></table>
+		The routing of the message depends from the message category:
+		<ul>
+			<li>MC_FOCUS: The message is forwarded to the focused child control.</li>
+			<li>MC_CONTROL: The message is forwarded to the child control which should 
+			get the message</li>
+			<li>For messages which another category the message is broadcasted to all embedded child controls of the control
+			until one sub control returns TRUE or no sub control is left anymore.</li>
+		</ul>
+	</p>
+
+	<p>
+		<table border="0"><tr><td bgcolor="#aaccff"><b>Step 3:</b></td></tr></table>
+		For all messages where the class <a href="classControl.html">Control</a> offers OnXxx-methods (e. g. OnGetFocus)
+		the corresponding OnXxx-method is invoked.
+	</p>
+  </body>
+</html>

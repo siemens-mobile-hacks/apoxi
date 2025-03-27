@@ -1,0 +1,117 @@
+<html>
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=windows-1252">
+
+<link href="doxygen.css"
+          rel="stylesheet"
+          type="text/css">
+<title>Modal - Modeless</title>
+
+
+</head>
+
+<body>
+
+<h1>How Modal and Modeless Windows work</h1>
+
+<p>There are two different possibilities how to open a Window: you can either open it Modal or Modeless. Modal Windows interrupt the Application flow
+like MessageBoxes or an OpenFileDialog do. The Application needs to wait for them to finish in order to be able to continue execution. Modeless Windows 
+on the other hand just open, but the user is still able to switch between Windows, and proceed working in the Window from where he opened the ModelessWindow for example.
+Following there is a brief explanation how these Windows are realized within APOXI:
+</p>
+
+<h2>Modal Windows</h2>
+<p>
+Modal Windows are opened using the <a href="classWindow.html">Window::OpenModal(const Rect&amp; rect)</a> method.
+The Window is implementing an active wait policy, which means that in the OpenModal method a CloseCondition is set for which the Window waits to be set.
+When the CloseCondition is set, the Window closes.
+</p>
+<p>
+On the CallStack the call of the OpenModal() method looks like this:
+</p>
+<pre>
+<b>Window::OpenModal(const Rect &amp; {...}) line 369</b>
+Window::OnKeyDown(unsigned char 42) line 627 + 13 bytes
+Control::HandleMessage(const Message &amp; {...}) line 1848 + 24 bytes
+Control::RouteMessage(const Message &amp; {...}) line 1131 + 12 bytes
+Application::RouteMessage(const Message &amp; {...}) line 407 + 17 bytes
+Dispatcher::SendSelf(const Message &amp; {...}) line 38 + 17 bytes
+AppContext::MsgLoop() line 163
+AppContext::StartUp() line 122 + 13 bytes
+MULTIMEDIATEST! class GenericWorkerTask  GenericWorkerTask::m_generic_worker_task + 1299604 bytes
+AppContainer::ThreadFn() line 96 + 8 bytes
+Thread::ThreadStartProc(void * 0x029efcd0 app_cont) line 54 + 13 bytes
+KERNEL32! 7c57438b()
+</pre>
+<p>
+The method call remains on the CallStack. If another action is now triggered in the opened Window, it looks like the following:
+</p>
+<pre>
+<b>ContextMenu::OnActionExecuted(Action * 0x029c1900) line 184 + 28 bytes</b>
+Window::OnMessage(const Message &amp; {...}) line 471 + 25 bytes
+ContextMenu::OnMessage(const Message &amp; {...}) line 151
+Control::RouteMessage(const Message &amp; {...}) line 1112 + 17 bytes
+Dispatcher::SendSelf(const Message &amp; {...}) line 38 + 17 bytes
+Action::Execute() line 113 + 21 bytes
+Window::OnKeyDown(unsigned char 42) line 627 + 13 bytes
+Control::HandleMessage(const Message &amp; {...}) line 1848 + 24 bytes
+Control::RouteMessage(const Message &amp; {...}) line 1131 + 12 bytes
+Application::RouteMessage(const Message &amp; {...}) line 407 + 17 bytes
+Dispatcher::SendSelf(const Message &amp; {...}) line 38 + 17 bytes
+AppContext::Wait(const Condition &amp; {...}) line 139
+Scheduler::Wait(const Application * 0x02800570 class DemoApp  DemoApp::m_app, const Condition &amp; {...}) line 48 + 17 bytes
+AppContainer::Wait(const Condition &amp; {...}) line 64 + 59 bytes
+<b>Window::OpenModal(const Rect &amp; {...}) line 377</b>
+Window::OnKeyDown(unsigned char 42) line 627 + 13 bytes
+Control::HandleMessage(const Message &amp; {...}) line 1848 + 24 bytes
+Control::RouteMessage(const Message &amp; {...}) line 1131 + 12 bytes
+Application::RouteMessage(const Message &amp; {...}) line 407 + 17 bytes
+Dispatcher::SendSelf(const Message &amp; {...}) line 38 + 17 bytes
+AppContext::MsgLoop() line 163
+AppContext::StartUp() line 122 + 13 bytes
+MULTIMEDIATEST! class GenericWorkerTask  GenericWorkerTask::m_generic_worker_task + 1298448 bytes
+AppContainer::ThreadFn() line 96 + 8 bytes
+Thread::ThreadStartProc(void * 0x029efcd0 app_cont) line 54 + 13 bytes
+KERNEL32! 7c574
+</pre>
+<p>
+If the CloseCondition is now set in the OnActionExecuted() method, the Window closes and both methods are removed from the CallStack.
+</p>
+<h2>Modeless Windows</h2>
+<p>
+Modeless Windows are opened using the <a href="classWindow.html">Window::OpenModeless(const Rect&amp; rect)</a> method.
+In opposite to Modal Windows they do not block the rest of the Application until a condition is set, but allow the user to interact with the progam while the Window is opened.
+</p>
+<p>
+Here's how it looks like on the CallStack:
+</p>
+<pre>
+<b>Window::OpenModeless(const Rect &amp; {...}) line 353</b>
+IdleScreenWin::OnActionExecuted(Action * 0x0280444c) line 266 + 26 bytes
+Window::OnMessage(const Message &amp; {...}) line 471 + 25 bytes
+IdleScreenWin::OnMessage(const Message &amp; {...}) line 137
+Control::RouteMessage(const Message &amp; {...}) line 1112 + 17 bytes
+Dispatcher::SendSelf(const Message &amp;  {...}) line 38 + 17 bytes
+Action::Execute() line 113 + 21 bytes
+Window::OnKeyDown(unsigned char 42) line 627 + 13 bytes
+IdleScreenWin::OnKeyDown(unsigned char 42) line 169 + 12 bytes
+Control::HandleMessage(const Message &amp;  {...}) line 1848 + 24 bytes
+Control::RouteMessage(const Message &amp;  {...}) line 1131 + 12 bytes
+Application::RouteMessage(const Message &amp; {...}) line 407 + 17 bytes
+Dispatcher::SendSelf(const Message &amp;  {...}) line 38 + 17 bytes
+AppContext::MsgLoop() line 163
+AppContext::StartUp() line 122 + 13 bytes
+MULTIMEDIATEST! class GenericWorkerTask  GenericWorkerTask::m_generic_worker_task + 1299604 bytes
+AppContainer::ThreadFn() line 96 + 8 bytes
+Thread::ThreadStartProc(void * 0x029efcd0 app_cont) line 54 + 13 bytes
+</pre>
+<p>
+Immediately after the call the (right after the Window has opened) the method is removed from the CallStack
+</p>
+
+  
+
+</body>
+
+</html>

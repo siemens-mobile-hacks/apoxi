@@ -1,0 +1,140 @@
+<html>
+	<head>
+		<link href="doxygen.css" rel="stylesheet" type="text/css">
+		<title>8 Themes</title>
+	</head>
+	
+	<body>
+		[ Previous: <a href="gui_tutorial_07.html">Device Context</a> ] [ Next: <a href="gui_tutorial_09.html">Multilingual Support</a> ]
+		
+		<h1>8 Themes</h1>
+		
+		<p>
+			APOXI allows having a variable number of themes, which
+			define the look of the used components like windows,
+			push-buttons, softkeybars etc.
+			Per default APOXI offers the themes Default Theme and
+			Foggy Theme, which are located in Apoxi/GlobalThemes.
+			To use a theme, it must be embedded into the implementation
+			of the class ThemeConfig, which specifies the
+			theme-configuration.
+		</p>
+		
+		<p>
+			<img src="pics/default_theme.gif" alt="Default Theme"/> <img src="pics/foggy_theme.gif" alt="Foggy Theme"/>
+		</p>
+			
+		<p>A theme-configuration using the
+			themes Default Theme and Foggy Theme could look like
+			this (the file ThemeConfig.cpp is located in the folder
+			Config of the MMI-project):
+		</p>
+		
+		<p>
+		<b>ThemeConfig.cpp</b>
+		<pre>
+#include "ThemeConfig.hpp"
+#include &lt;GlobalThemes/DefaultTheme/DefaultTheme.hpp&gt;
+#include &lt;GlobalThemes/FoggyTheme/FoggyTheme.hpp&gt;
+
+const Theme& ThemeConfig::GetTheme(INT index)
+{
+	return (index == 0) ? DefaultTheme::GetInstance() : FoggyTheme::GetInstance();
+}
+
+INT ThemeConfig::GetThemeCount()
+{
+	return 2;
+}
+
+INT ThemeConfig::GetFontId(SystemFontId id, const Theme& theme)
+{
+	return 0;
+}</pre>
+		<h2>8.1 Creating a New Theme</h2>
+		
+		<p>
+			When creating a new theme, the following steps are necessary:
+			<ul style="line-height: 150%">
+				<li>A class derived from <a href="classTheme.html">Theme</a>
+				(e. g. MyTheme), must be implemented. The implementations
+				for Default <a href="classTheme.html">Theme</a> and Foggy <a href="classTheme.html">Theme</a> of
+				APOXI may be a reference.</li>
+				<li>This class MyTheme must be referenced by
+				implementing the methods ThemeConfig::GetTheme
+				and ThemeConfig::GetThemeCount.</li>
+			</ul>
+		</p>
+
+		<h2>8.2 Implementing a View</h2>
+		
+		<p>
+			All components of APOXI delegate the drawing to their view-object.
+			All instances of a component may share one instance of a view.
+			For example one instance of the pushbutton-view is owned by
+			the Default <a href="classTheme.html">Theme</a> and all instances of a pushbutton will
+			use this instance for drawing themselfes:
+		</p>
+		<p>
+			<img src="pics/push_button_view.gif" alt="pushbutton view"/>
+		</p>
+		
+		<p>
+			The class <a href="classTheme.html">Theme</a> offers an abstract method
+			GetPushButtonView(), which must return a
+			pointer to an instance of the class <a href="classPushButtonView.html">PushButtonView</a>.
+			A derived class from <a href="classPushButtonView.html">PushButtonView</a> might look
+			like this:
+		</p>
+		<b>MyPushButtonView.hpp</b>
+		<pre>
+#include &lt;Gui/PushButton.hpp&gt;
+
+class MyPushButtonView : public <a href="classPushButtonView.html">PushButtonView</a> {
+	public:
+		MyPushButtonView();
+		virtual ~MyPushButtonView();
+
+	protected:
+		virtual void DrawPushButton(const PushButton& push_button,
+			DeviceContext* dc, const Rect& repaint_rect) const;
+};</pre>
+
+		<b>MyPushButtonView.cpp</b>
+		<pre>
+#include "DefaultPushButtonView.hpp"
+#include &lt;Gui/PaintDc.hpp&gt;
+
+MyPushButtonView::MyPushButtonView()
+{
+}
+
+MyPushButtonView::~MyPushButtonView()
+{
+}
+
+void MyPushButtonView::DrawPushButton(const PushButton& push_button,
+	DeviceContext* dc, const Rect& repaint_rect) const
+{
+	<a href="classPaintDc.html">PaintDc</a> pdc(dc);
+
+	// set color of background
+	if (push_button.IsPressed())
+		pdc.SetBrushColorRgb(200, 200, 200);
+	else
+		pdc.SetBrushColorRgb(120, 120, 120);
+
+	// draw filled background rectangle
+	XYDIM width = push_button.GetClientWidth();
+	XYDIM height = push_button.GetClientHeight();
+	pdc.FillRect(0, 0, width - 1, height - 1);
+
+	// draw text
+	pdc.DrawTextBox(Rect(0, 0, width - 1, height - 1),
+		push_button.GetAction()->GetText());
+}</pre>
+
+		[ Previous: <a href="gui_tutorial_07.html">Device Context</a> ] [ Next: <a href="gui_tutorial_09.html">Multilingual Support</a> ]
+
+	</body>
+</html>

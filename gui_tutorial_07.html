@@ -1,0 +1,237 @@
+<html>
+	<head>
+		<link href="doxygen.css" rel="stylesheet" type="text/css">
+		<title>7 Device Context</title>
+	</head>
+	
+	<body>
+		[ Previous: <a href="gui_tutorial_06.html">Drawable Objects</a> ] [ Next: <a href="gui_tutorial_08.html">Themes</a> ]
+		
+		<h1>7 Device Context</h1>
+		
+		<p>
+			All drawing operations in APOXI are done on the device
+			context, which is represented by the class <a href="classDeviceContext.html">DeviceContext</a>.
+			A device-context offers methods for drawing lines, rectangles,
+			text and much more. All drawing methods use the current
+			set color, text-format and other attributes which may be modified for each instance of the class
+			<a href="classDeviceContext.html">DeviceContext</a>.
+		</p>
+		
+		<p>
+			All operations on a device-context must be encapsulated between BeginUpdate() and EndUpdate():
+		</p>
+		<pre>
+<a href="classDeviceContext.html">DeviceContext</a> *dc = ...;
+dc->BeginUpdate();
+dc->SetTextAttr(TextFormat::Bold);
+dc->DrawText(5, 10, L"Hello world");
+dc->SetPenColorRgb(255, 0, 0);          // set pen color to red
+dc->DrawLine(5, 10, 100, 100);
+dc->SetBrushColorRgb(255, 255, 0);      // set brush color to yellow
+dc->FillRect(5, 10, 20, 20);
+dc->EndUpdate();</pre>
+	
+		<h2>7.1 PaintDc</h2>
+		
+		<p>
+			The default way in APOXI to do some drawing on a device-context is the following:
+		</p>
+		<b>MyWindow.hpp</b>
+		<pre>
+#include &lt;Gui/Window.hpp&gt;
+
+class MyWindow : public <a href="classWindow.html">Window</a> {
+    protected:
+        virtual void OnPaint(const Rect& repaint_rect);
+};</pre>
+
+		<b>MyWindow.cpp</b>
+		<pre>
+#include "MyWindow.hpp"
+
+void MyWindow::OnPaint(const Rect& repaint_rect)
+{
+    Window::OnPaint(repaint_rect);
+
+    <a href="classPaintDc.html">PaintDc</a> pdc(GetDeviceContext());
+    pdc.DrawText(5, 10, L"Hello world");
+    pdc.SetPenColorRgb(255, 0, 0);     // set pen color to red
+    pdc.DrawLine(5, 10, 100, 100);
+    pdc.SetBrushColorRgb(255, 255, 0); // set brush color to yellow
+    pdc.FillRect(5, 10, 20, 20);
+}</pre>
+		<p>
+			The class <a href="classPaintDc.html">PaintDc</a> is derived from the
+			class <a href="classDeviceContext.html">DeviceContext</a> and offers a comfortable
+			way to draw on a device-context without side-effects.
+			When constructing the paint-device-context the method
+			DeviceContext::BeginUpdate() is invoked automatically,
+			when destructing DeviceContext::EndUpdate() is invoked.
+		</p>
+		
+		<h2>7.2 BitmapDc</h2>
+		
+		<p>
+			APOXI allows to draw inside a bitmap by using a bitmap-device-context represented by the class <a href="classBitmapDc.html">BitmapDc</a>. Example:
+		</p>
+		
+		<pre>
+Bitmap* bmp = ...;
+<a href="classBitmapDc.html">BitmapDc</a> bmp_dc(bmp);
+bmp_dc.BeginUpdate();
+<font color="#009900">// it is recommended to initialize the bitmap with the
+// wanted background color first</font>
+bmp_dc.SetBrushColor(Color::ClientBackground);
+bmp_dc.FillRect(0, 0, bmp->GetWidth() - 1, bmp->GetHeight() - 1);
+
+<font color="#009900">// now the content of the bitmap can be drawn</font>
+bmp_dc->DrawLine(...);
+...
+bmp_dc->EndUpdate();</pre>
+
+		<p>
+			To show the bitmap it must be painted in
+			Window::OnPaint() or automatically by embedding
+			it into the drawable object <a href="classImageBox.html">ImageBox</a>.
+		</p>
+		
+		<h2>7.3 Asynchronous vs. Synchronous Drawing</h2>
+		
+		<p>
+			The difference between asynchronous drawing and synchronous drawing is very
+			important for applications which take care themselves about drawing the
+			content of their window without using the APOXI-components like
+			<a href="classTextBox.html">TextBox</a> or <a href="classImageBox.html">ImageBox</a>.
+			Typical applications are a WAP-browser or the JAVA-engine.
+		</p>
+		
+		<h3>7.3.1 Asynchronous Drawing</h3>
+		<p>
+			Usually the drawing in APOXI is done asynchronously, which
+			means that an area of a window will be marked
+			as invalid by invoking the method Window::Invalidate()
+			and in the next idle-state APOXI will do a redraw of all
+			invalid areas by invoking Window::OnPaint(),
+			where the drawing of the window-content is done on a
+			device-context. The asynchronous drawing has the benefit, that
+			multiple invalidations are collected before any drawing is
+			done which usually reduces the number of necessary drawing
+			operations.
+		</p>
+			Example: A window uses the drawable object <a href="classTextBox.html">TextBox</a>
+			for drawing a text.
+			<pre>
+m_text_box.SetText(L"Abc");
+...
+m_text_box.SetText(L"Xyz");</pre>
+			
+			When invoking TextBox::SetText just the state of the textbox is changed and the window
+			containing the textbox is invalidated. No drawing is done when invoking TextBox::SetText.
+			So invoking this method two times just results in two invalidations, the drawing itself
+			is done after the thread gets idle and recognizes invalid areas of windows.
+		</p>
+		
+		<h3>7.3.2 Synchronous Drawing</h3>
+		<p>
+			Synchronous drawing means, that the drawing on a device-context
+			is not done in the method Window::OnPaint() but for example in other methods like
+			Window::OnKeyDown the following way:
+		</p>
+			<pre>
+BOOLEAN MyWindow::OnKeyDown(KeyCode key_code)
+{
+    BOOLEAN dispatched = TRUE;
+    if (key_code == KeyboardConfig::GetArrowUp()) {
+    	SyncPaintDc pdc(GetDeviceContext());
+    	pdc.SetPenColorRgb(255, 0, 0);
+    	pdc.DrawLine(0, 0, 100, 50);
+    }
+    else
+        dispatched = Window::OnKeyDown(key_code);
+        
+    return dispatched;
+}</pre>
+
+		<p>
+			It is required to use an instance of the class
+			<a href="classSyncPaintDc.html">SyncPaintDc</a> as device-context for synchronous
+			drawing. The synchronous device-context takes care about locking the access to
+			the display by other applications until the destructor has been invoked.
+		</p>
+		
+		<p>
+			Some hints:
+			<ul>
+				<li>
+					If the client-area of a window is completely filled by synchronous drawing, it
+					is recommended to turn off the auto-clearing of the client-area after invalidation by
+					invoking the method Control::SetAutoClearEnabled(FALSE)
+				</li>
+				<li>
+					When the method Control::OnPaint is invoked, an area of the control has been
+					marked as invalid before. It is recommended to trigger the
+					synchronous drawing mechanism in this case to update the content
+				</li>
+			</ul>
+		</p>
+		
+		<h2>7.4 Hints</h2>
+		
+		<p>
+			The following chapter gives some hints regarding how to use some methods of the class
+			<a href="classDeviceContext.html">DeviceContext</a>.
+		</p>
+		
+		<h3>7.4.1 Clipping</h3>
+		
+		<p>
+			Per default APOXI assures that the clipping rectangle of a device context is set in an optimized
+			manner. This means when only parts of a window are invalidated, the clipping rectangle of the
+			device context used inside Window::OnPaint is already set to the invalidated area and not to
+			the whole client area of the window. The application developer does not need to care about doing
+			further optimizations.
+		</p>
+		
+		<p>
+			If a custom clipping is still required, it is strongly recommended to intersect the custom clipping
+			rectangle with the already optimized clipping rectangle. This assures the best possible performance
+			and prevents that e. g. other components are overdrawn accidently. Assuming that a custom clipping rectangle
+			should be set from the upper left position 10/10 to the lower right position 90/40 the following code is correct:
+		</p>
+		<pre>
+PaintDc pdc(GetDeviceContext());
+
+const Rect custom_clip_rect(10, 10, 90, 40);
+Rect clip_rect(pdc.GetClipRect());
+clip_rect.Intersect(custom_clip_rect);
+pdc.SetClipRect(clip_rect);
+
+<font color="#009900">// the clipping rectangle is now intersected with the custom
+// clipping rectangle and any drawing can be done now</font>
+pdc.DrawText(...);
+</pre>
+		
+		<h2>7.4.2 Alpha blending</h2>
+		
+		<p>
+			APOXI allows to define an alpha value for a color. When a graphical operation is done with this color,
+			a mixing of the color with the already existing background is done. Example: a green rectangle with an
+			alpha value of 128 is drawn above a bitmap:
+		</p>
+		<img src="pics/alpha_blending.png" alt="Alpha Blending"/>
+		
+<pre>
+PaintDc pdc(GetDeviceContext());
+pdc.DrawBitmap(30, 30, bitmap);
+pdc.SetBrushColorRgb(36, 221, 62, 128);
+pdc.FillRect(20, 20, 90, 90);
+</pre>
+		<p>
+			Alpha blending requires a lot of performance and should be used with care.
+		</p>
+				
+		[ Previous: <a href="gui_tutorial_06.html">Drawable Objects</a> ] [ Next: <a href="gui_tutorial_08.html">Themes</a> ]		
+		
+	</body>
+</html>

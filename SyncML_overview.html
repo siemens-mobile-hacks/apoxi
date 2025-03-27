@@ -1,0 +1,82 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<title>SyncML Overview</title>
+<style type="text/css">
+<!--
+.Stil1 {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: xx-large;
+	font-weight: bold;
+}
+.Stil4 {
+	font-size: large;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-weight: bold;
+}
+.Stil6 {font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 12px;}
+.Stil22 {font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 12px; font-weight: bold; }
+.Stil29 {font-family: Verdana, Arial, Helvetica, sans-serif; font-size: large; }
+-->
+</style>
+</head>
+
+<body>
+<div align="center">
+  <p align="center" class="Stil1">SyncML Overview </p>
+  <p align="justify" class="Stil4">1 Introduction </p>
+  <p align="justify" class="Stil6">A SyncML (Synchronization Markup Language) application has the task to synchronize databases on the mobile 
+    device with servers based on the SyncML protocol. To be part of APOXI, the SyncML application implementation 
+  has to rely on several interfaces, in particular, interfaces to the mobile device and interfaces to the databases. </p>
+  <p align="justify" class="Stil6">    There are components which are integrated into the APOXI framework and allow SyncML applications to work in 
+    APOXI, and there are class header definitions which must be implemented for database applications to provide 
+access to the database for synchronization purposes.</p>
+  <p align="justify" class="Stil4">    2 Architecture</p>
+  <p align="justify" class="Stil6">    
+    The following figure (Figure 1) depicts the software architecture of a SyncML client application which runs on the mobile 
+    device and is integrated into APOXI. As one can see, the SyncML application interacts with several components 
+    and the user. The user interacts with the SyncML application through a user interface. The user initiates 
+    synchronization processes for synchronizing a database with a remote server. The user also interacts with the 
+    database applications and makes changes in the databases.</p>
+  
+<div align="justify">
+  <table width="98%"  border="1" align="center" cellpadding="0" cellspacing="0" bordercolor="#000000">
+    <tr>
+      <td height="522"><div align="center"><img src="figures/SyncML_Architecture.png" width="573" height="490"></div></td>
+    </tr>
+  </table>
+</div>
+  <p align="justify" class="Stil22">Figure&nbsp;1. SyncML Architecture</p>
+  <p align="justify" class="Stil6">SyncML application does the synchronization, i.e., it reads device and database properties, reads and writes data 
+    from the data bases, builds and interprets the SyncML messages and interacts with the transport layer to receive 
+    and transmits SyncML messages. It accesses the databases exclusively through DBService interface 
+  components.</p>
+  <p align="justify" class="Stil29">2.1  SyncMLManager</p>
+  <p align="justify" class="Stil6">    The <em>SyncMLManager</em> component is a singleton which is integrated as a fixed part into the APOXI framework . The 
+SyncMLManager serves the following purposes:</p>
+  
+<div align="justify">
+      <ul>
+        <li class="Stil6">
+          <strong>Registration of the <em>SyncMLApplication</em></strong>: The <em>SyncMLManager</em> has a method <em>RegisterSyncMLApplication</em> to allow the SyncML application to be registered when deployed on the device.</li>
+          <li class="Stil6">
+            <strong>Registration of DBService components</strong>: The <em>SyncMLManager</em> is the component where all the DBServicecomponents of all synchronizable databases have to be registered and can be retrieved. Method <em>RegisterDataStore()</em> allows registering databases, <em>GetServiceGuid()</em> and <em>GetDBServiceFromURI()</em> allows getting the Guid and the pointer to the DBService component, respectively. The method <em>GetNumOfDataStores()</em> returns the number of data stores currently registered at the <em>SyncMLManager</em>, with <em>GetRegisteredDataStore</em> the URI and Guid of a specific data store can be queried.</li>
+          <li class="Stil6">
+            <strong>Posting <em>DBItemChangedMsg </em>messages</strong>: Method <em>PostItemChangedMsg()</em> allows database applications to post messages - <em>DBItemChangedMgs</em> - when items in the database have changed. </li>
+          <li class="Stil6">
+            <strong>Providing device information</strong>: The <em>SyncMLManager</em> has a method <em>GetDeviceInfo()</em> to retrieve device specific information which is needed according to the SyncML specification.</li>
+      </ul>
+</div>
+  <p align="justify" class="Stil29">2.2  APOXI MessageRouter</p>
+  <p align="justify" class="Stil6">    The APOXI <em>MessageRouter</em> routes <em>DBItemChangedMgs</em> posted by the database applications through the 
+    <em>SyncMLManager</em> to the SyncML application. The SyncML application then can maintain the change log required 
+    for sychronization.</p>
+  <p align="justify" class="Stil29">    2.3 DBService</p>
+  <p align="justify" class="Stil6">    The <em>DBService</em> interface is the interface for the SyncML application for accessing databases. Any database which 
+    should be synchronized by the <em>SyncMLApplication</em> has to provide its own <em>DBService</em> component. <em>DBService</em> is a 
+    specialization of the APOXI <em>Service</em> class. Therefore <em>DBServices</em> are part of the Service framework and register 
+with the APOXI service broker.</p>
+</body>
+</html>

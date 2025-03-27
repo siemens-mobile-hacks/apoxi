@@ -1,0 +1,467 @@
+<html>
+	<head>
+		<link href="doxygen.css" rel="stylesheet" type="text/css">
+		<title>10 Appendix</title>
+	</head>
+	
+	<body>
+		[ Previous: <a href="gui_tutorial_11.html">Image handling</a> ]
+		
+		<h1>12 Appendix</h1>
+		
+		<h2>12.1 Obsolete Classes</h2>
+		
+		<p>
+			With APOXI-1.9.0 items have been introduced, which are represented by the class <a href="classItem.html">Item</a>.
+			Due the new classes <a href="classItemGrid.html">ItemGrid</a>,
+			<a href="classItemTree.html">ItemTree</a> and
+			<a href="classItemMenu.html">ItemMenu</a> it is a lot easier now in APOXI to create listboxes and menus.
+			Still obsolete classes might be used in older projects, thats why the usage of those classes are explained in this
+			chapter.
+		</p>
+		
+		<h3>12.1.1 Menu</h2>
+		
+		<p>
+			The class <a href="classMenu.html">Menu</a> has been replaced by the class <a href="classItemMenu.html">ItemMenu</a>.
+			It is recommended to convert old code to use the class <a href="classItemMenu.html">ItemMenu</a>, as it takes less
+			time for doing this change and the adaption of the look and feel of menus gets a lot easier (see also
+			<a href="gui_tutorial_05.html">chapter 5</a>
+			for a description of the class <a href="classItemMenu.html">ItemMenu</a>):
+			<ul>
+				<li>Replace the class <a href="classMenu.html">Menu</a> by <a href="classItemMenu.html">ItemMenu</a></li>
+				<li>Replace the menu-accessors by an <a href="classItemContainer.html">ItemContainer</a> for the sub-menus and
+					just drop the menu-accessors for the root-menu.</li>
+				<li>Instead of <em>MenuAccessor::AddAction()</em> write <em>ItemContainer::AddItem()</em></em>.
+			</ul>
+		</p>
+		
+		<p>
+			The class <a href="classMenu.html">Menu</a> uses a menu-accessor for accessing and drawing the
+			menu-items. A menu-accessor is described by the class
+			<a href="classAbstractMenuAccessor.html">AbstractMenuAccessor</a>. It offers an interface
+			for iterating over a variable number of menu-items,
+			which may organized as a linear list of menu-items or as tree
+			(e .g for hierarchical menus).
+		</p>
+		
+		<p>
+			Example: a simple menu having a linear list of menu-items.
+		</p>
+		
+		<p>
+			<img src="pics/menu_hierarchy.gif" alt="Menu"/>
+		</p>
+
+		<p>
+			The class <a href="classMenu.html">Menu</a> is a control, which is responsible for:
+			<ul style="line-height: 150%">
+				<li>Listening to the keys (e. g. up- and down-arrow-keys).</li>
+				<li>Move the selection for the highlighted menu-item.</li>
+				<li>Scroll the content, when necessary.</li>
+				<li>Provide a position-indicator.</li>
+			</ul>
+		</p>
+		
+		<p>
+			The class <a href="classAbstractMenuAccessor.html">AbstractMenuAccessor</a> offers an interface for:
+		</p>
+		<ul style="line-height: 150%">
+			<li>Iterating over a variable number of menu-items in linear or a hierarchical way.</li>
+			<li>Drawing a menu-item.</li>
+		</ul>
+		
+		<p>
+			Example: A window should be created which contains a menu with the following structure:
+		</p>
+		
+		<p>
+			<img src="pics/action_menu.gif" alt="Action Menu"/>
+		</p>
+		
+		<p>
+			After pressing "Item 1" a sub-menu showing some
+			radiobuttons and checkboxes should be displayed.
+			When pressing "Item 2" an alert should be display,
+			which shows "Item 2 has been triggered". Item 3 should
+			stay disabled and hence cannot be triggered.
+		</p>
+		
+		<p>
+			The following code shows the implementation of this menu-structure.
+			The code needed for the hierarchical-menu is noted
+			in <b>bold</b>.
+		</p>
+		
+		<b>MyWindow.hpp</b>
+		<pre>
+#include &lt;ApoxiLib.hpp&gt;
+
+<b>
+#include &lt;AddOns/GuiMenuAccessors/SubMenuAction.hpp&gt;
+#include &lt;AddOns/GuiMenuAccessors/TopMenu.hpp&gt;
+</b>
+
+class MyWindow : public <a href="classWindow.html">Window</a> {
+	public:
+		void Init();
+
+	protected:
+		virtual BOOLEAN OnConfirm();
+		virtual BOOLEAN OnCancel();
+		virtual void OnActionExecuted(Action* action);
+
+	private:
+		<b><a href="classTopLevelMenu.html">TopLevelMenu</a> m_menu;
+
+		// declarations for main-menu
+		<a href="classSubMenuAction.html">SubMenuAction</a> m_sub_menu;
+		<a href="classAction.html">Action</a> m_action_1;
+		<a href="classAction.html">Action</a> m_action_2;
+
+		// declarations for sub-menu
+		<a href="classRadioButtonGroup.html">RadioButtonGroup</a> m_rb_group;
+		<a href="classRadioButtonAction.html">RadioButtonAction</a> m_rb_action_1;
+		<a href="classRadioButtonAction.html">RadioButtonAction</a> m_rb_action_2;
+		<a href="classRadioButtonAction.html">RadioButtonAction</a> m_rb_action_3;
+		<a href="classCheckBoxAction.html">CheckBoxAction</a> m_cb_action_1;
+		<a href="classCheckBoxAction.html">CheckBoxAction</a> m_cb_action_2;
+		</b>
+
+		<a href="classConfirmAction.html">ConfirmAction</a> m_confirm_action;
+		<a href="classCancelAction.html">CancelAction</a> m_cancel_action;
+};</pre>
+
+		<b>MyWindow.cpp</b>
+		<pre>
+#include "MyWindow.hpp"
+
+#include &lt;Config/Resources/confirm_icon.hpp&gt;
+#include &lt;Config/Resources/cancel_icon.hpp&gt;
+
+void MyWindow::Init()
+{
+	Window::Init();
+<b>
+	// initialize sub-menu
+	m_rb_group.Init();
+	m_rb_action_1.Init(this, &m_rb_group, Tr(L"Radiobutton 1"), TRUE);
+	m_rb_action_2.Init(this, &m_rb_group, Tr(L"Radiobutton 2"));
+	m_rb_action_3.Init(this, &m_rb_group, Tr(L"Radiobutton 3"));
+	m_cb_action_1.Init(this, Tr(L"Checkbox 1"), TRUE, TRUE);
+	m_cb_action_2.Init(this, Tr(L"Checkbox 2"));
+
+	m_sub_menu.Init(this, Tr(L"Item 1"), &confirm_icon);
+	m_sub_menu.AddAction(&m_rb_action_1);
+	m_sub_menu.AddAction(&m_rb_action_2);
+	m_sub_menu.AddAction(&m_rb_action_3);
+	m_sub_menu.AddAction(&m_cb_action_1);
+	m_sub_menu.AddAction(&m_cb_action_2);
+
+	// initialize main-menu
+	m_action_1.Init(this, Tr(L"Item 2"), &cancel_icon);
+	m_action_2.Init(this, Tr(L"Item 3"), &cancel_icon);
+	m_action_2.SetEnabled(FALSE);
+
+	m_menu.Init(this, Tr(L"Main Menu"));
+	m_main_accessor.AddAction(&m_sub_menu);
+	m_main_accessor.AddAction(&m_action_1);
+	m_main_accessor.AddAction(&m_action_2);</b>
+
+	// initialize softkeys
+	m_confirm_action.Init(this, Tr(L"Select"));
+	SetLeftSoftkey(&m_confirm_action);
+	
+	m_cancel_action.Init(this, Tr(L"Close"));
+	SetRightSoftkey(&m_cancel_action);
+}
+
+BOOLEAN MyWindow::OnConfirm()
+{
+	<b>m_menu.Trigger();</b>
+	return Base::OnConfirm();
+}
+
+BOOLEAN MyWindow::OnCancel()
+{
+	<b>AbstractMenuAccessor* accessor = m_menu.GetMenuAccessor();
+	ASSERT_DEBUG(accessor != 0);
+	if (accessor->IsRoot())
+		Close();
+	else
+		m_menu.Back();</b>
+
+	return Base::OnCancel();
+}
+
+void MyWindow::OnActionExecuted(Action* action)
+{
+	Base::OnActionExecuted(action);
+	if (action == &m_action_2) {
+		<a href="classAlert.html">Alert</a> alert(Tr(L"Item 2 has been triggered."));
+		alert.OpenModal();
+	}
+	// else if (action == ...)
+}</pre>
+		<p>
+			In <em>MyWindow::Init</em> the actions of the sub-menu are initialized:
+			<ul style="line-height: 150%">
+				<li>As shown in the chapter for the <a href="classRadioButtonControl.html">RadioButtonControl</a>, each radiobutton must be part of a radiobutton-group to assure that only one radiobutton may get selected.</li>
+				<li>The checkboxes are independent from each other and hence don't need a group.</li>
+				<li>After initializing the actions, they are embedded into the sub-menu.</li>
+			</ul>
+		</p>
+		
+		<p>
+			After the sub-menu the main-menu is initialized the same way:
+			<ul style="line-height: 150%">
+				<li>The two remaining actions representing the items are initialized.</li>
+				<li>After the initialization the actions are embedded into the main-action-accessor.</li>
+			</ul>
+		</p>
+		
+		<p>
+			The method OnConfirm is invoked, when the left softkey has been
+			pressed. In this case the currently selected menu-item is
+			triggered by invoking <em>m_menu.Trigger()</em>.
+		</p>
+		<p>
+			The method OnCancel is invoked, when the right softkey has
+			been pressed. The window should only get closed, if the currently
+			displayed menu represents a root-menu. Otherwise the menu should
+			go one menu-level back, which is done by <em>m_menu.Back()</em>.
+		</p>
+		
+		<p>
+			As explained in the chapter for actions, the method
+			OnActionExecuted may be used to react when an action has
+			been executed.
+		</p>		
+		
+		<h3>12.1.2 AbstractListBox</h2>
+		
+		<p>
+			APOXI offers only the class <a href="classAbstractListBox.html">AbstractListBox</a> as
+			a base class for listboxes. The application developer has been forced to derive its own
+			listbox for being able to create an instance of the class. Especially the handling of
+			the listbox-model together with the listbox-control is very tricky and thats why this
+			approach has been replaced by class <a href="classItemGrid.html">ItemGrid</a>. It is
+			recommended to replace all derived classes from
+			<a href="classAbstractListBox.html">AbstractListBox</a>
+			by the item-grid.
+		</p>
+		
+		<h2>10.2 Obsolete Methods</h2>
+		
+		<p>
+			With APOXI-1.9.0 the methods Control::OnConfirm and Control::OnCancel got obsolete. Both
+			methods are not needed anymore due providing the method Window::OnActionExecuted. A
+			typical code which used those methods might look like this:
+		</p>
+
+		<b>MyWindow.hpp</b>
+		<pre>
+#include &lt;ApoxiLib.hpp&gt;
+
+class MyWindow : public <a href="classWindow.html">Window</a> {
+	public:
+		void Init();
+
+	protected:
+		virtual BOOLEAN OnConfirm();
+		virtual BOOLEAN OnCancel();
+
+	private:
+		ConfirmAction m_confirm_action;
+		CancelAction m_cancel_action;
+};</pre>
+
+		<b>MyWindow.cpp</b>
+		<pre>
+#include "MyWindow.hpp"
+
+void MyWindow::Init()
+{
+	Window::Init();
+	...
+	m_confirm_action.Init(this, Tr(L"Confirm"));
+	m_cancel_action.Init(this, Tr(L"Cancel"));
+	...
+}
+
+BOOLEAN MyWindow::OnConfirm()
+{
+	// execute code A
+	return Base::OnConfirm();
+}
+
+BOOLEAN MyWindow::OnCancel()
+{
+	// execute code B
+	return Base::OnCancel();
+}</pre>
+
+	<p>
+		Replace this code the following way:
+	</p>
+
+		<b>MyWindow.hpp</b>
+		<pre>
+#include &lt;ApoxiLib.hpp&gt;
+
+class MyWindow : public <a href="classWindow.html">Window</a> {
+	public:
+		void Init();
+
+	protected:
+		virtual void OnActionExecuted(Action* action);
+
+	private:
+		Action m_confirm_action;
+		Action m_cancel_action;
+};</pre>
+
+		<b>MyWindow.cpp</b>
+		<pre>
+#include "MyWindow.hpp"
+
+void MyWindow::Init()
+{
+	Window::Init();
+	...
+	m_confirm_action.Init(this, Tr(L"Confirm"));
+	m_cancel_action.Init(this, Tr(L"Cancel"));
+	...
+}
+
+void MyWindow::OnActionExecuted(Action* action)
+{
+	Window::OnActionExecuted(action);
+	if (action == &m_confirm_action)
+		// execute code A
+	else if (action == &m_cancel_action)
+		// execute code B
+}</pre>
+
+		<h2>12.3 Constructor vs. Init</h2>
+
+		<p
+			As seen in the sample-application, a method called Init has been used to initialize the objects instead of the non-default constructors. The reason for this will be explained in this chapter.
+		</p>
+		
+		<p>
+			When embedding components inside a class, there are two different ways for the implementation:
+		</p>
+		
+		<ol>
+			<li>Declare component-pointers in the header-file and allocate the instances in the constructor. Example:<br/>
+				<b>MyWindow.hpp</b>
+				<pre>
+class MyWindow : public <a href="classWindow.html">Window</a> {
+	typedef <a href="classWindow.html">Window</a> Base;
+
+	public:
+		MyWindow();
+		virtual ~MyWindow();
+
+	private:
+		LineEditor* m_editor;
+};</pre>
+
+			<b>MyWindow.cpp</b>
+			
+			<pre>
+#include "MyWindow.hpp"
+
+MyWindow::MyWindow() :	Base()
+{
+	m_editor = new Editor(this, InputMapper::Numeric);
+	ASSERT_DEBUG(m_editor != 0);
+}
+
+MyWindow::~MyWindow()
+{
+	delete m_editor;
+	m_editor = 0;
+}</pre>	
+			</li>
+			<li>Declare  the components as members in the header-file and initialize them by invoking <em>Init</em>:<br>
+				<b>MyWindow.hpp</b>
+				<pre>
+class MyWindow : public <a href="classWindow.html">Window</a> {
+	typedef <a href="classWindow.html">Window</a> Base;
+
+	public:
+		void Init();
+
+	private:
+		<a href="classLineEditor.html">LineEditor</a> m_editor;
+};</pre>
+
+				<b>MyWindow.cpp</b>
+				<pre>
+#include "MyWindow.hpp"
+
+void MyWindow::Init()
+{
+	Base::Init();
+	m_editor.Init(this, InputMapper::Numeric);
+}</pre>
+			</li>
+		</ol>
+		
+		<p>
+			The usual way in C++ is to declare component-pointers in the
+			header-class and allocate the instances dynamically in the constructor.
+			But with the current hardware-limitations of mobile phones this common
+			way has some disadvantages:
+		</p>
+		
+		<ul style="line-height: 150%">
+			<li>Every new-operation might fail. This is case gets worse especially for mobile phones, where the amount of storage is still very limited. An error-message "Out of memory - cannot open the phonebook" must be prevented.</li>
+			<li>A lot of new-operations paired with delete-operations might lead to memory-fragmentation. APOXI uses memory-pools to prevent fragmentation of the memory, but still there is no guarantee that e. g. 1 KByte may be allocated in every use-case.</li>
+			<li>The new-operation is quite expensive concerning performance.</li>
+		</ul>
+		
+		<p>
+			To fit the requirements of the limited hardware, APOXI
+			offers the method Init which is a replica of the constructor
+			for statically declared objects. Hence an application may be
+			declared statically, this application may contain a variable number
+			of windows, which themselves contain a variable number of sub-controls.
+			When declaring objects statically, the order of executing the constructors
+			is not defined, which leads to race-conditions. By using <em>Init</em>
+			this can be bypassed quite easy: after APOXI has been started up,
+			Application::OnOpen() is invoked for each application,
+			which initializes its windows with <em>Init</em>. The windows
+			initialize their sub-controls with <em>Init</em> too and so on.
+		</p>
+		
+		<p>
+			The benefit of declaring the object statically is that the maximum
+			amount of memory an application needs is defined on compile-time.
+			For sure most applications still may have the requirement
+			to allocate data dynamically, but it is a lot easier to find out
+			the peak-values needed for the size of the heap, when the size of the
+			application is as static as possible. Note that APOXI does not force
+			the application-programmer to use <em>Init</em>: every constructor
+			offers a Init-replica and vice versa.
+		</p>
+		
+		<p>
+			Because <em>Init</em> should behave the same as the constructor,
+			it must invoked only once for an instance of the class. Do not
+			use Init to reinitialize an instance of a class!
+		</p>
+		
+		<p>
+			Regarding the current hardware-limitations
+			it is recommended to use the approach with <em>Init</em>,
+			even this may look strange in the first sight as
+			experienced C++-programmer. 
+		</p>	
+		
+		[ Previous: <a href="gui_tutorial_11.html">Image handling</a> ]
+		
+	</body>
+</html>

@@ -1,0 +1,411 @@
+<html>
+	<head>
+		<link href="doxygen.css" rel="stylesheet" type="text/css">
+		<title>3 Sample Application</title>
+	</head>
+
+	<body>
+		[ Previous: <a href="gui_tutorial_02.html">Concepts</a> ] [ Next: <a href="gui_tutorial_04.html">Items</a> ]
+
+		<h1>3 Sample Application</h1>
+
+		<p>
+			The following implementation of a sample application should convey a feeling for APOXI.
+			Detailed descriptions about the used classes are given in later chapters.
+		</p>
+
+		<h2>3.1 Displaying "Hello World"</h2>
+
+		<p>
+		In order to write a "Hello world"-application on the mobile phone,
+		a window needs to be created for drawing a text. Here is the header-file for the class MyWindow:
+		</p>
+
+		<b>MyWindow.hpp</b>
+		<pre>
+#include &lt;Gui/Window.hpp&gt;
+
+class MyWindow : public <a href="classWindow.html">Window</a> {
+	protected:
+		virtual void OnPaint(const Rect& repaint_rect);
+};</pre>
+
+		<p>
+		The class MyWindow is derived from the class <a href="classWindow.html">Window</a> and the method OnPaint must be implemented for the purpose of drawing the famous  "Hello world". Here is the implementation of the class MyWindow:
+		</p>
+
+		<b>MyWindow.cpp</b>
+		<pre>
+#include "MyWindow.hpp"
+
+void MyWindow::OnPaint(const Rect& repaint_rect)
+{
+	Window::OnPaint(repaint_rect);
+
+	<a href="classPaintDc.html">PaintDc</a> pdc(GetDeviceContext());
+	pdc.DrawText(5, 10, L"Hello world");
+}</pre>
+
+		<p>
+			First of all OnPaint calls the base-method Window::OnPaint().
+			All drawing-operations are performed on the device-context.
+			The current device-context is provided by the method Window::GetDeviceContext().
+		</p>
+
+		<p>
+			The class <a href="classPaintDc.html">PaintDc</a> provides comfortable usage of a standard device-context.
+			A temporary paint device-context can be created by invoking <a href="classPaintDc.html">PaintDc</a> pdc(GetDeviceContext()).
+			Next the text "Hello world" is drawn at the position (5, 10) by calling pdc.DrawText(5, 10, L"Hello world").
+		</p>
+
+		<p>
+			Those are all the steps required for defining a window, which displays
+			"Hello world". But windows also need to be embedded in a common context, which
+			is provided by an application. So before opening any window, an application must be created:
+		</p>
+
+		<b>MyApplication.hpp</b>
+		<pre>
+#include &lt;Kernel/Application.hpp&gt;
+#include "MyWindow.hpp"
+
+class MyApplication : public <a href="classApplication.html">Application</a> {
+	protected:
+		virtual void OnOpen();
+
+	private:
+		MyWindow m_my_window;
+};</pre>
+
+		<p>
+			The class MyApplication is derived from <a href="classApplication.html">Application</a>. The member m_my_window is added
+			for embedding the previously defined window within the application.
+			m_my_window is an instance of MyWindow. Here is the implementation of the application:
+		</p>
+
+		<b>MyApplication.cpp</b>
+		<pre>
+#include "MyApplication.hpp"
+
+void MyApplication::OnOpen()
+{
+	Application::OnOpen();
+	m_my_window.Init();
+	m_my_window.OpenModeless();
+}</pre>
+
+		<p>
+			First of all the base class method Window::OnOpen()
+			is called. Then the window is initialized by m_my_window.Init() and opened in modeless mode by
+			invoking m_my_window.OpenModeless().
+		</p>
+
+		<p>
+			Alternatively it would have been possible to use a pointer to MyWindow and invoke
+			m_my_window = new MyWindow() instead of m_my_window.Init(). The reason for using the
+			method Init instead of dynamical allocation and using the constructors is explained
+			in <a href="gui_tutorial_10.html">chapter 10</a> in detail.
+		</p>
+
+		<p>
+		</p>
+
+		<p>
+			The visual result of the code above does not look spectacular, but fulfils our demands of displaying "Hello world":
+		</p>
+
+		<p>
+			<img src="pics/hello_world.gif" alt="Hello World"/>
+		</p>
+
+		<h2>3.2 Getting Multilingual</h2>
+
+		<p>
+			In general, the usage of hardcoded strings should be avoided,
+			as many applications have to be shipped supporting different languages.
+			The next paragraph will point out how APOXI provides an easy way for creating localized applications.
+		</p>
+
+		<p>
+			The programmer simply has to pass all texts to the
+			Tr()-method ("Translate") before displaying them.
+			So instead of handing over "Hello world" to Window::DrawText directly:
+		</p>
+
+		<pre>
+pdc.DrawText(5, 10, L"Hello world")</pre>
+
+		<p>
+			the usage should look like this
+		</p>
+
+		<pre>
+pdc.DrawText(5, 10, Tr(L"Hello world"))</pre>
+
+		<p>
+			The translate method performs a fast lookup within a translation table
+			and returns the translated text string.
+			Tr() will return its argument, if no translation table is available. This
+			means that during the development of an application no translation table
+			is required and can be added at later stages.
+		</p>
+
+		<h2>3.3 Handling Key Events</h2>
+
+		<p>
+			Instead of displaying "Hello world" MyWindow will be modified to display
+			"No key pressed" After pressing the key "2" the text should change to "Key 2 pressed":
+		</p>
+
+		<p>
+			<img src="pics/handling_key_events.gif" alt="Handling Key Events"/>
+		</p>
+
+		<b>MyWindow.hpp</b>
+
+<pre>#include &lt;Gui/Window.hpp&gt;
+
+class MyWindow : public <a href="classWindow.html">Window</a> {
+	public:
+		void Init();
+
+	protected:
+		virtual void OnPaint(const Rect& repaint_rect);
+		virtual BOOLEAN OnKeyDown(KeyCode key_code);
+
+	private:
+		const WCHAR* m_text;
+};</pre>
+
+		<b>MyWindow.cpp</b>
+
+		<pre>
+#include "MyWindow.hpp"
+#include &lt;Config/KeyboardConfig.hpp&gt;
+
+void MyWindow::Init()
+{
+	Window::Init();
+	SetTitle(Tr(L"Press key 2..."));
+	m_text = Tr(L"No key pressed");
+}
+
+void MyWindow::OnPaint(const Rect& repaint_rect)
+{
+	Window::OnPaint(repaint_rect);
+
+	<a href="classPaintDc.html">PaintDc</a> pdc(GetDeviceContext());
+	pdc.DrawText(5, 10, m_text);
+}
+
+BOOLEAN MyWindow::OnKeyDown(KeyCode key_code)
+{
+	if (key_code == KeyboardConfig::GetNumber(2)) {
+		m_text = Tr(L"Key 2 has been pressed");
+		Invalidate();
+		return TRUE;
+	}
+	else
+		return Window::OnKeyDown(key_code);
+}</pre>
+
+		<p>
+			The method Window::OnKeyDown() is invoked whenever a key has been
+			pressed. MyWindow is extended by the member m_text which is a pointer
+			to a string. This string should be modified when pressing the key "2".
+		</p>
+
+		<p>
+			In MyWindow::Init() m_text is initialized with "No key pressed".
+			When the <a href="classWindow.html">Window</a> is opened MyWindow::OnPaint() is called and
+			"No key pressed" is displayed. Pressing the key "2" invokes a call of
+			MyWindow::OnKeyDown(). The key-code is submitted by the parameter
+			key_code and can be compared with configurated key-codes.
+			The configurated key-codes are defined by the class KeyboardConfig.
+		</p>
+
+		<p>
+			When changing data which should be displayed, the window must be invalidated
+			to trigger a paint-event. This can be done by invoking Window::Invalidate().
+			Window::OnKeyDown() offers a BOOLEAN as return-value,
+			which indicates whether a key has been dispatched. If the key is not
+			treated, the base-method should be called.
+		</p>
+
+		<h2>3.4 Using a Drawable Object</h2>
+
+		<p>
+			Invalidating a window because data has been changed is not very comfortable
+			and might lead to an inconistent state between display and data (e. g.
+			when forgetting an invalidation). Drawable objects offer an easy way for
+			encapsuling data which should be displayed.
+		</p>
+
+		<b>MyWindow.hpp</b>
+
+		<pre>
+#include &lt;Gui/Window.hpp&gt;
+#include &lt;Gui/TextLine.hpp&gt;
+
+class MyWindow : public <a href="classWindow.html">Window</a> {
+	public:
+		void Init();
+
+	protected:
+		virtual BOOLEAN OnKeyDown(KeyCode key_code);
+
+	private:
+		<a href="classTextLine.html">TextLine</a> m_text_line;
+};</pre>
+
+		<b>MyWindow.cpp</b>
+
+		<pre>
+#include "MyWindow.hpp"
+
+void MyWindow::Init()
+{
+	Window::Init();
+	SetTitle(Tr(L"Press key 2..."));
+
+	m_text_line.Init(this, Tr(L"No key pressed."));
+	m_text_line.SetPos(5, 10);
+}
+
+BOOLEAN MyWindow::OnKeyDown(KeyCode key_code)
+{
+	if (key_code == KeyboardConfig::GetNumber(2)) {
+		m_text_line.SetText(Tr(L"Key 2 has been pressed!"));
+		return TRUE;
+	}
+	else
+		return Window::OnKeyDown(key_code);
+}</pre>
+
+		<p>
+			The drawable object <a href="classTextLine.html">TextLine</a> is able to show a text on a given position.
+			When the text is changed, the window will automatically
+			be invalidated and hence redrawn where necessary. There is no
+			need anymore to overwrite Window::OnPaint(), because every drawable object
+			knows its position and size and is drawn automatically.
+		</p>
+
+		<h2>3.5 Layouting Components</h2>
+
+		<p>
+			When more than one component is embedded into a window, the components have
+			to be layouted by assigning them a position and a size. This can be done in
+			Window::Init(), but has the disadvantage that later changes on
+			the size of the window are ignored. Hence APOXI offers another
+			entry-point for doing the layout of components: When opening a
+			window and whenever the size changes, the method Window::OnLayoutClient()
+			will be called. In this method the components can be adjusted inside the client-area.
+		</p>
+
+		<p>
+			<img src="pics/using_layouter.gif" alt="Layouting Components"/>
+		</p>
+
+		<h3>3.5.1 Layouting by Hand</h3>
+
+		<p>
+			In the following example the layouting is done by asking the window for its size and adjusting the size and position of the progressbar and a pushbutton.
+		</p>
+
+		<b>MyWindow.hpp</b>
+
+		<pre>
+#include &lt;ApoxiLib.hpp&gt;
+
+class MyWindow : public <a href="classWindow.html">Window</a> {
+	public:
+		void Init();
+
+	protected:
+		virtual void OnLayoutClient();
+
+	private:
+		<a href="classProgressBar.html">ProgressBar</a> m_progress_bar;
+		<a href="classPushButton.html">PushButton</a> m_push_button;
+		<a href="classCloseWindowAction.html">CloseWindowAction</a> m_close_win_action;
+};</pre>
+
+		<b>MyWindow.cpp</b>
+
+		<pre>
+#include "MyWindow.hpp"
+
+void MyWindow::Init()
+{
+	Window::Init();
+ 	SetTitle(Tr(L"Layouting by hand"));
+	m_progress_bar.Init(this, 75);
+	m_close_win_action(this, this, Tr(L"Close"));
+	m_push_button.Init(this, &m_close_win_action);
+}
+
+void MyWindow::OnLayoutClient()
+{
+	Window::OnLayoutClient();
+
+	m_progress_bar.SetPos(0, 0);
+	m_progress_bar.SetSize(GetClientWidth(),
+                         m_progress_bar.GetDefaultHeight());
+
+	m_push_button.SetPos(0, GetClientHeight() / 2);
+	m_push_button.SetSize(GetClientWidth(),
+                        m_push_button.GetDefaultHeight());
+}</pre>
+
+		<p>
+			This implementation is acceptable when having 2 or 3 controls, but when a complex layout with centered and nested controls is needed, this will get way too complicated.
+		</p>
+
+		<p>
+			<img src="pics/layouting_by_hand.gif" alt="Layouting by Hand"/>
+		</p>
+
+		<h3>3.5.2 Using a Layouter</h3>
+
+		<p>
+			APOXI offers the class <a href="classLayouter.html">Layouter</a> for this problem. For having a similar layout as above by using a layouter, the implementation of OnLayoutClient() will look like this:
+		</p>
+
+		<pre>
+void MyWindow::OnLayoutClient()
+{
+	Window::OnLayoutClient();
+
+	<a href="classLayouter.html">Layouter</a> layouter(1, 2, this);
+	layouter.Arrange(0, 0, &m_progress_bar);
+	layouter.Arrange(0, 1, &m_push_button);
+}</pre>
+		<p>
+			The layouter is capable of layouting components and recursively other
+			layouters inside a grid. The number of horizontal and vertical cells
+			inside the grid can be specified in the constructor: The first parameter
+			specifies the number of horizontal cells, the second parameter specifies
+			the number of vertical cells. The layouter must know the available width
+			and height for the grid. This is submitted by passing the <a href="classWindow.html">Window</a>.
+			Invoking <a href="classLayouter.html">Layouter</a> layouter(1, 2, this) results in a grid with 2 cells.
+		</p>
+
+		<p>
+			By layouter.Arrange(0, 0, &m_progress_bar) the progress-bar is arranged
+			in the cell with the index (0, 0) (Note: the index starts at zero).
+			layouter.Arrange(0, 1, &m_push_button) arranges the push-button in the
+			cell with the index (0, 1).
+		</p>
+
+		<p>
+			In contrast to the layouting by hand the layouter respects default widths and heights from components and centers each component inside a cell instead of increasing the boundaries to the maximum available size:
+		</p>
+
+		<p>
+			<img src="pics/layouting_by_layouter.gif" alt="Using a Layouter"/>
+		</p>
+
+		[ Previous: <a href="gui_tutorial_02.html">Concepts</a> ] [ Next: <a href="gui_tutorial_04.html">Items</a> ]
+
+	</body>
+</html>

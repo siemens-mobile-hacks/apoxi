@@ -1,0 +1,118 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<title>HTTP/WAP Interface Overview</title>
+<style type="text/css">
+<!--
+.Stil1 {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: xx-large;
+	font-weight: bold;
+}
+.Stil4 {
+	font-size: large;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-weight: bold;
+}
+.Stil6 {font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 12px;}
+.Stil32 {font-family: Verdana, Arial, Helvetica, sans-serif; font-size: large;}
+-->
+</style>
+</head>
+
+<body>
+<div align="center">
+  <p align="justify" class="Stil1">HTTP/WAP Interface Overview </p>
+  <p align="justify" class="Stil4">1 Introduction </p>
+  <p align="justify" class="Stil6">    The access of the internet from mobile applications requires an implementation of the HTTP and WAP protocols 
+  and interfaces, which can be used by applications to access these protocols.</p>
+  <p align="justify" class="Stil6">    HTTP/WAP Interface provides a set of APIs for applications using WAP and HTTP connections while keeping the 
+underlying HTTP or WAP stack vendor independent.</p>
+  <p align="justify" class="Stil6">    In particular, HTTP/WAP Interface architecture serves the following purposes:</p>
+  
+  <div align="justify">
+          <ul>
+            <li>
+              <span class="Stil6">It defines the interfaces to HTTP and WAP functionality for future applications. </span></li>
+              <li>
+                <span class="Stil6">It delineates applications needing HTTP/WAP functionality from the implementation of the HTTP/WAP stack. </span></li>
+              <li>
+                <span class="Stil6">It allows the implementation of the WAP stack to be in the form of a function calling interface as well as in the form of a service interface invoked by passing messages. </span></li>
+              <li>
+                <span class="Stil6">It describes the implementation of this interface for a 3rd Party WAP stack.</span></li>
+              <li>
+                <span class="Stil6">Implementation of WAP Profiles, which are used to store WAP Parameters (Logical/Physical/Authentication/Port Characteristic Sets), required for opening a WAP connection and appropriate methods to get/set their values.</span></li>
+              <li>
+                <span class="Stil6">Implementation of WAP Profile Manager Interface for applications to manage the Wap Profiles (like creating, storing, retrieving and deleting profiles from memory).</span></li>
+          </ul>
+</div>
+  <p align="justify" class="Stil4">2 Architecture Overview</p>
+  <p align="justify" class="Stil6"><br>
+    The following diagram gives an overview of the functional interaction of HTTP/WAP Interface with other modules 
+    of the complete system.</p>
+  
+<div align="justify">
+  <table width="100%"  border="1" align="center" cellpadding="0" cellspacing="0" bordercolor="#000000">
+    <tr>
+      <td height="400"><div align="center"><img src="figures/Http_WAP_Architecture.png" width="579" height="359"></div></td>
+    </tr>
+                  </table>
+</div>
+  <p align="justify" class="Stil6"><strong> Figure 1. Architecture of HTTPWapInterface</strong></p>
+  <p align="justify" class="Stil32">2.1 HTTP Client Application</p>
+  <p align="justify" class="Stil6">    This is any application, which needs to act as an HTTP client. It accesses HTTP functionality in the HTTP/WAP 
+Management package within APOXI.</p>
+  <p align="justify" class="Stil32">2.2 MMS Application </p>
+  <p align="justify" class="Stil6"> This is another application, which needs HTTP functionality.</p>
+  <p align="justify" class="Stil32">2.3 WAP Push Client Application </p>
+  <p align="justify" class="Stil6"> This is any application, which needs to act as a WAP push client, i.e. it will receive push messages. It accesses WAP functionality in the HTTP/WAP Management package within APOXI.</p>
+  <p align="justify" class="Stil32">2.4 WapCoreApp Application</p>
+  <p align="justify" class="Stil6"> This application implements the WapService interface and acts as a wrapper for a 3rd Party WAP stack. The communication between HTTP/WAP management in APOXI and the WapCoreApp application is via messages in both directions.</p>
+  <p align="justify" class="Stil32">2.5 WAP Profiles Application</p>
+  <p align="justify" class="Stil6"> The purpose of this application is to create, edit and delete WAP profiles. It accesses the WAP profiles by using the WAP Profiles management in APOXI. It works very similar to the existing <em>DataConnApp</em> application used to manage data connection profiles.</p>
+  <p align="justify" class="Stil32">2.6 HTTP/WAP Management </p>
+  <p align="justify" class="Stil6"> This package has the task to initiate, manage and terminate HTTP/WAP connections, to handle HTTP requests and responses and to handle WAP push messages.</p>
+  <p align="justify" class="Stil32">2.7 Function Called WAP Stack</p>
+  <p align="justify" class="Stil6"> This package is any future WAP stack with a function calling interface, as opposed to the message handling interface of <em>WapCoreApp</em>.</p>
+  <p align="justify" class="Stil32">2.8 WAP Profiles Management</p>
+  <p align="justify" class="Stil6">The task of this package is to create, edit and delete WAP profiles and to make them persistent. The primary classes are <em>WapProfileMgr</em> and <em>WapProfile</em>. It uses the Registry package to make profiles persistent.</p>
+  <p align="justify" class="Stil32">2.9 APOXI Registry</p>
+  <p align="justify" class="Stil6"> This is the storage medium for profile data.</p>
+  <p align="justify" class="Stil4">3 Overview HTTP/WAP Interface</p>
+  <p align="justify" class="Stil6">    This section contains description and usage model of HTTP/WAP interface and WAP Profile Management.</p>
+  <p align="justify" class="Stil32">    3.1 HTTP/WAP Interface</p>
+  <p align="justify" class="Stil6">    One of the motivations behind developing the HTTP/WAP interface is that applications do not need to be ported 
+each time the underlying HTTP/WAP stack changes. To meet this goal the design has three major parts:</p>
+  
+<ul><li><div align="left" class="Stil6">
+      <div align="justify"><strong>Http Service</strong>: The HTTP interface is implemented as a service. The functionality of the HTTP is embedded into the class <em>HttpHandler</em>. So applications those want to use HTTP should derive from the <em>HttpHandler</em> class.</div>
+    </div>
+    </li>
+    <li>
+      <div align="left" class="Stil6">
+        <div align="justify"><strong>Interface with WAP</strong>: The HTTP/WAP interface has a <em>HttpWapMgrBase</em> class which should be derived by the 3rd Party WAP stack and all the methods in it should be implemented by the 3rd party. </div>
+      </div>
+    </li>
+    <li>
+      <div align="left" class="Stil6">
+        <div align="justify"><strong>Wap Service</strong>: The Wap interface is implemented as a service. The functionality of the Wap interface is embedded into the class <em>WapHandler</em> So all the application who want to use the WAP should derive from the <em>WapHandler</em> class. </div>
+      </div>
+    </li>
+  </ul>
+  <p align="justify" class="Stil4">4  WAP Profile Management</p>
+  <p align="justify" class="Stil6">    A WAP Profile stores all the parameters required to open a WAP connection. A <em>WapProfile</em> object also holds an 
+    identifier of a data connection profile (class DataConnProfile) i.e., the bearer protocol details. WAP Profiles are 
+    managed by <em>WapProfileMgr</em> interface implemented by <em>WapProfileMgr</em> class. <em>WapProfileMgr</em> interface provides 
+    operations like creation, save, retrieve and deletion of a <em>WapProfile</em> for the applications to make use of it.</p>
+<p align="justify" class="Stil6">    The parameters of the <em>WapProfile</em> object are stored in persistent memory and can be retrieved and used for 
+    editing. The identifier and the name of all the WAP Profiles are held in a linked list of objects of struct 
+    <em>WapProfileInfo</em>. For example, an application that needs the user to select a particular <em>WapProfile</em> can parse 
+    through this linked list of <em>WapProfileInfo</em> objects and retrieve the <em>WapProfile</em> name and its mapping identifier. As 
+    and when the user selects a particular name, then its corresponding profile id can be passed to the method which 
+    opens a WAP connection. WAP Profile Management is a library which can be used by an upper layer application 
+    to manage the WAP Profiles.</p>
+  <p align="justify" class="Stil4">&nbsp;    </p>
+</body>
+</html>

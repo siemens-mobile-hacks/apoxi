@@ -1,0 +1,153 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<title>AFS Overview</title>
+<style type="text/css">
+<!--
+.Stil1 {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: xx-large;
+	font-weight: bold;
+}
+.Stil4 {
+	font-size: large;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-weight: bold;
+}
+.Stil6 {font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 12px;}
+.Stil8 {font-family: Verdana, Arial, Helvetica, sans-serif; font-size: larger; }
+.Stil10 {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: medium;
+	font-weight: bold;
+}
+-->
+</style>
+</head>
+
+<body>
+<div align="center">
+  <p class="Stil1">AFS Overview </p>
+  <p align="left" class="Stil4">1 Overview </p>
+  <div align="left">AFS (APOXI File System) contains the following sub components:</div>
+  <ul><div align="left"><li>
+    APOXI Registry
+</li>
+      <li>APOXI Root File System
+        <ul>
+          <li>Flash File System Storage Device</li>
+          <li>Multi Media Card / SD Card Storage Device</li>
+          <li>Random Access Memory Storage Device</li>
+          <li>Virtual Root Storage Device</li>
+        </ul>
+      </li>
+      <li>APOXI Flash File System Core </li>
+  </div></ul>
+  <p align="left" class="Stil4">2 APOXI Registry </p>
+  <p align="justify" class="Stil6">For purposes like device management it is necessary to store configuration data in a central storage in the mobile 
+    phone. Because the central storage has many similarities with the registry as found in Microsoft Windows&reg;, it was 
+    decided to adopt this name as a working name. Apart from the storage responsibility, registry will also serve as a 
+    routing interface to other external Object Trees such as SyncML / DM Tree.<br>
+    APOXI registry has easy-to-use synchronous interface to maintain configuration settings (load, store, modify, and 
+  delete). The registry uses Flash File System for storing the data.</p>
+  <p align="justify" class="Stil8">2.1 Interfaces</p>
+  <p align="justify" class="Stil6">APOXI registry interfaces are shown in  Figure 1.</p>
+  <table width="98%"  border="1" align="center" cellpadding="0" cellspacing="0" bordercolor="#000000">
+    <tr>
+      <td><div align="center"><img src="figures/APOXI_Registry.png" width="383" height="340"></div></td>
+    </tr>
+  </table>
+  <p align="justify" class="Stil6">Figure&nbsp;1. APOXI Registry Interfaces</p>
+  <p align="justify" class="Stil6">As shown in Figure 1, Interface 1 is the interface to the APOXI Registry used by applications. Interface 2 is the 
+    interface handling Application Specific Object Trees (ASOT). Interface 3 constitutes the interface for managing the 
+  Local Tree Storage. This interface will only be used by the registry core.</p>
+  <p align="justify" class="Stil8">2.2 Handling of Request by Registry</p>
+  <p align="justify" class="Stil6">Any request received by the registry is handled depending on the URI header.</p>
+  <p align="justify" class="Stil6">During startup any application that needs to maintain its ASOT, registers its ASOT with Registry. This information 
+  is maintained by registry core in GUID Service Table.</p>
+  <p align="justify" class="Stil6">    If a request arrives for a tree that is registered by an application, this request is forwarded to the application for 
+    further processing. If no registered tree can be found matching the URI header, the request is routed to the Local 
+    Object Tree.</p>
+  <p align="justify" class="Stil8">2.3 Tree structure of Registry</p>
+  <p align="justify" class="Stil6">There are two types of nodes in the tree structure: Interior nodes and leaf node. Interior nodes have further interior 
+    nodes or leaf nodes (analog to folders). Leaf nodes cannot have further nodes. They store the information related 
+  to the node (analog to files). The leaf nodes support the following types:</p>
+  <ul>
+    <li>
+      <div align="left">BOOLEAN</div>
+    </li>
+    <li>
+      <div align="left">INT</div>
+    </li>
+    <li>
+      <div align="left">STRING</div>
+    </li>
+    <li>
+      <div align="left">BLOB</div>
+    </li>
+  </ul>
+</div>
+<p class="Stil4">3 APOXI Root File System</p>
+<p class="Stil6">The Root File System (RFS) provides an easy-to-use interface to load, store, modify, copy, move, and delete files.</p>
+<p class="Stil8">3.1 Storage Devices</p>
+<p align="justify" class="Stil6">RFS integrates different storage devices utilizing one and the same interface. Currently, four storage devices are 
+  available. They are FFS, MMC, RAM, and Virtual Root. All available storage devices are supposed to be registered 
+with the RFS.</p>
+<p class="Stil10">3.1.1 Virtual Root Storage Device</p>
+<p align="justify" class="Stil6">The Virtual Root storage serves one special role: it unifies all the other currently registered storage devices under 
+  one root directory. So it is not a physical storage device and hence is called virtual. All the first level directories of 
+  this root directory are considered as storage device directories. Actually the virtual storage device constitutes a 
+file system similar to the UNIX file system.</p>
+<p class="Stil8">3.2 Paths, Pathnames, and Storage device IDs</p>
+<p class="Stil6">A file is specified by a storage device ID and a pathname.</p>
+<p align="justify" class="Stil6">  A storage device ID is a short string uniquely identifying the storage device within the system like &ldquo;ffs&rdquo;, &ldquo;mmc&rdquo;, 
+&ldquo;ram&rdquo;, and &ldquo;rfs&ldquo; (for the virtual root storage device).</p>
+<p class="Stil6">  A pathname like <em>&ldquo;/my_dir/my_sound_file.mp3&rdquo;</em> uniquely identifies a file within a distinct storage device.</p>
+<p class="Stil6">  The tuple of storage device ID and pathname constitutes a path.</p>
+<p class="Stil8">3.3 Files</p>
+<p align="justify" class="Stil6">An application can access the files from the storage devices by using the <em>GetFile(const Path &amp;path)</em> method of 
+  controller class <em>RootFileSystem</em>. This method returns a smart-pointer wrapping a file object. File object can be 
+considered as a file handle and can be used to create, open, read, write, delete, or rename a file.
+<p class="Stil8">3.4 Directory Iterators</p>
+<p class="Stil6">RFS uses iterators to easily traverse the entries of directories. It can be specified via a filter which entries the 
+iterator shall return. Iterator can be set to any directory of any storage device.</p>
+<p class="Stil8">3.5 File Filters</p>
+<p class="Stil6">  The different kinds of filters provided by AFS are listed in the following:</p>
+<ul>
+  <li class="Stil6"><strong> Image File Filte</strong>r: It is a predefined file filter functor which filters image files. These are actually jpeg, gif, png, tiff, wbmp, and bmp files.</li>
+  <li class="Stil6">
+    <strong>Name Pattern File Filter</strong>: It is a predefined file filter functor which filters files by comparing the filename to a name pattern which is allowed to contain the asterisk * and/or question mark? wildcards.</li>
+  <li class="Stil6">
+    <strong>Sound File Filte</strong>r: It is a predefined file filter functor which filters sound files. These are actually mid, mmf, and imy files.</li>
+</ul>
+<p class="Stil4">4 APOXI Flash File System</p>
+<p align="justify" class="Stil6">The APOXI FFS (Flash File System) is an object-oriented interface for APOXI core modules to access the FFS to 
+  store, retrieve, and manipulate system-level data. The APOXI core modules must not use RFS to store systemlevel 
+  data because the RFS can be configured to not support the FFS, in such case storing system-level data 
+  would fail. Since the FFS core classes are always available, these have to be used for this purpose. Hence the 
+  FFS core classes can be viewed as means for accessing the system-level storage. Applications shall always use 
+the RFS to store any data, the RFS provides a much more convenient interface.</p>
+<p align="justify" class="Stil6">  The following dependency diagram (Figure 2) illustrates this view.</p>
+<table width="98%"  border="1" align="center" cellpadding="0" cellspacing="0" bordercolor="#000000">
+  <tr>
+    <td height="40"><div align="center"><img src="figures/FFS_Diagram.png" width="327" height="239"></div></td>
+  </tr>
+</table>
+<p align="justify" class="Stil6"><strong>Figure 2. FFS: Dependency diagram</strong></p>
+<p align="justify" class="Stil6">In general the whole functionality of the FFS is accessible via RFS, with one exception: while it is possible to store 
+files with an ID only (without any name) with the core FFS classes, the RFS only supports named files.</p>
+<p align="justify" class="Stil6">  APOXI FFS provides the following functionalities:</p>
+<ul>
+  <li class="Stil6">Accessibility for APOXI modules </li>
+  <li class="Stil6">Mechanism to handle multiple files opened for read/write</li>
+  <li class="Stil6">Access to a file via a unique ID</li>
+  <li class="Stil6">Access to a file via a unique filename</li>
+  <li class="Stil6">Retrieval of file-specific information such as file type, file size, etc</li>
+  <li class="Stil6">Standard file operations like create, open, read, write, copy, etc. on any file</li>
+  <li class="Stil6">Standard search operations like checking the file existence, get first file, get next file, etc.</li>
+  <li class="Stil6">Retrieval of storage information such as total FFS size, used space, available space, etc.</li>
+</ul>
+</body>
+</html>

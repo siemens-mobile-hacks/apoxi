@@ -1,0 +1,219 @@
+<html>
+    <head>
+        <link href="doxygen.css" rel="stylesheet" type="text/css">
+        <title>10 Appendix</title>
+    </head>
+    
+    <body>
+        [ Previous: <a href="gui_tutorial_10.html">Aragon</a> ] [ Next: <a href="gui_tutorial_12.html">Appendix</a> ]
+        
+        <h1>11 Image handling</h1>
+        
+        <h2>11.1 Image encoding</h2>
+        <p>
+         APOXI offers a generic interface, which allows encoding of images from several formats to a specific industrial standard. Currently, a JPEG encoder is available for this purpose.
+         Nevertheless, the I/F offers to implement any other kind of encoder, like PNG or GIF too.
+         
+        Benefits of APOXI encoder architecture:
+         <ul>
+            <li>Encoding can be done synchronously (blocking) or asynchronously (non-blocking).</li>
+            <li>During encoding, an application can receive encoding progress messages.</li>
+            <li>Encoding is done scanline by scanline or - depending on encoder architecture   macro block-wise.</li>
+            <li>Encoding can be aborted immediatly during asynchronous encoding.</li>
+          </ul>
+ 
+        </p>
+        
+        <h3>11.1.1 Jpeg Encoding</h2>
+        
+        <p>
+            JPEG encoding currently supports following input formats:
+            <ul>
+                <li>RGB raw data with 16 or 24 Bits per pixel (e.g. APOXI Bitmap)</li>
+                <li>YUV 4:2:0 planar raw data</li>
+                <li>any APOXI image</li>
+            </ul>
+        </p>
+        
+        <p> Following, are some examples for different use cases on how the APOXI JPEG encoder can be utilized: </p>
+        
+        
+        <p> Example for encoding a YUV 4:2:0p RAW data image using asychronous encoding with a callback function.
+            Encode() function returns immediatly and application gets information on encoding progress by ImageEncodingProgressMsg() and finally, when encoding
+            has finished the given callback is called.
+        </p>
+<pre>
+<font color="#009900">// create a data sink where the encoded data should be stored
+// in our testcase it is a file on FFS</font>
+Pathname path_name(L"/yuv2jpg.jpg");
+Path path(path_name, L"ffs");
+FileDataSink file_sink = new FileDataSink(path, 0, TRUE);
+ASSERT_DEBUG(m_file_sink != 0);
+
+<font color="#009900">// now we need to create a source object, where we get the data from
+// in our testcase we have a file on FFS, which contains the RAW data</font>
+const Pathname path_name_source(L"/lena-XGA-420-comp.yuv");
+const Path path_source(path_name_source, L"ffs");
+
+FileBinData* source = FileBinData::CreateInstance(path_source);
+if (source == 0) {
+    Alert alert(L"Could not find required source image.\nlena-XGA-420-comp.yuv is required!");
+    alert.OpenModal();
+    Cleanup();
+    return;
+}
+
+<font color="#009900">// now we utilize the JpegEncoder with the proper parameters for YUV</font>
+JpegEncoder::EncodingParams encoding_params;
+encoding_params.SetColorFormat(JpegEncoder::EncodingParameters::Yuv420pFormat);
+encoding_params.SetQualityLevel(80);
+
+<font color="#009900">// now we need to tell the jpeg encoder which format the RAW data has
+// our picture has size of 1024x768 and YUV4:2:0 data is 24 Bits big</font>
+Image::MetaData source_prop;    
+source_prop.SetWidth(1024);
+source_prop.SetHeight(768);
+source_prop.SetBitsPerPixel(24);
+
+<font color="#009900">// create a new jpeg encoder</font>
+JpegEncoder m_encoder = new JpegEncoder(encoding_params);
+
+if ((file_sink == 0) || (encoder == 0)) {
+    Cleanup();
+    return;
+}
+BOOLEAN success = FALSE;
+<font color="#009900">// don't forget to open the DataSink!</font>
+if (file_sink->Open()) {
+    <font color="#009900">// now we can encode the image
+    // we need to give the encoder our source, the source properties, the destination
+    // FALSE stands for non-blocking and finally we give our context pointer and our callback for 
+    // the callback when image has been encoded.</font>
+    success =  m_encoder->Encode(*source, source_prop, *file_sink, FALSE, this, &CB_ImageEncoded);
+    if (!success) { 
+        Alert alert(L"Could not encode the image.");
+        alert.OpenModal();
+        Cleanup();
+    }
+}
+
+
+
+void CB_ImageEncoded(INT result, void* context, DataSink& dest)
+{
+    DBG_OUT((0, L"Callback of Encoded Image called with result: %d\n", result));
+    <font color="#009900">// do cleanup of encoder of any other stuff when encoding has finished or aborted</font>
+}</pre>      
+  
+    <p> Example for encoding asynchronously an APOXI Image using ImageEncodingProgress messages.
+        Encode() function immediatly returns and applications gets information on encoding progress by progress messages.
+   </p>
+   
+<pre>
+<font color="#009900">// create data sink for final jpeg</font>
+Pathname path_name(L"/async.jpg");
+Path path(path_name, L"ffs");
+
+FileDataSink file_sink = new FileDataSink(path, 0, TRUE);
+
+<font color="#009900">// initialize image</font>
+const Pathname path_name_source(L"/Pal_Int_VGA-V.png");
+const Path path_source(path_name_source, L"ffs");
+
+FileBinData* source = FileBinData::CreateInstance(path_source);
+if (source == 0) {
+    Alert alert(L"Could not find required source image.\nPal_Int_VGA-V.png is required!");
+    alert.OpenModal();
+    Cleanup();
+    return;
+}
+
+Image* source_image = new PngImage(source);
+if (source_image == 0)
+    return;
+
+<font color="#009900">// utilize the parameters, but we just want the jpeg being half size of the original one</font>
+JpegEncoder::EncodingParameters encoding_params;
+encoding_params.SetQualityLevel(80);
+encoding_params.SetWidth(source_image->GetWidth() / 2);
+encoding_params.SetHeight(source_image->GetHeight() / 2);
+
+JpegEncoder encoder = new JpegEncoder(encoding_params);
+
+const BOOLEAN no_memory = (file_sink == 0) || (source_image == 0) || (encoder == 0);
+if (no_memory) {
+    Cleanup();
+    return;
+}
+    
+BOOLEAN success = FALSE;
+
+if (file_sink->Open()) {
+    success = encoder->Encode(*source_image, *file_sink, FALSE);
+    if (!success) {
+        Alert alert(L"Could not encode the image.");
+        alert.OpenModal();
+        Cleanup();
+    }
+}</pre>
+    
+    <p> Example for encoding synchronously an APOXI bitmap into a temporary RAM sink.
+   </p>
+<pre>
+<font color="#009900">// this time we use shared pointer for DataSink
+// RamDataSink creates a sink in RAM</font>
+RamDataSinkPtr ram_sink(new RamDataSink());
+if (ram_sink.Get() == 0) {
+    return TRUE;
+}
+
+<font color="#009900">// comneon is our source bitmap, it is stored as a resource generated by resource compiler</font>
+RamData* source = RamData::CreateInstance((void*)comneon.GetBits(), comneon.GetHeight() * comneon.GetWidth() * 16);
+if (source == 0) {
+    return TRUE;
+}
+
+<font color="#009900">// create the properties of the source image</font>
+Image::MetaData source_prop;
+source_prop.SetWidth(comneon.GetHeight());
+source_prop.SetHeight(comneon.GetWidth());
+source_prop.SetBitsPerPixel(16);
+
+JpegEncoder::EncodingParameters param;
+param.SetQualityLevel(75);
+
+<font color="#009900">// create a jpeg encoder</font>
+JpegEncoder enc(param);
+
+if (ram_sink->Open() && enc.Encode(*source, source_prop, *ram_sink)) {
+    Alert alert(Tr(L"Successfully encoded raw-image to temporary RAM-file"));
+    alert.OpenModal();
+    ram_sink->Close();
+    
+    <font color="#009900">// we sucessfully encoded the bitmap into a JPEG and now we want to display the jpeg
+    // create a data source for the written ram_sink</font>
+    DataSourcePtr ram_source(new RamDataSource(ram_sink));
+    if (ram_source.Get() == 0) {
+        return TRUE;
+    }
+
+    DataSourceBinData *ram_source_bin_data = DataSourceBinData::CreateInstance(ram_source);
+    if (ram_source_bin_data == 0) {
+        return TRUE;
+    }
+
+    <font color="#009900">// create a new JpegImage out of the bin data</font>
+    Image *dest_image = new JpegImage(ram_source_bin_data);
+    if (dest_image != 0) {
+        <font color="#009900">// do the drawing of the new jpeg image</font>
+    }
+}
+else {
+    Alert alert(Tr(L"Error when encoding raw-image to temporary RAM-file"));
+    alert.OpenModal();
+}</pre>
+               
+        [ Previous: <a href="gui_tutorial_10.html">Aragon</a> ] [ Next: <a href="gui_tutorial_12.html">Appendix</a> ]
+        
+    </body>
+</html>

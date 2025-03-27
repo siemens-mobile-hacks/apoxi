@@ -1,0 +1,81 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<title>APC Overview</title>
+<style type="text/css">
+<!--
+.Stil1 {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: xx-large;
+	font-weight: bold;
+}
+.Stil4 {
+	font-size: large;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-weight: bold;
+}
+.Stil6 {font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 12px;}
+-->
+</style>
+</head>
+
+<body>
+<div align="center">
+  <p align="center" class="Stil1">APC Overview </p>
+  <p align="left" class="Stil4">1 Introduction </p>
+  <p align="justify" class="Stil6">APC (APOXI Process Control) is an an exchangeable layer for external communication (e.g. SDL-signal-driven, 
+    AT-command-driven, etc.). APC provides wrapper classes for accessing the protocol stack mainly needed by ASC 
+    and ADC. The only purpose of the APC is the transformation (mapping) of SDL-signals into C++ wrapper classes 
+  and back.</p>
+  <p align="justify" class="Stil4">2 Sending SDL Signals from Applications to Stack</p>
+  <p align="justify" class="Stil6">When applications want to send some SDL signals to stack, <em>ToStackMsg</em> with parameters will be sent to APC. 
+    APC will then convert the parameters to SDL arguments and send them to the Stack. <em>ToStackMsg</em> is a special 
+  message for carrying information from APOXI to the protocol stack.</p>
+  <p align="justify" class="Stil4">3 Sending SDL Signals from Stack to Applications</p>
+  <p align="justify" class="Stil6">Stack sends a SDL signal to APC and APC transforms these signals to APOXI arguments. These arguments will 
+    then be sent within a <em>FromStackMessage</em> to ASC (APOXI Stack Control). <em>FromStackMessage</em> is wrapper for APC 
+    arguments. ASC only needs to listen to <em>FromStackMessages</em>. APC thus provides better performance due to 
+  simplified routing.</p>
+  <p align="justify" class="Stil4">4 Message Flow in APOXI</p>
+  <p align="justify" class="Stil6">ADC and ASC provides no direct interface for MMI applications. MMI applications can communicate to ASC and 
+  ADC only through APC.</p>
+  <p align="justify" class="Stil6">    The message flow in APOXI is given in Figure 1.</p>
+  <table width="98%"  border="1" align="center" cellpadding="0" cellspacing="0" bordercolor="#000000">
+    <tr>
+      <td><div align="center"><img src="figures/message_flow_diagram.png" width="625" height="385"></div></td>
+    </tr>
+  </table>
+  <p align="justify" class="Stil6"><strong>Figure&nbsp;1. Message Flow</strong></p>
+  <p align="justify" class="Stil4">5 APC Wrapper classes</p>
+  <p align="left" class="Stil6">Some of the wrapper classes provided by APC for protocol stack acces are listed in the following:</p>
+  <div align="left">
+    <ul>
+      <li class="Stil6">
+        <strong>SMS classes</strong></li>
+        <ul class="Stil6">
+          <li><strong>Tpdu</strong>: This class holds the raw data of a transfer protocol data unit</li>
+            <li><strong>Sms</strong>: This class is a wrapper over a TPDU-reference </li>
+            <li><strong>MessageTypeIndicato</strong>r: This class is a wrapper over a data-stream (no data is copied)</li>
+            <li><strong>Protocolidentifier</strong></li>
+            <li><strong>MessageStatus</strong></li>
+            <li><strong>UserData</strong></li>
+            <li><strong>ValidityPeriod</strong>: This class is a wrapper over a data-stream (no data is copied)</li>
+        </ul>
+        <li class="Stil6">
+          <strong>CBS classes</strong>: Describes the protocol for the cell broadcast service. </li>
+        <li class="Stil6">
+          <strong>SimToolKit classes</strong></li>
+        <li class="Stil6">
+          <strong>Plmn handling classes</strong></li>
+        <li class="Stil6">
+          <strong>General Stack type classes</strong><br>
+      </li>
+    </ul>
+</div>
+  <ul>
+  </ul>
+  <p align="justify" class="Stil4">&nbsp;</p>
+</body>
+</html>

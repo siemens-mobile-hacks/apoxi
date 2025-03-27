@@ -1,0 +1,44 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<title>USB Overview</title>
+<style type="text/css">
+<!--
+.Stil1 {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: xx-large;
+	font-weight: bold;
+}
+.Stil4 {
+	font-size: large;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-weight: bold;
+}
+.Stil6 {font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 12px;}
+.Stil22 {font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 12px; font-weight: bold; }
+.Stil29 {font-family: Verdana, Arial, Helvetica, sans-serif; font-size: large; }
+-->
+</style>
+</head>
+
+<body>
+<div align="center">
+  <p align="center" class="Stil1">USB Overview </p>
+  <p align="justify" class="Stil4">1 Introduction </p>
+  <p align="justify" class="Stil6">USB stands for Universal Serial Bus. It is used as a possible transport protocol by OBEX, which is a standard 
+    protocol used to exchange objects consisting of headers and data between a client and a server. It follows a 
+  request-response mechanism. In APOXI, Obex uses Bluetooth, IrDA and USB as the possible transport protocols. Tthe USB OBEX transport layer is the glue between the APOXI OBEX module and the Emsys Obex software.</p>
+  <p align="justify" class="Stil4">    2 Overview</p>
+  <p align="justify" class="Stil6">    
+    The USB Obex layer in APOXI acts as the transport protocol and provides an abstraction over the Emsys Obex implementation. </p>
+  <p align="justify" class="Stil6"><em>ApoxiObex</em> module allows applications to perform client-server communication as per the OBEX standard for the available transport protocols. </p>
+  <p align="justify" class="Stil6"><em>UsbObex</em> provides the UsbObex transport implementation for the ApoxiObex module. The implementation of this module lies in /Apoxi/AddOns/Usb/Obex folder. <em>UsbObex</em> feature can be enabled or disabled using the compiler flag 'USB_OBEX'.</p>
+  <p align="justify" class="Stil6">UsbTransport is independent of the UsbObex implementation. It provides the USB device specific information to its subscribers.</p>
+  <p align="justify" class="Stil6">EmsysObex module provides the protocol implementation of OBEX over USB.</p>
+  <p align="justify" class="Stil6">UsbApplication is a Mmi application which displays USB device connection information.</p>
+  <p align="justify" class="Stil6">ObexAwareApp is any application that uses ApoxiObex for Obex functionality.</p>
+  <p align="justify" class="Stil6">ObexApp is a Mmi application for the user to select one of the available transports, viz., Bluetooth, IrDA, USB.</p>
+</body>
+</html>

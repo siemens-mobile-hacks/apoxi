@@ -1,0 +1,127 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<title>ASC Overview</title>
+<style type="text/css">
+<!--
+.Stil1 {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: xx-large;
+	font-weight: bold;
+}
+.Stil4 {
+	font-size: large;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-weight: bold;
+}
+.Stil6 {font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 12px;}
+.Stil7 {font-family: Verdana, Arial, Helvetica, sans-serif}
+.Stil8 {font-family: Verdana, Arial, Helvetica, sans-serif; font-size: larger;}
+-->
+</style>
+</head>
+
+<body>
+<div align="center">
+  <p align="center" class="Stil1">ASC Overview </p>
+  <p align="left" class="Stil4">1 Introduction </p>
+  <p align="justify" class="Stil6">ASC (The APOXI Stack Control) offers an abstract interface to access mobile communication requirements, like 
+    GSM/GPRS/UMTS. It is designed to keep the application development as independent as possible to any 
+    proprietary protocol stack facilities. 
+    APOXI contains also an exchangeable layer (APC) for external communication The only purpose of the APC is 
+    the transformation of SDL-signals into C++-wrapper classes and back. The functionality for controlling the protocol 
+    stack resides in the ASC. ASC runs in context of the calling application, which makes it easy for custom 
+  applications to access its functionality.</p>
+  <p align="justify" class="Stil6">    ASC provides a common interface to various protocol stacks. The position of ASC within APOXI is shown in 
+    figure 1.</p>
+  <table width="98%"  border="1" align="center" cellpadding="0" cellspacing="0" bordercolor="#000000">
+    <tr>
+      <td height="337"><div align="center"><img src="figures/ASC_Architecture.png" width="565" height="292"></div></td>
+    </tr>
+  </table>
+  <p align="justify" class="Stil6"><strong>Figure&nbsp;1. Position of ASC in APOXI</strong></p>
+  <p align="justify" class="Stil4">2 Handlers</p>
+  <p align="justify" class="Stil6">One of the key concepts of the ASC is the &ldquo;Handler concept&rdquo;. The idea is to enable a separate activation of various 
+    stack functions like Call, SMS, Cell-Broadcast, Supplementary Services, etc. Every APOXI Handler hides the 
+  signal flow (from and to the protocol stack) from the application to ease the handling of its &ldquo;real job&ldquo;. </p>
+  <p align="justify" class="Stil6">    One special handler is the <em>MainHandler</em>. It is the main interface or the entry point of the APOXI Stack Control 
+    library. It provides a scalable use of the protocol stack functions. The <em>MainHandler</em> offers the possibility to mount, 
+    unmount and access APOXI handlers. Any application can access its MainHandler-functionalities simply by using 
+    the static <em>StackControl()</em> methods.</p>
+  <p align="justify" class="Stil6">    Every APOXI Handler beside the <em>MainHandlers</em> represents a collection of functions concerning the protocol stack 
+    (e.g. call handling, SMS handling, ...). The various handlers are mounted via the <em>StackControl</em> to the specific 
+    <em>MainHandler</em> of the calling application. They are all subclasses of the abstract base class BaseHandler, which 
+    defines their common interface. </p>
+  <p align="justify" class="Stil6">    Some of the Handlers are listed in the following:</p>
+  <ul>
+    <li>
+      <div align="left"><span class="Stil7"><span class="Stil6"><strong>CallHandler</strong>: Supports basic call handling functions. This basic functionality comprises features which neither are specific for mobile terminated nor originated calls, e.g., release of calls. Furthermore, there are methods for DMTF tone generation. </span></span></div>
+    </li>
+    <li class="Stil6">
+      <div align="left"><strong>SimTkHandler</strong>: This is the SIM Toolkit Handler. It holds the functionality for receiving SIM Toolkit events coming up from the protocol stack and provides an interface for the application to react to these events. </div>
+    </li>
+    <li class="Stil6">
+      <div align="left"><strong>SmsHandler</strong>: Supports handling of SMS.</div>
+    </li>
+    <li class="Stil6">
+      <div align="left"><strong>PowerHandler</strong>: Provides an interface for the application to start up and terminate the protocol stack.</div>
+    </li>
+    <li class="Stil6">
+      <div align="left"><strong>CrssHandler</strong>: Supports call related supplementary services like Hold, Retrieve, Swap, etc. Furthermore, there are methods for multi-party call support.</div>
+    </li>
+  </ul>
+  <p align="justify" class="Stil4">3 ASC Dispatchers </p>
+  <p align="justify" class="Stil6">The ASC-dispatchers realize the asynchronous interface of the ASC-Handlers. Besides notifying the associated handlers about the triggered events, they often transform the triggered event into one or more messages applications may listen to.</p>
+  <p align="justify" class="Stil4">4 Interaction between Handlers and Dispatchers</p>
+  <p align="justify" class="Stil6">The various types of communication between ASC and applications are described in this section. There are both asynchronous communication and synchronous communication.</p>
+  <p align="left" class="Stil8">4.1 Asynchronous Communication</p>
+  <p align="left" class="Stil6">An example for simple communication between MMI application and stack is shown in the following figure.</p>
+  <table width="98%" height="246"  border="1" align="center" cellpadding="0" cellspacing="0" bordercolor="#000000">
+    <tr>
+      <td height="244"><div align="center"><img src="figures/ASC_Asyn1.png" width="454" height="212"></div></td>
+    </tr>
+  </table>
+  <p align="left" class="Stil6">As shown in the example, in such communication, when an application makes a function call, the handler sends 
+  that message to the stack.</p>
+  <p align="left" class="Stil6">    The following figure shows the asynchronous messaging handled by the handlers and dispatchers in ASC.</p>
+  <table width="98%"  border="1" align="center" cellpadding="0" cellspacing="0" bordercolor="#000000">
+    <tr>
+      <td height="243"><div align="center"><img src="figures/ASC_Asyn2.png" width="404" height="213"></div></td>
+    </tr>
+  </table>
+  <p align="justify" class="Stil6">In such an asynchronous communication, when an application makes a function call, the Handler sends the 
+    message to the stack and the message from the stack is caught by the Dispatcher. Dispatcher then dispatches 
+  the message to the application.</p>
+  <p align="left" class="Stil8">4.2 Synchronous communication</p>
+  <p align="left" class="Stil6">An example for the asynchronous communication handled by the ASC is shown in the following figure.</p>
+  <table width="98%"  border="1" align="center" cellpadding="0" cellspacing="0" bordercolor="#000000">
+    <tr>
+      <td height="230"><div align="center"><img src="figures/ASC_Syn.png" width="410" height="206"></div></td>
+    </tr>
+  </table>
+  <p align="justify" class="Stil6">In a synchronous communication, when an application makes a function call, the Handler sends the message to 
+    the stack and enters into a wait mode by calling <em>Wait()</em> until it gets a response. The message is caught by the 
+  dispatcher and it sends the return value to the handler and handler then returns the result to the calling function.</p>
+  <p align="justify" class="Stil4">5 Supplementary Services Handling</p>
+  <p align="justify" class="Stil6">The ASC offers also a concept called Supplementary Services Handling. Its purpose is to offer an easy to use 
+  programming interface (API). This special API focuses on three parts:</p>
+  <ul>
+    <li class="Stil6">
+      <div align="left">Permanent scan of user input (Input analyzing)</div>
+    </li>
+    <li class="Stil6">
+      <div align="left">Sending the supplementary request</div>
+    </li>
+    <li class="Stil6">
+      <div align="left">Evaluation of the asynchronous result messages</div>
+    </li>
+  </ul>
+  <p align="justify" class="Stil6">    The Input analyzing allows syntactical analyzing of MMI input strings as defined in 3GPP 22.030 V4.0.0. The Input 
+    analyzer iterates through a list of <em>InputAction</em> objects and returns the object when the string matches its rules. The 
+    ASC also includes a feature called Call Independent Supplementary Services. But the Supplementary service 
+    interface, in general, is an Active-wait-based interface for sending the supplementary service requests to the 
+protocol stack. The received return value indicates if the request was accepted by the Mobile Network (MN).</p>
+</body>
+</html>

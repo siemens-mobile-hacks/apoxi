@@ -1,0 +1,114 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<title>Multimedia Overview</title>
+<style type="text/css">
+<!--
+.Stil1 {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: xx-large;
+	font-weight: bold;
+}
+.Stil4 {
+	font-size: large;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-weight: bold;
+}
+.Stil6 {font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 12px;}
+.Stil8 {font-family: Verdana, Arial, Helvetica, sans-serif; font-size: larger;}
+.Stil11 {font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 12px; font-weight: bold; }
+-->
+</style>
+</head>
+
+<body>
+<div align="center">
+  <p align="center" class="Stil1">MultiMedia Overview </p>
+  <p align="left" class="Stil4">1 Introduction</p>
+  <p align="justify" class="Stil6">The Multimedia is an APOXI-AddOn. It contains classes for decoding JPEG, PNG, BMP, WBMP and GIF images. 
+    Additionally a multimedia editor is offered where animations and sound objects can be embedded and edited 
+  inside a text. Also it is possible to encode JPEG images in a synchronous and asynchronous manner.</p>
+  <p align="justify" class="Stil4">2 MultiMediaEditor</p>
+  <p align="justify" class="Stil6">The multimedia-editor can be used for displaying and editing texts in combination with bitmaps, animations and 
+    sounds. The editor itself does not care about the format when receiving or sending the data (e. g. EMS or MMS), 
+    but offers an easy interface to feed the editor-document with the corresponding data and retrieve the modified 
+  data.</p>
+  <p align="justify" class="Stil6"><em>MultiMediaEditor</em> offers a multi-media-editor with the following features:</p>
+  <ul>
+    <li class="Stil6">
+      <div align="left">Suitable for the input-mappers for numbers, phonenumbers, multitap and predictive input like T9 </div>
+    </li>
+    <li class="Stil6">
+      <div align="left">Vertical scrolling including an optional position-indicator </div>
+    </li>
+    <li class="Stil6">
+      <div align="left">Overwrite/insert mode </div>
+    </li>
+    <li class="Stil6">
+      <div align="left">Allows embedding a variable number of images, animations, sound-objects and other customized editor-items</div>
+    </li>
+    <li class="Stil6">
+      <div align="left">Support of paragraphs, which may aligned left, centered or right</div>
+    </li>
+    <li class="Stil6">
+      <div align="left">Support of rich-text:
+        <ul>
+          <li>Bold, italic, underlined, strikethrough </li>
+            <li>Variable text-color and text-background-color </li>
+            <li>Variable font </li>
+        </ul>
+      </div>
+    </li>
+    <li class="Stil6">
+      <div align="left">Read-only mode which allows triggering actions on images, animations and sound-objects</div>
+    </li>
+  </ul>
+  <p align="left" class="Stil6">An example for MultiMediaEditor editor is shown in the following figure 1.</p>
+  <table width="98%"  border="1" align="center" cellpadding="0" cellspacing="0" bordercolor="#000000">
+    <tr>
+      <td height="288"><div align="center"><img src="figures/MultimediaEditor.png" width="225" height="252"></div></td>
+    </tr>
+  </table>
+  <p align="justify" class="Stil11">Figure&nbsp;1. MultiMedia Editor</p>
+  <p align="justify" class="Stil6">The multimedia-editor uses the multimedia-editor-document for accessing and modifying the data. The 
+  multimedia-document can contain a variable number of compound-Items.</p>
+  <p align="justify" class="Stil8">2.1 Compound-Items</p>
+  <p align="justify" class="Stil6">A compound-Item contains a variable number of Items like characters or bitmaps. APOXI offers the following 
+  compound-Items:</p>
+  <ul>
+    <li class="Stil6">
+      <div align="left"><span class="Stil11">Text-Compound-Item</span>: Can contain a text of a variable length</div>
+    </li>
+    <li class="Stil6">
+      <div align="left"><span class="Stil11">Date-CompoundI-tem</span>: Contains a dat</div>
+    </li>
+    <li class="Stil6">
+      <div align="left"><span class="Stil11">Time-Compound-Item</span>: Contains a time</div>
+    </li>
+    <li class="Stil6">
+      <div align="left"><span class="Stil11">Ip-Address-Compound-Item</span>: Contains an IP-address</div>
+    </li>
+  </ul>
+  <p align="justify" class="Stil6">In the multimedia-package of APOXI-Add-Ons the following compound-Items are available:</p>
+  <ul>
+    <li class="Stil6">
+      <div align="left"><span class="Stil11">Rich-Text-Compound-Item</span>: Can contain a text of a variable length, where the text can have a font, foreground-color, background-color and a text-attribute (derived from <em>TextCompoundItem</em>).</div>
+    </li>
+    <li class="Stil6">
+      <div align="left"><span class="Stil11">Paragraph-Compound-Item</span>: Represents a text-paragraph, which can have a horizontal alignment (default, left, centered, right) and contains a variable number of compound-Items.</div>
+    </li>
+    <li class="Stil6">
+      <div align="left"><span class="Stil11">General-Compound-Item</span>: Can contain a variable number of items which know their size themselve (e. g. an Image-Item).</div>
+    </li>
+  </ul>
+  <p align="justify" class="Stil6">The multimedia-document automatically takes care to split and merge the compound-Items when items are 
+  inserted or deleted. Hence always a minimum amount of compound-Items is assured.</p>
+  <p align="justify" class="Stil8">2.2 Input-Method</p>
+  <p align="justify" class="Stil6">The input-method can be any Input-Mapper offered by APOXI (e. g. <em>MultiTab</em> or <em>Predictive</em>) or an individual Input-
+  Mapper.</p>
+  <p align="justify" class="Stil8">2.3 Wrapping</p>
+  <p align="justify" class="Stil6">Every compound-Item itself takes care for the wrapping. Different wrapping-modes are supported.</p>
+</body>
+</html>

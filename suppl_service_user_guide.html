@@ -1,0 +1,1876 @@
+﻿<html>
+  <head>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8">
+	<title>Supplementary Services Tutorial</title>
+
+	<link rel="stylesheet" type="text/css" href="doxygen.css">
+  </head>
+
+
+  <body bgcolor="white" text="black" link="blue" vlink="purple" alink="red">
+
+	<h1>1 Introduction</h1>
+
+	<h2>1.1 Purpose</h2>
+	<p>
+	  The purpose of this document is to explain the usage of the Supplementary Service API of the APOXI framework. A Supplementary Service is an extension of the basic telecommunication services (e.g. telephony, fax, Short Message Service (SMS)), which supplies additional functionality.
+	</p>
+
+	<h2>1.2 Scope &amp; Contents</h2>
+	<p>
+	  The document describes which classes and objects are available for interaction with Supplementary Services, what their responsibilities are and how to use these classes in an MMI application environment. The Supplementary Service API resides within the Apoxi Stack Control (ASC). Please see the class reference of the Apoxi ASC module for details on the various classes and objects presented in this document.
+	</p>
+
+	<h2>1.3 Document Conventions</h2>
+	<p>
+	  There are the following formats and document conventions used throughout the document:
+
+	<ul>
+	  <li><em>Emphasis</em> - Denoting words of higher importance or new terms being introduced.</li>
+	  <li><code>SOURCECODE</code> - Denoting source code snippets, EBNF definitions and control code sequences.</li>
+	</ul>
+    </p>
+
+	<h2>1.4 Intended Audience</h2>
+	<p>
+	  The document is targeted at application developers and software architects who need to integrate Supplementary Service functionality into their applications. The document provides high-level description of the Supplementary Service API, its components and how to use them to initiate Supplementary Service requests and to receive the results back from the mobile network.
+	</p>
+
+	<h2>1.5 Reference</h2>
+	<table border="0" cellpadding="10">
+	  <tr>
+		<td>Supplementary Service-PROG-GUIDE</td>
+		<td>Supplementary Services - Programmer's Guide to the GSM Stack Interface</td>
+	  </tr>
+	</table>
+
+	<h1>2 Usage</h1>
+
+	<h2>2.1 Introduction</h2>
+	<p>
+	  On the lowest level Supplementary Service interaction is nothing more than sending a specific control sequence to the mobile network and parsing the relevant data out of heaps of structures which are returned in response to the initial query. The control string is encoded to hold the type of the Supplementary Service, the desired action on that Supplementary Service and any further parameters. All the communication itself is handled via signals of the GSM stack.
+	</p>
+
+	<p>
+	  APOXI simplifies that process for the MMI programmer by providing tailored interfaces for working with the Supplementary Services. These interfaces are implemented using handlers and messages.
+
+
+	<h2>2.2 Handlers</h2>
+
+	<h3>2.2.1 Introduction</h3>
+
+	<p>
+	  The following is a short overview of the various operations and needed parameters the different Supplementary Services offer. Parameters marked with &quot;(*)&quot; are optional. <br>
+	  Please see Section 3.2 for a list of MMI Basic Service Groups.
+
+	  <table border="1" style="border-collapse: collapse; border-top: solid; border-left: solid; border-right: solid; border-bottom: solid">
+		<thead style="background: #E6E6E6">
+		  <tr>
+			<td><b>Supplementary Service</b></td>
+			<td><b>Operation</b></td>
+			<td><b>Parameters</b></td>
+		  </tr>
+		</thead>
+
+		<tr>
+		  <td rowspan="4">Call Barring</td>
+		  <td>Activation</td><td>Password, MMI Basic Service Group(*)</td>
+		</tr>
+		<tr>
+		  <td>Deactivation</td><td>Password, MMI Basic Service Group(*)</td>
+		</tr>
+		<tr>
+		  <td>Interrogation</td><td>MMI Basic Service Group(*)</td>
+		</tr>
+		<tr>
+		  <td>Password Change</td><td>Old password, new password, confirmation for new password</td>
+		</tr>
+
+		<tr>
+		  <td rowspan="5">Call Forwarding</td>
+		  <td>Registration</td><td>Destination number, MMI Basic Service Group(*), Time-out (CF on no reply, only)</td>
+		</tr>
+		<tr>
+		  <td>Erasure</td><td>MMI Basic Service Group(*)</td>
+		</tr>
+		<tr>
+		  <td>Activation</td><td>Destination number(*), MMI Basic Service Group(*), Time-out(*) (CF on no reply, only)</td>
+		</tr>
+		<tr>
+		  <td>Deactivation</td><td>MMI Basic Service Group(*)</td>
+		</tr>
+		<tr>
+		  <td>Interrogation</td><td>MMI Basic Service Group(*)</td>
+		</tr>
+
+		<tr>
+		  <td rowspan="3">Call Waiting</td>
+		  <td>Activation</td><td>MMI Basic Service Group(*)</td>
+		</tr>
+		<tr>
+		  <td>Deactivation</td><td>MMI Basic Service Group(*)</td>
+		</tr>
+		<tr>
+		  <td>Interrogation</td><td>MMI Basic Service Group(*)</td>
+		</tr>
+
+		<tr>
+		  <td>Calling Line Identification Presentation (CLIP)</td>
+		  <td>Interrogation</td><td></td>
+		</tr>
+
+		<tr>
+		  <td>Calling Line Identification Restriction (CLIR)</td>
+		  <td>Interrogation</td><td></td>
+		</tr>
+
+		<tr>
+		  <td>Connected Line Identification Presentation (COLP)</td>
+		  <td>Interrogation</td><td></td>
+		</tr>
+
+		<tr>
+		  <td>Connected Line Identification Restriction (COLR)</td>
+		  <td>Interrogation</td><td></td>
+		</tr>
+
+		<tr>
+		  <td>Unstructured Supplementary Service Data</td>
+		  <td>n/a</td><td>n/a</td>
+		</tr>
+	  </table>
+	</p>
+
+	<p>
+	  Handlers are the only means of interacting with the various Supplementary Services. Each handler is only responsible for a single Supplementary Service and provides various methods for using the service. The handler's interfaces resemble closely the different operations presented above. The advantages are, that the MMI programmer does not have to memorize the various Supplementary Service codes and different control sequences. He simply obtains the handler of the Supplementary Service he wants to use and calls a certain method. Furthermore the handler interface makes sure that the correct parameters are passed on to the GSM network making it impossible for the MMI programmer to omit mandatory parameters, to supply the wrong types of parameters or to mix up the order of the parameters. The handler also only features methods of valid requests for the specific service, thus further simplifying Supplementary Service interaction for the MMI programmer.
+	</p>
+
+	<p>
+	  Although the handler names are straightforward, the following is a list of all handlers and their responsibilities:
+
+	<ul>
+	  <li><code>CallBarringHandler</code> - Call Barring Supplementary Service (BAOC, BAOIC, BOAIC-exHC, BAIC, BAIC-Roam).</li>
+	  <li><code>CallForwardingHandler</code> - Call Forwarding Supplementary Service (CFU, CFB, CFNRy, CFNRc).</li>
+	  <li><code>CallWaitingHandler</code> - Call Waiting Supplementary Service.</li>
+	  <li><code>CLIPHandler</code> - Calling Line Identification Presentation Supplementary Service.</li>
+	  <li><code>CLIRHandler</code> - Calling Line Identification Restriction Supplementary Service.</li>
+	  <li><code>COLPHandler</code> - Connected Line Identification Presentation Supplementary Service.</li>
+	  <li><code>COLRHandler</code> - Connected Line Identification Restriction Supplementary Service.</li>
+	  <li><code>MobileOriginatedUSSDHandler</code> - For mobile-originated USSD requests.</li>
+	  <li><code>USSDHandler</code> - For network-originated USSD requests.</li>
+	</ul>
+    </p>
+
+	<h3>2.2.2 Obtaining Handlers</h3>
+
+	<p>
+	  A handler cannot be instantiated directly (in fact it is possible as such, but things will not work if it is done that way). A handler has to be obtained using the ASC <code>StackControl</code> class. This is the ASC master class, which administers the various handlers and makes sure that they are correctly linked into the system and that the message flow works.
+	</p>
+
+	<p>
+	  The handler is obtained by passing the desired handler's identifier to the static <code>GetHandler</code> method of the <code>StackControl</code> class. The method will instantiate the specified handler and returns a base handler pointer to the new object, which needs to be cast to the specific handler object. Every handler defines a special anonymous enumeration, containing a single element called ID, which is set to the handler's actual identifier.
+	</p>
+
+	<p>
+	  The following example should make things clear:
+	</p>
+
+	<p>
+	  <table bgcolor="#C0C0C0" style="border-collapse: collapse" bordercolor="#111111" cellpadding="0" cellspacing="0" width="100%">
+		<tr>
+		  <td>
+			<code>
+			  CallForwardingHandler *call_forwarding_handler;<br>
+			  BaseHandler *base_handler;<br>
+			  <br>
+			  base_handler = StackControl::GetHandler(CallForwardingHandler::ID);<br>
+			  CastHandler(call_forwarding_handler, base_handler);
+			</code>
+		  </td>
+		</tr>
+	  </table>
+	</p>
+
+	<h3>2.2.3 Using the Handlers</h3>
+
+	<p>
+	  Every handler provides methods to interact with the service it is responsible for. These methods resemble closely the five basic operations for Supplementary Services and password change where applicable:
+
+	<ul>
+	  <li>Registration - <code>Register</code> method</li>
+	  <li>Erasure - <code>Erase</code> method</li>
+	  <li>Activation - <code>Activate</code> method</li>
+	  <li>Deactivation - <code>Deactivate</code> method</li>
+	  <li>Interrogation - <code>RequestStatus</code> method</li>
+	  <li>Change password - <code>ChangePassword</code> method (only available for the Call Barring Supplementary Service)</li>
+	</ul>
+    </p>
+
+	<p>
+	  The availability of these methods may vary. Some handlers do not offer some methods (e.g. there is no registration method for the CLIR handler) simply because that operation isn't defined for the Supplementary Service . Upon invocation of such a method any parameters are checked for their plausibility, the correct control sequence string is built und sent to the mobile network.
+	</p>
+
+	<p>
+	  The return values of the methods might vary depending on the parameter list and the type of action or service requested. All possible values are defined in the <code>SsApiRc</code> enumeration, which can be found in the ASC <em>Types.hpp</em> file and in the <a href="#SsApiRc">Appendix</a>. The following are the most common values one might encounter:
+
+	<ul>
+	  <li><code>Success</code> - The request was successfully sent to the mobile network.</li>
+	  <li><code>SupplementaryServicePending</code> - There is already another Supplementary Service transaction active.</li>
+	  <li><code>NormalServiceRequired</code> - The network is not in a state, which allows the sending of the request.</li>
+	</ul>
+
+	The handler also provides state information during a transaction (including this return value) using several messages. Please see the following Section for details.
+    </p>
+
+	<p>
+	  <table bgcolor="#C0C0C0" style="border-collapse: collapse" bordercolor="#111111" cellpadding="0" cellspacing="0" width="100%">
+		<tr>
+		  <td>
+			<code>
+			  CallForwardingHandler *call_forwarding_handler;<br>
+			  BaseHandler *base_handler;<br>
+			  <br>
+			  base_handler = StackControl::GetHandler(CallForwardingHandler::ID);<br>
+			  CastHandler(call_forwarding_handler, base_handler);
+
+			  call_forwarding_handler.Activate(Cfu, Telephony);
+			</code>
+		  </td>
+		</tr>
+	  </table>
+	</p>
+
+	<p>
+	  See the class documentation of each handler for details on the methods, parameters and return values.
+	</p>
+
+	<p>
+	  This concludes the issue of using handlers and sending requests to the mobile network. The following Section describes how to receive the results returned by the mobile network.
+	</p>
+
+	<h2>2.3 Messages</h2>
+
+	<h3>2.3.1 Introduction</h3>
+
+	<p>
+	  The communication with the Supplementary Service layer is completely asynchronous. That is although every handler method provides its result with a return value, messages are sent to indicate the current state of the handler and the transaction. Furthermore messages are the means of receiving any data sent from the mobile network in response to a request.
+	</p>
+
+	<h3>2.3.2 Receiving Messages</h3>
+
+	<p>
+	  Any data received from the mobile network is transferred to a specific application message. The resulting message is then sent via the <code>MessageRouter</code>. Thus only the application, which initiated the request in the first place will get the result message.
+	</p>
+
+	<p>
+	  After posting the message to the message router, the message router will call the <code>OnMessage</code> method of the specific application with the message as parameter. The application then has to decide what to do with the message and the data within.
+	</p>
+
+	<p>
+	  <img src="pics/message_interaction.gif"></img><br>
+	  Figure 2.1: Message creation and interaction
+	</p>
+
+	<h3>2.3.3 Handler Status Messages</h3>
+	<p>
+	  As mentioned before the comminucation is completely asynchronous and the handlers provide some status information details on the transaction. The following messages are used for that purpose:
+
+	<ul>
+	  <li><code>SsRequestSentMsg</code> - This message indicates, that the handler has just sent the request to the GSM stack and is awaiting its response. The message contains the control sequence string sent to the stack.</li>
+	  <li><code>SsRequestAcceptedMsg</code> - This message indicates, that the GSM stack accepted the request. The GSM stack has already assigend a tipd to the request and is about to send it to the mobile network. The tipd is a unique transaction identifier. It is generated when the stack accepts a request and is used in any subsequent messages, which belong to that transaction. It is the only means of mapping incoming messages with initial requests or connecting multiple messages, which belong to the same transaction. The message contains the tipd of the transaction, as well as the specific Supplementary Service code, basic service group if any and any given positional parameters.</li>
+	  <li><code>SsRequestRejectedMsg</code> - This message indicates that an error occured during the sending of the request and that the stack did not accept the request. The message contains the handler's return value as well as the specific Supplementary Service code, basic service group if any and any given positional parameters of the initial request.</li>
+	</ul>
+    </p>
+
+	<p>
+	  This leads to three possible message flows when initiating a request:
+
+    <ul>
+      <li>Successful transaction setup
+		<ol>
+		  <li><code>SsRequestSentMsg</code> - The handler accepted the request and sent it on to the GSM stack.</li>
+		  <li><code>SsRequestAcceptedMsg</code> - The GSM stack accepted the request and sent it on to the mobile network.</li>
+		  <li>Any result messages from the mobile network. These can include error messages that the mobile network was unable to handle the request.</li>
+		</ol>
+		<img src="pics/successful_transaction.gif"></img>
+		Figure 2.2 Successful transaction (example Call Forwarding status request)
+	  </li>
+
+      <li>Immediate rejection of the request
+		<ol>
+		  <li><code>SsRequestRejectedMsg</code> - The request was rejected by the handler itself before it is sent to the GSM stack. Reasons for this to happen include, that the mobile network is not accessible at the moment or that another Supplementary Service request is already pending.</li>
+		</ol>
+		<img src="pics/transaction_immediate_reject.gif"></img>
+		Figure 2.3 Request rejected by handler (example Call Forwarding status request)
+      </li>
+
+      <li>GSM stack rejects the request
+		<ol>
+		  <li><code>SsRequestSentMsg</code> - The handler accepted the request and sent it on to the GSM stack.</li>
+		  <li><code>SsRequestRejectedMsg</code> - The GSM stack immediately rejected the request. No data was sent to the mobile network and the transaction (which in fact has never started) is over.</li>
+		</ol>
+		<img src="pics/rejected_transaction.gif"></img>
+		Figure 2.4 Request rejected by GSM stack or network (example Call Forwarding status request)
+      </li>
+    </ul>
+    </p>
+
+	<h2>2.4 USSD Interaction</h2>
+
+	<h3>2.4.1 Introduction</h3>
+
+	<p>
+	  Unstructured Supplementary Service Data (USSD) provides a session-oriented possibility for information exchange between the MS and the GSM network. The connection between the MS and the GSM network exists until it is terminated.
+	</p>
+
+	<p>
+	  USSD is used to send data packets from between MS and GSM network in both directions. The data sent may consist of text as well as binary data. The receiver of the data must be able to read and understand it, otherwise the data is rejected.
+	</p>
+
+	<p>
+	  Figure 2.5 shows an example of how USSD can be used to accomplish roaming for pre-paids. In this case the call request is sent to the home network via an USSD request. The home network checks the current billing status and sets up a callback call.
+	</p>
+
+	<p>
+	  <img src="pics/ussd_overview.jpg"></img><br>
+	  Figure 2.6 USSD example application, taken from <a href="http://www.symsoft.se/Files/USSD.html">http://www.symsoft.se/Files/USSD.html</a>.
+	</p>
+
+	<h3>2.4.2 General USSD Interaction</h3>
+	<p>
+	  USSD requests are handled slightly different than regular Supplementary Service request because they are session oriented. That means that a single session or transaction can consist of many requests being sent back and forth within the scope of that single transaction. Therefore the handler has to provide means to send requests within a given transaction context and to end that transaction.
+	</p>
+
+	<p>
+	  The transaction is generally identified by its tipd (the unique transaction identifier, used to mark messages, which belong together). Therefore the handler's methods require a valid tipd to be specified. Alternatively and for convenience a previously received message can be specified from which the actual tipd is extracted. Furthermore the handler provides methods to end the transaction gracefully (which is indicated by an <code>USSDEndMsg</code>), alternatively to reject it or to signal an error to the mobile network.
+	</p>
+
+	<p>
+	  <img src="pics/ussd_transactions.gif"></img><br>
+	  Figure 2.7 USSD transaction
+	</p>
+
+
+	<h3>2.4.3 Network-Originated USSD Interaction</h3>
+	<p>
+	  The interaction with network-originated USSD request is slightly different from the regular USSD transaction usage. In this case the transaction is initiated by the mobile network and not by an application using a handler. Therefore it is not known which application - if any - wants to react to the incoming request.
+	</p>
+
+	<p>
+	  Upon reception of the first request a <code>USSDBeginMsg</code> is generated. The message does not contain any data. Its sole purpose is to identify the application, which wants to handle the incoming request. The message itself is a system message and thus sent to every application by default. When an application receives the message it can choose either to ignore it or to commence the USSD transaction by calling the <code>BeginTransaction</code> method of the message object. This will link the application to the USSD transaction und triggers the actual data message to be sent to the application.
+	</p>
+
+	<p>
+	  The mobile network has two possiblities (apart from error indications of course) to reply to a USSD request. On the one hand it can send back another USSD request. The request might contain result data of the initial request, but it requires the mobile station to answer and supply additional data. So if a USSD request is received as a reply, additional data has to be sent to the mobile network.
+	</p>
+
+	<p>
+	  On the other hand the mobile network can send back a USSD notification. A notification contains result data of the initial request and simply has to be acknowledged by the mobile station. Only an empty acknowledge message has to be sent back to the mobile network.
+	</p>
+
+	<p>
+	  Note that there must not be more than one application reacting to the message in the system. The first application to react will be assigned the transaction. Any subsequent tries to register for the transaction will result in a Supplementary Service-pending error. If two or more apllications try to register simultaneously it is not determenistic, which application will actually be assigned and which will be denied. This leads to completely undeterministic and hard to track race conditions, which have to be avoided.
+	</p>
+
+	<p>
+	  <img src="pics/network_originated_ussd.gif"></img><br>
+	  Figure 2.8 Network-originated USSD transaction initiation
+	</p>
+
+    <h2>2.5 Call Control by SIM</h2>
+
+	<h3>2.5.1 Introduction</h3>
+
+	<p>
+	  Call control by SIM denotes a feature of the SIM card, which enables the card to intercept any request to the GSM network and transform it into another request, which will be sent instead. This means that e.g. a Supplementary Service request could be intercepted and transformed into a call, instead of sending the appropriate control sequence a call is set up. There are no limits concerning the transformation of requests. A call could be transferred into another a call, a Supplementary Service request or an USSD request, wheras a Supplementary Service request could be transferred into another Supplementary Service request, a call or an USSD request. For USSD requests applies the same as for Supplementary Service requests. In short everything can be transformed in everything else.
+	</p>
+
+	<h3>2.5.2 Usage</h3>
+	<p>
+	  Call control by SIM is completely integrated into the Supplementary Service API and thus is completely transparent to the user. One has to distinguish three important cases. Firstly a Supplementary Service request or an USSD request being transformed into a call, secondly a call being transferred into a Supplementary Service request or an USSD request and thirldy a Supplementary Service request or an USSD request being transformed into another Supplementary Service request or USSD request.
+	</p>
+
+	<p>
+	  A Supplementary Service request being transformed into a call is fairly straightforward. The initial request is intercepted on its way to the GSM stack and the requester is notified of the transformation. Thus the handler will send an <code>SsRequestRejectedMsg</code> containing the specific return code to indicate the transformation and the request is over. In the mean time a call is set up, which in fact is not of any importance to the Supplementary Service API.
+	</p>
+
+	<p>
+	  The following return codes identify the different transformations of a Supplementary Service:
+	<ul>
+	  <li><code>SupplementaryServiceChangedToSs</code> - The Supplementary Service was transformed into another Supplementary Service.</li>
+	  <li><code>SupplementaryServiceChangedToUssd</code> - The Supplementary Service was transformed into an USSD request.</li>
+	  <li><code>SupplementaryServiceChangedToMoc</code> - The Supplementary Service was transformed into a mobile originated call (MOC).</li>
+    </ul>
+  </p>
+
+	<p>
+	  A call being transformed into an Supplementary Service request is a bit complicated. The Supplementary Service API will be notified by the SIM card that a transformation just occured and that the Supplementary Service request was sent to the mobile network. The Supplementary Service API will then <em>simulate</em> that the request has in fact been initiated by the user and not the SIM card. Thus the according messages (a <code>SsRequestSentMsg</code> and a <code>SsRequestAcceptedMsg</code>) will be generated and dispatched to inform the MMI that a Supplementary Service request has just been sent. The answer to the request is again picked up wrapped in a message and sent to the MMI just as a regular Supplementary Service request would do. In the mean time the call setup was terminated, which again is of no importance to the Supplementary Service API.
+	</p>
+
+	<p>
+	  A Supplementary Service request being transformed into another Supplementary Service request is a combination of the previous two scenarios. The initial Supplementary Service request is terminated as described in the first scenario and the handler will send an <code>SsRequestRejectedMsg</code> to the requester to indicate the termination of the inital request. The new request is setup according to the description in the second scenario. The Supplementary Service API simulates the new request and the processes the results just as if a regular Supplementary Service request was made.
+	</p>
+
+
+	<h1>3 Reference</h1>
+
+    <h2>3.1 Message Reference</h2>
+
+    <h3>3.1.1 Overview</h3>
+
+    <table border="1" style="border-collapse: collapse; border-top: solid; border-left: solid; border-right: solid; border-bottom: solid">
+      <thead style="background: #E6E6E6">
+		<tr>
+		  <td><b>Message Name</b></td>
+		  <td><b>Short Description</b></td>
+		</tr>
+      </thead>
+      <tr>
+		<td><a href="#CallBarringActivatedMsg">CallBarringActivatedMsg</a></td>
+		<td> Triggered by a Call Barring activation request. Contains the initial parameters and a vector of call barring features, which contains the basic service groups for which call barring is activated.</td>
+      </tr>
+      <tr>
+		<td><a href="#CallBarringDeactivatedMsg">CallBarringDeactivatedMsg</a></td>
+		<td>Triggered by a Call Barring deactivation request. Contains the initial parameters and a vector of call barring features, which contains the basic service groups for which call barring is deactivated.</td>
+      </tr>
+      <tr>
+		<td><a href="#CallBarringPasswordChangedMsg">CallBarringPasswordChangedMsg</a></td>
+		<td>Triggered by a Call Barring password change request. Contains the initial parameters and the new password.</td>
+      </tr>
+      <tr>
+		<td><a href="#CallBarringStatusMsg">CallBarringStatusMsg</a></td>
+		<td>Triggered by a Call Barring status interrogation request. Contains the initial parameters and a vector of basic service groups for which Call Waiting is activated.</td>
+      </tr>
+      <tr>
+		<td><a href="#CallForwardingActivatedMsg">CallForwardingActivatedMsg</a></td>
+		<td>Triggered by a Call Forwarding activation request. Contains the initial parameters and a vector of call forwarding features for which call forwarding is activated.</td>
+	  </tr>
+	  <tr>
+		<td><a href="#CallForwardingActiveMsg">CallForwardingActiveMsg</a></td>
+		<td>Notification that Call Forwarding is active upon initiating a mobile originated call.</td>
+	  </tr>
+	  <tr>
+		<td><a href="#CallForwardingDeactivatedMsg">CallForwardingDeactivatedMsg</a></td>
+		<td>Triggered by a Call Forwarding deactivation request. Contains the initial parameters and a vector of call forwarding features for which call forwarding is deactivated.</td>
+	  </tr>
+	  <tr>
+		<td><a href="#CallForwardingErasedMsg">CallForwardingErasedMsg</a></td>
+		<td>Triggered by a Call Forwarding erasure request. Contains the initial parameters and a vector of call forwarding features for which call forwarding is erased.</td>
+	  </tr>
+	  <tr>
+		<td><a href="#CallForwardingRegisteredMsg">CallForwardingRegisteredMsg</a></td>
+		<td>Triggered by a Call Forwarding registration request. Contains the initial parameters and a vector of call forwarding features for which call forwarding is registered.</td>
+	  </tr>
+	  <tr>
+		<td><a href="#CallForwardingStatusMsg">CallForwardingStatusMsg</a></td>
+		<td>Triggered by a Call Forwarding status interrogation request. Contains the initial parameters and either a vector of call forwarding features, or an empty vector but an overall status.</td>
+	  </tr>
+	  <tr>
+		<td><a href="#CallHeldMsg">CallHeldMsg</a></td>
+		<td>Notification that the current call is held at the other party. This is the counterpart to the <code>CallRetrievedMsg</code>.</td>
+	  </tr>
+	  <tr>
+		<td><a href="#CallIsWaitingMsg">CallIsWaitingMsg</a></td>
+		<td>Notification that the current call is waiting at the other party.</td>
+	  </tr>
+	  <tr>
+		<td><a href="#CallRetrievedMsg">CallRetrievedMsg</a></td>
+		<td>Notification that the current call is retrieved by the other party. This is the counterpart to the <code>CallHeldMsg</code>.</td>
+	  </tr>
+	  <tr>
+		<td><a href="#CallWaitingActivatedMsg">CallWaitingActivatedMsg</a></td>
+		<td>Triggered by a Call Waiting activation request. Contains the initial parameters and a vector of basic service groups for which Call Barring is activated.</td>
+	  </tr>
+	  <tr>
+		<td><a href="#CallWaitingDeactivatedMsg">CallWaitingDeactivatedMsg</a></td>
+		<td>Triggered by a Call Waiting deactivation request. Contains the initial parameters and a vector of basic service groups for which Call Barring is deactivated.</td>
+	  </tr>
+	  <tr>
+		<td><a href="#CallWaitingStatusMsg">CallWaitingStatusMsg</a></td>
+		<td>Triggered by a Call Waiting status interrogation request. Contains the initial parameters and a vector of basic service groups for which Call Barring is activated.</td>
+	  </tr>
+	  <tr>
+		<td><a href="#ClipStatusMsg">ClipStatusMsg</a></td>
+		<td>Triggered by a CLIP status interrogation request. Contains the current CLIP status.</td>
+	  </tr>
+	  <tr>
+		<td><a href="#ClirNotSurpressedMsg">ClirNotSurpressedMsg</a></td>
+		<td>Notification that the the CLI is not surpressed at the other party, i.e. the number is shown.</td>
+	  </tr>
+	  <tr>
+		<td><a href="#ClirStatusMsg">ClirStatusMsg</a></td>
+		<td>Triggered by a CLIR status interrogation request. Contains the current CLIR status.</td>
+	  </tr>
+	  <tr>
+		<td><a href="#ColpStatusMsg">ColpStatusMsg</a></td>
+		<td>Triggered by a COLP status interrogation request. Contains the current COLP status.</td>
+	  </tr>
+	  <tr>
+		<td><a href="#ColrStatusMsg">ColrStatusMsg</a></td>
+		<td>Triggered by a COLR status interrogation request. Contains the current COLR status.</td>
+	  </tr>
+	  <tr>
+		<td><a href="#CugCallMsg">CugCallMsg</a></td>
+		<td>Notification that the incoming or outgoing call is a closed-user-group call.</td>
+	  </tr>
+	  <tr>
+		<td><a href="#EctActiveMsg">EctActiveMsg</a></td>
+		<td>Indication that the current call has been transferred. This notifiaction is sent to the party being transferred as well as the party at the destination of the transfer.</td>
+	  </tr>
+	  <tr>
+		<td><a href="#EctAlertingMsg">EctAlertingMsg</a></td>
+		<td>Indication for the party being transferred that the transferred call is ringing at the destination party.</td>
+	  </tr>
+	  <tr>
+		<td><a href="#ForwardedCallIncomingMsg">ForwardedCallIncomingMsg</a></td>
+		<td>Notification that the incoming call has been forwarded from a different party (Message received by C subscriber).</td>
+	  </tr>
+	  <tr>
+		<td><a href="#IncomingCallForwardedMsg">IncomingCallForwardedMsg</a></td>
+		<td>Notification that an incoming call was forwarded to a different party (Message received by B subscriber).</td>
+	  </tr>
+	  <tr>
+		<td><a href="#MultiPartyCallInvokedMsg">MultiPartyCallInvokedMsg</a></td>
+		<td>Notification that the current call was added to a multy-party call.</td>
+	  </tr>
+	  <tr>
+		<td><a href="#NetworkSsErrorMsg">NetworkSsErrorMsg</a></td>
+		<td>Triggered if the mobile network signals an error while processing the request.  Contains the error code sent by the mobile network.</td>
+	  </tr>
+	  <tr>
+		<td><a href="#NetworkSsRejectedMsg">NetworkSsRejectedMsg</a></td>
+		<td>Triggered if the mobile network rejects the request. Contains the tagged problem code sent by the mobile network.</td>
+	  </tr>
+	  <tr>
+		<td><a href="#OutgoingCallForwardedMsg">OutgoingCallForwardedMsg</a></td>
+		<td>Notification that the outgoing call was forwarded to another destination (Message received by A subscriber).</td>
+	  </tr>
+	  <tr>
+		<td><a href="#SsErrorMsg">SsErrorMsg</a></td>
+		<td>Triggered by an error during message generation. Contains the error code and an error text string.</td>
+	  </tr>
+  	  <tr>
+  		<td><a href="#SsRequestAcceptedMsg">SsRequestAcceptedMsg</a></td>
+  		<td>This message indicates, that the GSM stack accepted the request. The GSM stack has already assigend a tipd to the request and is about to send it to the mobile network. The message contains the tipd of the transaction, as well as the specific Supplementary Service code, basic service group if any and any given positional parameters.</td>
+	  </tr>
+  	  <tr>
+  		<td><a href="#SsRequestRejectedMsg">SsRequestRejectedMsg</a></td>
+  		<td>This message indicates that an error occured during the sending of the request and that the stack did not accept the request. The message contains the handler's return value as well as the specific Supplementary Service code, basic service group if any and any given positional parameters of the initial request.</td>
+	  </tr>
+  	  <tr>
+  		<td><a href="#SsRequestSentMsg">SsRequestSentMsg</a></td>
+  		<td>This message indicates, that the handler has just sent the request to the GSM stack and is awaiting its response. The message contains the control sequence string sent to the stack.</td>
+	  </tr>
+  	  <tr>
+  		<td><a href="#StackSsRejectedMsg">StackSsRejectedMsg</a></td>
+  		<td>This message indicates, that the GSM stack rejected the request after it has previously decided to accept it by sending the <code>Begin_Acc</code> signal.</td>
+	  <tr>
+		<td><a href="#UssdBeginMsg">UssdBeginMsg</a></td>
+		<td>Triggered by a network-originated USSD request. Used to determine the application which wants to commence the transaction.</td>
+	  </tr>
+	  <tr>
+		<td><a href="#UssdDataMsg">UssdDataMsg</a></td>
+		<td>Triggered by the mobile network's response to a mobile originated USSD request. Contains the requested data.</td>
+	  </tr>
+	  <tr>
+		<td><a href="#UssdEndMsg">UssdEndMsg</a></td>
+		<td>Triggered if the mobile network signals the end of an active USSD transaction.</td>
+	  </tr>
+	  <tr>
+		<td><a href="#UssdNotifyMsg">UssdNotifyMsg</a></td>
+		<td>Triggered by an incoming USSD notification. Contains the notifiaction data. The application needs to acknowledge the reception of the notification.</td>
+	  </tr>
+	  <tr>
+		<td><a href="#UssdRequestMsg">UssdRequestMsg</a></td>
+		<td>Triggered by an incoming USSD request. Contains the request data. The application needs to send specific response data back.</td>
+	  </tr>
+	  <tr>
+		<td><a href="#UssdRequestResentMsg">UssdRequestResentMsg</a></td>
+		<td>Indication that the sending of the initial request with protocol version 2 failed and that the request was resent using protocol version 1.</td>
+	  </tr>
+	</table>
+
+	<p>
+	  Annotation for Call Forwarding:
+	<ul>
+	  <li>A-Subscriber - A subscriber who is placing an outgoing call to a B-subscriber.</li>
+	  <li>B-Subscriber - A subscriber who has call forwarding activated and is forwarding incoming calls.</li>
+	  <li>C-Subscriber - The subscriber to whom the forwarded call is delivered.</li>
+	</ul>
+	</p>
+
+    <h3>3.1.2 Call Barring</h3>
+    <h4><a name="CallBarringActivatedMsg">CallBarringActivatedMsg</a></h4>
+     <table border="1" style="border-collapse: collapse; border-top: solid; border-left: solid; border-right: solid; border-bottom: solid">
+      <thead style="background: #E6E6E6">
+	<tr>
+	  <td><b>Parameter</b></td>
+	  <td><b>Description</b></td>
+	</tr>
+      </thead>
+	  <tr>
+		<td>tipd</td>
+		<td>The tipd of the transaction.</td>
+	  </tr>
+	  <tr>
+		<td>call_barring_features</td>
+		<td>A vector of <code>CallBarringFeature</code> objects, which status equals active and operative. The feature object contains the status code and the MMI basic service group.</td>
+	  </tr>
+	  <tr>
+		<td>parameter_ss_code</td>
+		<td>The <code>SsCode</code> parameter of the initial request.</td>
+	  </tr>
+	  <tr>
+		<td>parameter_basic_service</td>
+		<td>The <code>ServiceGroup</code> parameter of the initial request.</td>
+	  </tr>
+    </table>
+
+    <h4><a name="CallBarringDeactivatedMsg">CallBarringDeactivatedMsg</a></h4>
+      <table border="1" style="border-collapse: collapse; border-top: solid; border-left: solid; border-right: solid; border-bottom: solid">
+      <thead style="background: #E6E6E6">
+	<tr>
+	  <td><b>Parameter</b></td>
+	  <td><b>Description</b></td>
+	</tr>
+      </thead>
+	  <tr>
+		<td>tipd</td>
+		<td>The tipd of the transaction.</td>
+	  </tr>
+	  <tr>
+		<td>call_barring_features</td>
+		<td>A vector of <code>CallBarringFeature</code> objects, which status equals provisioned and not active. The feature object contains the status code and the MMI basic service group.</td>
+	  </tr>
+	  <tr>
+		<td>parameter_ss_code</td>
+		<td>The <code>SsCode</code> parameter of the initial request.</td>
+	  </tr>
+	  <tr>
+		<td>parameter_basic_service</td>
+		<td>The <code>ServiceGroup</code> parameter of the initial request.</td>
+	  </tr>
+    </table>
+
+    <h4><a name="CallBarringPasswordChangedMsg">CallBarringPasswordChangedMsg</a></h4>
+      <table border="1" style="border-collapse: collapse; border-top: solid; border-left: solid; border-right: solid; border-bottom: solid">
+      <thead style="background: #E6E6E6">
+	<tr>
+	  <td><b>Parameter</b></td>
+	  <td><b>Description</b></td>
+	</tr>
+      </thead>
+	  <tr>
+		<td>tipd</td>
+		<td>The tipd of the transaction.</td>
+	  </tr>
+	  <tr>
+		<td>new_password</td>
+		<td>The password string returned by the mobile network.</td>
+	  </tr>
+	  <tr>
+		<td>param_ss_code</td>
+		<td>The <code>SsCode</code> parameter of the initial request.</td>
+	  </tr>
+	  <tr>
+		<td>param_old_password</td>
+		<td>The old password parameter string of the initial request.</td>
+	  </tr>
+	  <tr>
+		<td>param_new_password</td>
+		<td>The new password parameter string of the initial request.</td>
+	  </tr>
+	  <tr>
+		<td>param_conf_password</td>
+		<td>The password confirmation parameter string of the initial request.</td>
+	  </tr>
+    </table>
+
+    <h4><a name="CallBarringStatusMsg">CallBarringStatusMsg</a></h4>
+    <table border="1" style="border-collapse: collapse; border-top: solid; border-left: solid; border-right: solid; border-bottom: solid">
+      <thead style="background: #E6E6E6">
+	<tr>
+	  <td><b>Parameter</b></td>
+	  <td><b>Description</b></td>
+	</tr>
+      </thead>
+	  <tr>
+		<td>tipd</td>
+		<td>The tipd of the transaction.</td>
+	  </tr>
+	  <tr>
+		<td>ss_status</td>
+		<td>The status of the service (<code>SsStatus</code>). This is set to provisioned and activated, if no overall status, but a list of MMI basic service groups was provided.</td>
+	  </tr>
+	  <tr>
+		<td>basic_service_list</td>
+		<td>A vector of <code>SsGroup</code> objects, which contains the MMI basic service groups that are provisioned and active. The vector is empty if an overall status was provided</td>
+	  </tr>
+	  <tr>
+		<td>parameter_ss_code</td>
+		<td>The <code>SsCode</code> parameter of the initial request.</td>
+	  </tr>
+	  <tr>
+		<td>parameter_basic_service</td>
+		<td>The <code>ServiceGroup</code> parameter of the initial request.</td>
+	  </tr>
+    </table>
+
+
+    <h3>3.1.3 Call Forwarding</h3>
+    <h4><a name="CallForwardingActivatedMsg">CallForwardingActivatedMsg</a></h4>
+     <table border="1" style="border-collapse: collapse; border-top: solid; border-left: solid; border-right: solid; border-bottom: solid">
+      <thead style="background: #E6E6E6">
+	<tr>
+	  <td><b>Parameter</b></td>
+	  <td><b>Description</b></td>
+	</tr>
+      </thead>
+	  <tr>
+		<td>tipd</td>
+		<td>The tipd of the transaction.</td>
+	  </tr>
+	  <tr>
+		<td>ss_code</td>
+		<td>The <code>SsCode</code> specifying which Call Forwarding subservice has been activated.</td>
+	  </tr>
+	  <tr>
+		<td>forwarding_features</td>
+		<td>A vector of <code>ForwardingFeature</code> objects. Each element represents a MMI basic service group. It contains the group's identifier, the current status, the destination number of the call forwarding and the time-out for CFNRy. If the list is empty Call Forwarding was activated according to the initial parameters.</td>
+	  </tr>
+	  <tr>
+		<td>parameter_ss_code</td>
+		<td>The <code>SsCode</code> parameter of the initial request.</td>
+	  </tr>
+	  <tr>
+		<td>parameter_basic_service</td>
+		<td>The <code>ServiceGroup</code> parameter of the initial request.</td>
+	  </tr>
+	  <tr>
+		<td>parameter_phonenumber</td>
+		<td>The <code>PhoneNumber</code> parameter of the initial request.</td>
+	  </tr>
+	  <tr>
+		<td>parameter_time_out</td>
+		<td>The time-out parameter of the initial request.</td>
+	  </tr>
+    </table>
+
+    <h4><a name="CallForwardingDeactivatedMsg">CallForwardingDeactivatedMsg</a></h4>
+      <table border="1" style="border-collapse: collapse; border-top: solid; border-left: solid; border-right: solid; border-bottom: solid">
+      <thead style="background: #E6E6E6">
+	<tr>
+	  <td><b>Parameter</b></td>
+	  <td><b>Description</b></td>
+	</tr>
+      </thead>
+	  <tr>
+		<td>tipd</td>
+		<td>The tipd of the transaction.</td>
+	  </tr>
+	  <tr>
+		<td>ss_code</td>
+		<td>The <code>SsCode</code> specifying which Call Forwarding subservice has been deactivated.</td>
+	  </tr>
+	  <tr>
+		<td>forwarding_features</td>
+		<td>A vector of <code>ForwardingFeature</code> objects. Each element represents a MMI basic service group. It contains the group's identifier, the current status, the destination number of the call forwarding and the time-out for CFNRy. If the list is empty Call Forwarding was deactivated according to the initial parameters.</td>
+	  </tr>
+	  <tr>
+		<td>parameter_ss_code</td>
+		<td>The <code>SsCode</code> parameter of the initial request.</td>
+	  </tr>
+	  <tr>
+		<td>parameter_basic_service</td>
+		<td>The <code>ServiceGroup</code> parameter of the initial request.</td>
+	  </tr>
+    </table>
+
+    <h4><a name="CallForwardingErasedMsg">CallForwardingErasedMsg</a></h4>
+      <table border="1" style="border-collapse: collapse; border-top: solid; border-left: solid; border-right: solid; border-bottom: solid">
+      <thead style="background: #E6E6E6">
+	<tr>
+	  <td><b>Parameter</b></td>
+	  <td><b>Description</b></td>
+	</tr>
+      </thead>
+	  <tr>
+		<td>tipd</td>
+		<td>The tipd of the transaction.</td>
+	  </tr>
+	  <tr>
+		<td>ss_code</td>
+		<td>The <code>SsCode</code> specifying which Call Forwarding subservice has been erased.</td>
+	  </tr>
+	  <tr>
+		<td>forwarding_features</td>
+		<td>A vector of <code>ForwardingFeature</code> objects. Each element represents a MMI basic service group. It contains the group's identifier, the current status, the destination number of the call forwarding and the time-out for CFNRy. If the list is empty Call Forwarding was erased according to the initial parameters.</td>
+	  </tr>
+	  <tr>
+		<td>parameter_ss_code</td>
+		<td>The <code>SsCode</code> parameter of the initial request.</td>
+	  </tr>
+	  <tr>
+		<td>parameter_basic_service</td>
+		<td>The <code>ServiceGroup</code> parameter of the initial request.</td>
+	  </tr>
+    </table>
+
+    <h4><a name="CallForwardingRegisteredMsg">CallForwardingRegisteredMsg</a></h4>
+      <table border="1" style="border-collapse: collapse; border-top: solid; border-left: solid; border-right: solid; border-bottom: solid">
+      <thead style="background: #E6E6E6">
+	<tr>
+	  <td><b>Parameter</b></td>
+	  <td><b>Description</b></td>
+	</tr>
+      </thead>
+	  <tr>
+		<td>tipd</td>
+		<td>The tipd of the transaction.</td>
+	  </tr>
+	  <tr>
+		<td>ss_code</td>
+		<td>The <code>SsCode</code> specifying which Call Forwarding subservice has been registered.</td>
+	  </tr>
+	  <tr>
+		<td>forwarding_features</td>
+		<td>A vector of <code>ForwardingFeature</code> objects. Each element represents a MMI basic service group. It contains the group's identifier, the current status, the destination number of the call forwarding and the time-out for CFNRy. If the list is empty Call Forwarding was registered according to the initial parameters.</td>
+	  </tr>
+	  <tr>
+		<td>parameter_ss_code</td>
+		<td>The <code>SsCode</code> parameter of the initial request.</td>
+	  </tr>
+	  <tr>
+		<td>parameter_basic_service</td>
+		<td>The <code>ServiceGroup</code> parameter of the initial request.</td>
+	  </tr>
+	  <tr>
+		<td>parameter_phonenumber</td>
+		<td>The <code>PhoneNumber</code> parameter of the initial request.</td>
+	  </tr>
+	  <tr>
+		<td>parameter_time_out</td>
+		<td>The time-out parameter of the initial request.</td>
+	  </tr>
+    </table>
+
+    <h4><a name="CallForwardingStatusMsg">CallForwardingStatusMsg</a></h4>
+    <table border="1" style="border-collapse: collapse; border-top: solid; border-left: solid; border-right: solid; border-bottom: solid">
+      <thead style="background: #E6E6E6">
+	<tr>
+	  <td><b>Parameter</b></td>
+	  <td><b>Description</b></td>
+	</tr>
+      </thead>
+	  <tr>
+		<td>tipd</td>
+		<td>The tipd of the transaction.</td>
+	  </tr>
+	  <tr>
+		<td>ss_status</td>
+		<td>The status of the service (<code>SsStatus</code>). This is set to 0, if no overall status, but a list of forwarding features was provided.</td>
+	  </tr>
+	  <tr>
+		<td>forwarding_features</td>
+		<td>A vector of <code>ForwardingFeature</code> objects. Each element represents a MMI basic service group. It contains the group's identifier, the current status, the destination number of the call forwarding and the time-out for CFNRy. The list is empty if an overall status was provided.</td>
+	  </tr>
+	  <tr>
+		<td>parameter_ss_code</td>
+		<td>The <code>SsCode</code> parameter of the initial request.</td>
+	  </tr>
+	  <tr>
+		<td>parameter_basic_service</td>
+		<td>The <code>ServiceGroup</code> parameter of the initial request.</td>
+	  </tr>
+    </table>
+
+    <h3>3.1.4 Call Waiting</h3>
+    <h4><a name="CallWaitingActivatedMsg">CallWaitingActivatedMsg</a></h4>
+     <table border="1" style="border-collapse: collapse; border-top: solid; border-left: solid; border-right: solid; border-bottom: solid">
+      <thead style="background: #E6E6E6">
+	<tr>
+	  <td><b>Parameter</b></td>
+	  <td><b>Description</b></td>
+	</tr>
+      </thead>
+	  <tr>
+		<td>tipd</td>
+		<td>The tipd of the transaction.</td>
+	  </tr>
+	  <tr>
+		<td>ss_status</td>
+		<td>The status of the service (<code>SsStatus</code>). This is active and operative.</td>
+	  </tr>
+	  <tr>
+		<td>basic_service_list</td>
+		<td>A vector of <code>SsGroup</code> objects, which contains the MMI basic service groups that are active and operative.</td>
+	  </tr>
+	  <tr>
+		<td>param_basic_service</td>
+		<td>The <code>ServiceGroup</code> parameter of the initial request.</td>
+	  </tr>
+    </table>
+
+    <h4><a name="CallWaitingDeactivatedMsg">CallWaitingDeactivatedMsg</a></h4>
+      <table border="1" style="border-collapse: collapse; border-top: solid; border-left: solid; border-right: solid; border-bottom: solid">
+      <thead style="background: #E6E6E6">
+	<tr>
+	  <td><b>Parameter</b></td>
+	  <td><b>Description</b></td>
+	</tr>
+      </thead>
+	  <tr>
+		<td>tipd</td>
+		<td>The tipd of the transaction.</td>
+	  </tr>
+	  <tr>
+		<td>ss_status</td>
+		<td>The status of the service (<code>SsStatus</code>). This is provisioned and not active.</td>
+	  </tr>
+	  <tr>
+		<td>basic_service_list</td>
+		<td>A vector of <code>SsGroup</code> objects, which contains the MMI basic service groups that are provisioned and not active.</td>
+	  </tr>
+	  <tr>
+		<td>param_basic_service</td>
+		<td>The <code>ServiceGroup</code> parameter of the initial request.</td>
+	  </tr>
+    </table>
+
+    <h4><a name="CallWaitingStatusMsg">CallWaitingStatusMsg</a></h4>
+    <table border="1" style="border-collapse: collapse; border-top: solid; border-left: solid; border-right: solid; border-bottom: solid">
+      <thead style="background: #E6E6E6">
+	<tr>
+	  <td><b>Parameter</b></td>
+	  <td><b>Description</b></td>
+	</tr>
+      </thead>
+	  <tr>
+		<td>tipd</td>
+		<td>The tipd of the transaction.</td>
+	  </tr>
+	  <tr>
+		<td>ss_status</td>
+		<td>The status of the service (<code>SsStatus</code>). This is set to provisioned and activated, if no overall status, but a list of MMI basic service groups was provided.</td>
+	  </tr>
+	  <tr>
+		<td>basic_service_list</td>
+		<td>A vector of <code>SsGroup</code> objects, which contains the MMI basic service groups that are provisioned and active. The vector is empty if an overall status was provided</td>
+	  </tr>
+    </table>
+
+    <h3>3.1.5 Line Identification</h3>
+
+	<h4><a name="ClipStatusMsg">ClipStatusMsg</a></h4>
+    <table border="1" style="border-collapse: collapse; border-top: solid; border-left: solid; border-right: solid; border-bottom: solid">
+      <thead style="background: #E6E6E6">
+	<tr>
+	  <td><b>Parameter</b></td>
+	  <td><b>Description</b></td>
+	</tr>
+      </thead>
+	  <tr>
+		<td>tipd</td>
+		<td>The tipd of the transaction.</td>
+	  </tr>
+	  <tr>
+		<td>ss_status</td>
+		<td>The status of the service (<code>SsStatus</code>).</td>
+	  </tr>
+    </table>
+
+	<h4><a name="ClirStatusMsg">ClirStatusMsg</a></h4>
+    <table border="1" style="border-collapse: collapse; border-top: solid; border-left: solid; border-right: solid; border-bottom: solid">
+      <thead style="background: #E6E6E6">
+	<tr>
+	  <td><b>Parameter</b></td>
+	  <td><b>Description</b></td>
+	</tr>
+      </thead>
+	  <tr>
+		<td>tipd</td>
+		<td>The tipd of the transaction.</td>
+	  </tr>
+	  <tr>
+		<td>ss_status</td>
+		<td>The status of the service (<code>SsStatus</code>).</td>
+	  </tr>
+	  <tr>
+		<td>cli_restriction_option</td>
+		<td>The <code>CliRestrictionOption</code> indicating whether the CLIR setting is permanent, or if it can be changed and defaults either to allowed or to restricted.<br>
+		Possible values: <code>Permanent</code>, <code>TemporaryDefaultRestricted</code> or <code>TemporaryDefaultAllowed</code>.</td>
+	  </tr>
+    </table>
+
+	<h4><a name="ColpStatusMsg">ColpStatusMsg</a></h4>
+    <table border="1" style="border-collapse: collapse; border-top: solid; border-left: solid; border-right: solid; border-bottom: solid">
+      <thead style="background: #E6E6E6">
+	<tr>
+	  <td><b>Parameter</b></td>
+	  <td><b>Description</b></td>
+	</tr>
+      </thead>
+	  <tr>
+		<td>tipd</td>
+		<td>The tipd of the transaction.</td>
+	  </tr>
+	  <tr>
+		<td>ss_status</td>
+		<td>The status of the service (<code>SsStatus</code>).</td>
+	  </tr>
+    </table>
+
+	<h4><a name="ColrStatusMsg">ColrStatusMsg</a></h4>
+    <table border="1" style="border-collapse: collapse; border-top: solid; border-left: solid; border-right: solid; border-bottom: solid">
+      <thead style="background: #E6E6E6">
+	<tr>
+	  <td><b>Parameter</b></td>
+	  <td><b>Description</b></td>
+	</tr>
+      </thead>
+	  <tr>
+		<td>tipd</td>
+		<td>The tipd of the transaction.</td>
+	  </tr>
+	  <tr>
+		<td>ss_status</td>
+		<td>The status of the service (<code>SsStatus</code>).</td>
+	  </tr>
+    </table>
+
+    <h3>3.1.6 USSD</h3>
+	<h4><a name="UssdBeginMsg">UssdBeginMsg</a></h4>
+    <table border="1" style="border-collapse: collapse; border-top: solid; border-left: solid; border-right: solid; border-bottom: solid">
+      <thead style="background: #E6E6E6">
+	<tr>
+	  <td><b>Parameter</b></td>
+	  <td><b>Description</b></td>
+	</tr>
+      </thead>
+	  <tr>
+		<td>tipd</td>
+		<td>The tipd of the transaction.</td>
+	  </tr>
+    </table>
+
+	<h4><a name="UssdDataMsg">UssdDataMsg</a></h4>
+    <table border="1" style="border-collapse: collapse; border-top: solid; border-left: solid; border-right: solid; border-bottom: solid">
+      <thead style="background: #E6E6E6">
+	<tr>
+	  <td><b>Parameter</b></td>
+	  <td><b>Description</b></td>
+	</tr>
+      </thead>
+	  <tr>
+		<td>tipd</td>
+		<td>The tipd of the transaction.</td>
+	  </tr>
+	  <tr>
+		<td>data</td>
+		<td>The string containing the USSD data.</td>
+	  </tr>
+	  <tr>
+		<td>data_coding_scheme</td>
+		<td>The data coding scheme (<code>DataCodingScheme</code>) the data string is encoded in.</td>
+	  </tr>
+    </table>
+
+	<h4><a name="UssdEndMsg">UssdEndMsg</a></h4>
+    <table border="1" style="border-collapse: collapse; border-top: solid; border-left: solid; border-right: solid; border-bottom: solid">
+      <thead style="background: #E6E6E6">
+	<tr>
+	  <td><b>Parameter</b></td>
+	  <td><b>Description</b></td>
+	</tr>
+      </thead>
+	  <tr>
+		<td>tipd</td>
+		<td>The tipd of the transaction.</td>
+	  </tr>
+    </table>
+
+	<h4><a name="UssdNotifyMsg">UssdNotifyMsg</a></h4>
+    <table border="1" style="border-collapse: collapse; border-top: solid; border-left: solid; border-right: solid; border-bottom: solid">
+      <thead style="background: #E6E6E6">
+	<tr>
+	  <td><b>Parameter</b></td>
+	  <td><b>Description</b></td>
+	</tr>
+      </thead>
+	  <tr>
+		<td>tipd</td>
+		<td>The tipd of the transaction.</td>
+	  </tr>
+	  <tr>
+		<td>control_info</td>
+		<td>The string containing the USSD data.</td>
+	  </tr>
+	  <tr>
+		<td>data_coding_scheme</td>
+		<td>The data coding scheme (<code>DataCodingScheme</code>) the data string is encoded in.</td>
+	  </tr>
+    </table>
+
+	<h4><a name="UssdRequestMsg">UssdRequestMsg</a></h4>
+    <table border="1" style="border-collapse: collapse; border-top: solid; border-left: solid; border-right: solid; border-bottom: solid">
+      <thead style="background: #E6E6E6">
+	<tr>
+	  <td><b>Parameter</b></td>
+	  <td><b>Description</b></td>
+	</tr>
+      </thead>
+	  <tr>
+		<td>tipd</td>
+		<td>The tipd of the transaction.</td>
+	  </tr>
+	  <tr>
+		<td>control_info</td>
+		<td>The string containing the USSD data.</td>
+	  </tr>
+	  <tr>
+		<td>data_coding_scheme</td>
+		<td>The data coding scheme (<code>DataCodingScheme</code>) the data string is encoded in.</td>
+	  </tr>
+    </table>
+
+	<h4><a name="UssdRequestResentMsg">UssdRequestResentMsg</a></h4>
+    <table border="1" style="border-collapse: collapse; border-top: solid; border-left: solid; border-right: solid; border-bottom: solid">
+      <thead style="background: #E6E6E6">
+	<tr>
+	  <td><b>Parameter</b></td>
+	  <td><b>Description</b></td>
+	</tr>
+      </thead>
+	  <tr>
+		<td>new_tipd</td>
+		<td>The new tipd of the resent transaction.</td>
+	  </tr>
+	  <tr>
+		<td>old_tipd</td>
+		<td>The tipd of the failed transaction.</td>
+	  </tr>
+    </table>
+
+
+    <h3>3.1.7 Notification Messages</h3>
+
+	<h4><a name="CallForwardingActiveMsg">CallForwardingActiveMsg</a></h4>
+    <table border="1" style="border-collapse: collapse; border-top: solid; border-left: solid; border-right: solid; border-bottom: solid">
+      <thead style="background: #E6E6E6">
+	<tr>
+	  <td><b>Parameter</b></td>
+	  <td><b>Description</b></td>
+	</tr>
+      </thead>
+	  <tr>
+		<td>tipd</td>
+		<td>The tipd of the transaction.</td>
+	  </tr>
+ 	  <tr>
+		<td>ss_code</td>
+		<td>The <code>SsCode</code> specifying the Call Forwarding subservice.</td>
+	  </tr>
+   </table>
+
+	<h4><a name="CallHeldMsg">CallHeldMsg</a></h4>
+    <table border="1" style="border-collapse: collapse; border-top: solid; border-left: solid; border-right: solid; border-bottom: solid">
+      <thead style="background: #E6E6E6">
+	<tr>
+	  <td><b>Parameter</b></td>
+	  <td><b>Description</b></td>
+	</tr>
+      </thead>
+	  <tr>
+		<td>tipd</td>
+		<td>The tipd of the transaction.</td>
+	  </tr>
+   </table>
+
+	<h4><a name="CallIsWaitingMsg">CallIsWaitingMsg</a></h4>
+    <table border="1" style="border-collapse: collapse; border-top: solid; border-left: solid; border-right: solid; border-bottom: solid">
+      <thead style="background: #E6E6E6">
+	<tr>
+	  <td><b>Parameter</b></td>
+	  <td><b>Description</b></td>
+	</tr>
+      </thead>
+	  <tr>
+		<td>tipd</td>
+		<td>The tipd of the transaction.</td>
+	  </tr>
+   </table>
+
+	<h4><a name="CallRetrievedMsg">CallRetrievedMsg</a></h4>
+    <table border="1" style="border-collapse: collapse; border-top: solid; border-left: solid; border-right: solid; border-bottom: solid">
+      <thead style="background: #E6E6E6">
+	<tr>
+	  <td><b>Parameter</b></td>
+	  <td><b>Description</b></td>
+	</tr>
+      </thead>
+	  <tr>
+		<td>tipd</td>
+		<td>The tipd of the transaction.</td>
+	  </tr>
+   </table>
+
+	<h4><a name="ClirNotSurpressedMsg">ClirNotSurpressedMsg</a></h4>
+    <table border="1" style="border-collapse: collapse; border-top: solid; border-left: solid; border-right: solid; border-bottom: solid">
+      <thead style="background: #E6E6E6">
+	<tr>
+	  <td><b>Parameter</b></td>
+	  <td><b>Description</b></td>
+	</tr>
+      </thead>
+	  <tr>
+		<td>tipd</td>
+		<td>The tipd of the transaction.</td>
+	  </tr>
+   </table>
+
+	<h4><a name="CugCallMsg">CugCallMsg</a></h4>
+    <table border="1" style="border-collapse: collapse; border-top: solid; border-left: solid; border-right: solid; border-bottom: solid">
+      <thead style="background: #E6E6E6">
+	<tr>
+	  <td><b>Parameter</b></td>
+	  <td><b>Description</b></td>
+	</tr>
+      </thead>
+	  <tr>
+		<td>tipd</td>
+		<td>The tipd of the transaction.</td>
+	  </tr>
+	  <tr>
+		<td>cug_index</td>
+		<td>The index of the closed user group.</td>
+	  </tr>
+   </table>
+
+	<h4><a name="EctActiveMsg">EctActiveMsg</a></h4>
+    <table border="1" style="border-collapse: collapse; border-top: solid; border-left: solid; border-right: solid; border-bottom: solid">
+      <thead style="background: #E6E6E6">
+	<tr>
+	  <td><b>Parameter</b></td>
+	  <td><b>Description</b></td>
+	</tr>
+      </thead>
+	  <tr>
+		<td>tipd</td>
+		<td>The tipd of the transaction.</td>
+	  </tr>
+	  <tr>
+		<td>rdn_selector</td>
+		<td>Indicator (<code>RdnChoice</code>) specifying whether the other party's number is available and if its presentation is allowed.</td>
+	  </tr>
+	  <tr>
+		<td>address</td>
+		<td>The <code>PhoneNumber</code> of the other party.</td>
+	  </tr>
+	  <tr>
+		<td>sub_address</td>
+		<td>Meaning not known yet.</td>
+	  </tr>
+  </table>
+
+	<h4><a name="EctAlertingMsg">EctAlertingMsg</a></h4>
+    <table border="1" style="border-collapse: collapse; border-top: solid; border-left: solid; border-right: solid; border-bottom: solid">
+      <thead style="background: #E6E6E6">
+	<tr>
+	  <td><b>Parameter</b></td>
+	  <td><b>Description</b></td>
+	</tr>
+      </thead>
+	  <tr>
+		<td>tipd</td>
+		<td>The tipd of the transaction.</td>
+	  </tr>
+   </table>
+
+	<h4><a name="ForwardedCallIncomingMsg">ForwardedCallIncomingMsg</a></h4>
+    <table border="1" style="border-collapse: collapse; border-top: solid; border-left: solid; border-right: solid; border-bottom: solid">
+      <thead style="background: #E6E6E6">
+	<tr>
+	  <td><b>Parameter</b></td>
+	  <td><b>Description</b></td>
+	</tr>
+      </thead>
+	  <tr>
+		<td>tipd</td>
+		<td>The tipd of the transaction.</td>
+	  </tr>
+  	  <tr>
+		<td>ss_code</td>
+		<td>The <code>SsCode</code> specifying the Call Forwarding subservice.</td>
+	  </tr>
+	</table>
+
+	<h4><a name="IncomingCallForwardedMsg">IncomingCallForwardedMsg</a></h4>
+    <table border="1" style="border-collapse: collapse; border-top: solid; border-left: solid; border-right: solid; border-bottom: solid">
+      <thead style="background: #E6E6E6">
+	<tr>
+	  <td><b>Parameter</b></td>
+	  <td><b>Description</b></td>
+	</tr>
+      </thead>
+	  <tr>
+		<td>tipd</td>
+		<td>The tipd of the transaction.</td>
+	  </tr>
+ 	  <tr>
+		<td>ss_code</td>
+		<td>The <code>SsCode</code> specifying the Call Forwarding subservice.</td>
+	  </tr>
+	</table>
+
+	<h4><a name="MultiPartyCallInvokedMsg">MultiPartyCallInvokedMsg</a></h4>
+    <table border="1" style="border-collapse: collapse; border-top: solid; border-left: solid; border-right: solid; border-bottom: solid">
+      <thead style="background: #E6E6E6">
+	<tr>
+	  <td><b>Parameter</b></td>
+	  <td><b>Description</b></td>
+	</tr>
+      </thead>
+	  <tr>
+		<td>tipd</td>
+		<td>The tipd of the transaction.</td>
+	  </tr>
+	</table>
+
+	<h4><a name="OutgoingCallForwardedMsg">OutgoingCallForwardedMsg</a></h4>
+    <table border="1" style="border-collapse: collapse; border-top: solid; border-left: solid; border-right: solid; border-bottom: solid">
+      <thead style="background: #E6E6E6">
+	<tr>
+	  <td><b>Parameter</b></td>
+	  <td><b>Description</b></td>
+	</tr>
+      </thead>
+	  <tr>
+		<td>tipd</td>
+		<td>The tipd of the transaction.</td>
+	  </tr>
+ 	  <tr>
+		<td>ss_code</td>
+		<td>The <code>SsCode</code> specifying the Call Forwarding subservice.</td>
+	  </tr>
+   </table>
+
+
+    <h3>3.1.7 Network Error Messages</h3>
+	<h4><a name="NetworkSsErrorMsg">NetworkSsErrorMsg</a></h4>
+    <table border="1" style="border-collapse: collapse; border-top: solid; border-left: solid; border-right: solid; border-bottom: solid">
+      <thead style="background: #E6E6E6">
+	<tr>
+	  <td><b>Parameter</b></td>
+	  <td><b>Description</b></td>
+	</tr>
+      </thead>
+	  <tr>
+		<td>tipd</td>
+		<td>The tipd of the transaction.</td>
+	  </tr>
+ 	  <tr>
+		<td>error_code</td>
+		<td>The <code>SsErrorCode</code> specifying the error.</td>
+	  </tr>
+   </table>
+
+	<h4><a name="NetworkSsRejectedMsg">NetworkSsRejectedMsg</a></h4>
+    <table border="1" style="border-collapse: collapse; border-top: solid; border-left: solid; border-right: solid; border-bottom: solid">
+      <thead style="background: #E6E6E6">
+	<tr>
+	  <td><b>Parameter</b></td>
+	  <td><b>Description</b></td>
+	</tr>
+      </thead>
+	  <tr>
+		<td>tipd</td>
+		<td>The tipd of the transaction.</td>
+	  </tr>
+ 	  <tr>
+		<td>tagged_problem_code</td>
+		<td>The <code>TaggedProblemCode</code> describing the cause of the rejection.</td>
+	  </tr>
+   </table>
+
+    <h3>3.1.8 Supplementary Service Framework Layer Messages</h3>
+	<h4><a name="SsErrorMsg">SsErrorMsg</a></h4>
+    <table border="1" style="border-collapse: collapse; border-top: solid; border-left: solid; border-right: solid; border-bottom: solid">
+      <thead style="background: #E6E6E6">
+	<tr>
+	  <td><b>Parameter</b></td>
+	  <td><b>Description</b></td>
+	</tr>
+      </thead>
+	  <tr>
+		<td>tipd</td>
+		<td>The tipd of the transaction.</td>
+	  </tr>
+ 	  <tr>
+		<td>error_code</td>
+		<td>The error code (<code>SsBaseHandler::ReturnCode</code>) specifying the error.</td>
+	  </tr>
+   	  <tr>
+		<td>error_text</td>
+		<td>A String describing the error in more detail.</td>
+	  </tr>
+	</table>
+
+	<h4><a name="SsRequestAcceptedMsg">SsRequestAcceptedMsg</a></h4>
+    <table border="1" style="border-collapse: collapse; border-top: solid; border-left: solid; border-right: solid; border-bottom: solid">
+      <thead style="background: #E6E6E6">
+	<tr>
+	  <td><b>Parameter</b></td>
+	  <td><b>Description</b></td>
+	</tr>
+      </thead>
+	  <tr>
+		<td>tipd</td>
+		<td>The tipd of the transaction.</td>
+	  </tr>
+	  <tr>
+		<td>ss_code</td>
+		<td>The <code>SsCode</code> specifying the Supplementary Service.</td>
+	  </tr>
+	  <tr>
+		<td>basic_service</td>
+		<td>The <code>ServiceGroup</code>, if specified.</td>
+	  </tr>
+	  <tr>
+		<td>operation_code</td>
+		<td>The <code>SsOperationCode</code> specifying which operation is attempted on the Supplementary Service.</td>
+	  </tr>
+	  <tr>
+		<td>parameter1</td>
+		<td>The string of the first positional parameter, if specified.</td>
+	  </tr>
+	  <tr>
+		<td>parameter2</td>
+		<td>The string of the second positional parameter, if specified.</td>
+	  </tr>
+	  <tr>
+		<td>parameter3</td>
+		<td>The string of the third positional parameter, if specified.</td>
+	  </tr>
+	</table>
+
+	<h4><a name="SsRequestRejectedMsg">SsRequestRejectedMsg</a></h4>
+    <table border="1" style="border-collapse: collapse; border-top: solid; border-left: solid; border-right: solid; border-bottom: solid">
+      <thead style="background: #E6E6E6">
+	<tr>
+	  <td><b>Parameter</b></td>
+	  <td><b>Description</b></td>
+	</tr>
+      </thead>
+ 	  <tr>
+		<td>error_code</td>
+		<td>The handler's return value (<code>SsApiRc</code>) specifying the error.</td>
+	  </tr>
+ 	  <tr>
+		<td>ss_code</td>
+		<td>The <code>SsCode</code> specifying the Supplementary Service.</td>
+	  </tr>
+	  <tr>
+		<td>basic_service</td>
+		<td>The <code>ServiceGroup</code>, if specified.</td>
+	  </tr>
+	  <tr>
+		<td>operation_code</td>
+		<td>The <code>SsOperationCode</code> specifying which operation is attempted on the Supplementary Service.</td>
+	  </tr>
+	  <tr>
+		<td>parameter1</td>
+		<td>The string of the first positional parameter, if specified.</td>
+	  </tr>
+	  <tr>
+		<td>parameter2</td>
+		<td>The string of the second positional parameter, if specified.</td>
+	  </tr>
+	  <tr>
+		<td>parameter3</td>
+		<td>The string of the third positional parameter, if specified.</td>
+	  </tr>
+	  <tr>
+		<td>cause</td>
+		<td>The <code>CallErrorCause</code> describing why the request was rejected.</td>
+	  </tr>
+	</table>
+
+	<h4><a name="SsRequestSentMsg">SsRequestSentMsg</a></h4>
+    <table border="1" style="border-collapse: collapse; border-top: solid; border-left: solid; border-right: solid; border-bottom: solid">
+      <thead style="background: #E6E6E6">
+	<tr>
+	  <td><b>Parameter</b></td>
+	  <td><b>Description</b></td>
+	</tr>
+      </thead>
+	  <tr>
+		<td>ss_control_seq</td>
+		<td>The control sequence string sent to the GSM stack.</td>
+	  </tr>
+ 	  <tr>
+		<td>ss_code</td>
+		<td>The <code>SsCode</code> specifying the Supplementary Service.</td>
+	  </tr>
+	  <tr>
+		<td>basic_service</td>
+		<td>The <code>ServiceGroup</code>, if specified.</td>
+	  </tr>
+	  <tr>
+		<td>operation_code</td>
+		<td>The <code>SsOperationCode</code> specifying which operation is attempted on the Supplementary Service.</td>
+	  </tr>
+	  <tr>
+		<td>parameter1</td>
+		<td>The string of the first positional parameter, if specified.</td>
+	  </tr>
+	  <tr>
+		<td>parameter2</td>
+		<td>The string of the second positional parameter, if specified.</td>
+	  </tr>
+	  <tr>
+		<td>parameter3</td>
+		<td>The string of the third positional parameter, if specified.</td>
+	  </tr>
+	</table>
+
+	<h4><a name="StackSsRejectedMsg">StackSsRejectedMsg</a></h4>
+    <table border="1" style="border-collapse: collapse; border-top: solid; border-left: solid; border-right: solid; border-bottom: solid">
+      <thead style="background: #E6E6E6">
+	<tr>
+	  <td><b>Parameter</b></td>
+	  <td><b>Description</b></td>
+	</tr>
+      </thead>
+	  <tr>
+		<td>tipd</td>
+		<td>The tipd of the transaction.</td>
+	  </tr>
+ 	  <tr>
+		<td>cause</td>
+		<td>The <code>CallErrorCause</code> describing why the request was rejected.</td>
+	  </tr>
+	</table>
+
+
+	<h2>3.2 MMI Basic Service Groups</h2>
+
+	<table border="1" style="border-collapse: collapse; border-top: solid; border-left: solid; border-right: solid; border-bottom: solid">
+	  <thead style="background: #E6E6E6">
+		<tr>
+		  <td>
+			<b>Telecommunication Service</b>
+		  </td>
+
+		  <td>
+			<b>MMI Service Code</b>
+		  </td>
+   		</tr>
+	  </thead>
+	  <tr>
+		<td>Telephony</td>
+		<td>11</td>
+	  </tr>
+	  <tr>
+		<td>All data teleservices</td>
+		<td>12</td>
+	  </tr>
+	  <tr>
+		<td>Facsimile services</td>
+		<td>13</td>
+	  </tr>
+	  <tr>
+		<td>Short Message Service</td>
+		<td>16</td>
+	  </tr>
+	  <tr>
+		<td>All teleservices except SMS</td>
+		<td>19</td>
+	  </tr>
+	  <tr>
+		<td>Voice Group Service - Voice Group Call Service (VGCS)</td>
+		<td>17</td>
+	  </tr>
+	  <tr>
+		<td>Voice Group Service - Voice Broadcast Service (VBS)</td>
+		<td>18</td>
+	  </tr>
+	  <tr>
+		<td>All bearer services</td>
+		<td>20</td>
+	  </tr>
+	  <tr>
+		<td>All async services</td>
+		<td>21</td>
+	  </tr>
+	  <tr>
+		<td>All sync services</td>
+		<td>22</td>
+	  </tr>
+	  <tr>
+		<td>All data circuit sync</td>
+		<td>24</td>
+	  </tr>
+	  <tr>
+		<td>All data circuit async</td>
+		<td>25</td>
+	  </tr>
+	  <tr>
+		<td>All dedicated packet access</td>
+		<td>26</td>
+	  </tr>
+	  <tr>
+		<td>All dedicated PAD access</td>
+		<td>27</td>
+	  </tr>
+	  <tr>
+		<td>All GPRS bearer services</td>
+		<td>99</td>
+	  </tr>
+	</table>
+	
+	<h2><a name="SsApiRc">3.3 SsApiRc values</h2>
+
+	<table border="1" style="border-collapse: collapse; border-top: solid; border-left: solid; border-right: solid; border-bottom: solid">
+	<tr>
+		<td>UnspecifedRc</td>
+		<td> Unspecifed MN return code.</td>
+	</tr>
+	<tr>
+		<td>Success</td>
+		<td>MN accepted supplementary service request.</td>
+	</tr>
+	<tr>
+		<td>SupplementaryServicePending</td>
+		<td>A supplementary service is currently pending.</td>
+	</tr>
+
+	<tr>
+		<td>SupplementaryServiceNotPending</td>
+		<td>Operation requires active supplementary service.</td>
+	</tr>
+	<tr>
+		<td>InvalidTipd</td>
+		<td>An invalid Tipd is assigned to supplementary service.</td>
+	</tr>
+	<tr>
+		<td>InvalidServiceCode</td>
+		<td>An invalid service code was passed to the handler method.</td>
+	</tr>
+	<tr>
+		<td>InvalidMmiServiceGroup</td>
+		<td>An invalid basic mmi service group was passed to the handler method.</td>
+	</tr>
+	<tr>
+		<td>InvalidBasicService</td>
+		<td>An invalid basic service was passed to the handler, either it was invalid or there is no MMI code for the basic service</td>
+	</tr>
+	<tr>
+		<td>InvalidTimeOut</td>
+		<td>An invalid time_out value (not in 5 &lt;= value &lt;= 30) was supplied.</td>
+	</tr>
+	<tr>
+		<td>InvalidPhoneNumber</td>
+		<td>An invalid or empty phone number was supplied.</td>
+	</tr>
+	<tr>
+		<td>SupplementaryServiceDenied</td>
+		<td>Supplementary service request rejected by MN.</td>
+	</tr>
+	<tr>
+		<td>NormalServiceRequired</td>
+		<td>Supplementary service requires normal service registration state.</td>
+	</tr>
+	<tr>
+		<td>SsDataLocked</td>
+		<td>Unable to access. Data locked by an other application.</td>
+	</tr>
+	<tr>
+		<td>ConfPasswordMismatch</td>
+		<td>Password mismatch between new password and confirmation</td>
+	</tr>
+	<tr>
+		<td>SupplementaryServiceChangedToMoc</td>
+		<td>Because of CallControl by Sim the SS was changed to a MOC.</td>
+	</tr>
+	<tr>
+		<td>SupplementaryServiceChangedToSs</td>
+		<td>Because of CallControl by Sim the SS was changed to another SS.</td>
+	</tr>
+	<tr>
+		<td>SupplementaryServiceChangedToUssd</td>
+		<td>Because of CallControl by Sim the SS was changed to a USSD.</td>
+	</tr>
+	<tr>
+		<td>UssdTransactionError</td>
+		<td>An error occurred trying to initiate a USSD transaction</td>
+	</tr>
+	</table>
+
+	<h1>Appendix I - Glossary</h1>
+
+	<dl>
+	  <dt>AoC </dt>
+	  <dd>Advice of Charge </dd>
+
+	  <dt>AoCC</dt>
+	  <dd>AoC Charging</dd>
+
+	  <dt>AoCI</dt>
+	  <dd>AoC Information</dd>
+
+	  <dt>APOXI</dt>
+	  <dd>An object oriented application framework for development of man machine interface and applications for mobile terminals. The part of the mobile phone's software the simplifies the communication between MMI and GSM stack.</dd>
+
+	  <dt>BAIC</dt>
+	  <dd>Barring of All Incoming Calls</dd>
+
+	  <dt>BAIC roaming</dt>
+	  <dd>Barring of Incoming Calls when roaming outside the HPLMN country</dd>
+
+	  <dt>BAOC</dt>
+	  <dd>Barring of All Outgoing Calls</dd>
+
+	  <dt>BOIC</dt>
+	  <dd>Barring of Outgoing International Calls</dd>
+
+	  <dt>BOIC exHC</dt>
+	  <dd>Barring of Outgoing International Calls except Home Country</dd>
+
+	  <dt>BS</dt>
+	  <dd>Bearer Service - Basic Services for data transmission</dd>
+
+	  <dt>CB</dt>
+	  <dd>Call Barring</dd>
+
+	  <dt>CCBS</dt>
+	  <dd>Completion of Calls to Busy Subscriber</dd>
+
+	  <dt>CD</dt>
+	  <dd>Call Deflection</dd>
+
+	  <dt>CF</dt>
+	  <dd>Call Forwarding</dd>
+
+	  <dt>CFB</dt>
+	  <dd>Call Forwarding Busy</dd>
+
+	  <dt>CFNRc</dt>
+	  <dd>Call Forwarding Not Reachable</dd>
+
+	  <dt>CFNRy</dt>
+	  <dd>Call Forwarding No Reply</dd>
+
+	  <dt>CFU</dt>
+	  <dd>Call Forwarding Unconditional</dd>
+
+	  <dt>CLI</dt>
+	  <dd>Calling Line Identification</dd>
+
+	  <dt>CLIP</dt>
+	  <dd>CLI Presentation</dd>
+
+	  <dt>CLIR</dt>
+	  <dd>CLI Restriction</dd>
+
+	  <dt>CNAP</dt>
+	  <dd>Calling Name Presentation</dd>
+
+	  <dt>COLP</dt>
+	  <dd>Connected Line Identification Presentation</dd>
+
+	  <dt>COLR</dt>
+	  <dd>Connected Line Identification Restriction</dd>
+
+	  <dt>CUG</dt>
+	  <dd>Closed User Group</dd>
+
+	  <dt>CW</dt>
+	  <dd>Call Waiting (synonym for WAIT)</dd>
+
+	  <dt>ECT</dt>
+	  <dd>Explicit Call Transfer</dd>
+
+	  <dt>eMLPP</dt>
+	  <dd>enhanced Multi-Level Precedence and Pre-emption</dd>
+
+	  <dt>Fixed Network</dt>
+	  <dd>A wire-based phone network</dd>
+
+	  <dt>GSM</dt>
+	  <dd>Global System for Mobile Communication.</dd>
+
+	  <dt>GSM Network</dt>
+	  <dd>The whole infrastructure needed to operate mobile phones</dd>
+
+	  <dt>GSM Stack</dt>
+	  <dd>The part of a mobile phone's software that is managing the interaction between the MS and the GSM network</dd>
+
+	  <dt>HLR</dt>
+	  <dd>Home Location Register - A component of the GSM network</dd>
+
+	  <dt>HOLD</dt>
+	  <dd>Call Holding</dd>
+
+	  <dt>HPLMN</dt>
+	  <dd>Home PLMN - The GSM network of a subscriber's provider, where he has his contract.</dd>
+
+	  <dt>ISDN</dt>
+	  <dd>Integrated Services Digital Network</dd>
+
+	  <dt>MMI</dt>
+	  <dd>Man Machine Interface - The part of the mobile phone's software that is responsible for interacting with the user.</dd>
+
+	  <dt>Mobile Network</dt>
+	  <dd>Please see GSM Network</dd>
+
+	  <dt>Mobile Subscriber</dt>
+	  <dd>Any person operating a mobile phone</dd>
+
+	  <dt>MPTY</dt>
+	  <dd>Multi Party Service</dd>
+
+	  <dt>MS</dt>
+	  <dd>Mobile Station = Software (MMI + APOXI + GSM Stack) + Hardware.</dd>
+
+	  <dt>PLMN</dt>
+	  <dd>Public Lands Mobile Network - The GSM network infrastructure of one provider. If there are more then one provider in a country, there are also more PLMNs.</dd>
+
+	  <dt>Service Provider</dt>
+	  <dd>Entity providing the GSM network infrastructure and services.</dd>
+
+	  <dt>Signal</dt>
+	  <dd>Means of communication between the GSM stack and APOXI</dd>
+
+	  <dt>SPNP</dt>
+	  <dd>Support of Private Numbering Plan</dd>
+
+	  <dt>Supplementary Service</dt>
+	  <dd>Supplementary Service - Services which enhance Basic Services</dd>
+
+	  <dt>Supplementary Service Control Sequence</dt>
+	  <dd>Character string sent to the GSM network to invoke an operation on an Supplementary Service</dd>
+
+	  <dt>Subscriber</dt>
+	  <dd>Any person operating a phone</dd>
+
+	  <dt>TS</dt>
+	  <dd>Tele Service - Basic Services for speech and SMS transmission</dd>
+
+	  <dt>UDUB</dt>
+	  <dd>User Determined User Busy - Rejects an incoming call and sends the user busy signal.</dd>
+
+	  <dt>USSD</dt>
+	  <dd>Unstructured Supplementary Service Data</dd>
+
+	  <dt>UUS</dt>
+	  <dd>User-to-User Signaling</dd>
+
+	  <dt>VPLMN</dt>
+	  <dd>Visited PLMN - A GSM network where a subscriber is roaming in.</dd>
+
+	  <dt>WAIT</dt>
+	  <dd>Call Waiting</dd>
+	</dl>
+  </body>
+
+</html>

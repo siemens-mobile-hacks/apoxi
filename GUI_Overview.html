@@ -1,0 +1,221 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<title>GUI Overview</title>
+<style type="text/css">
+<!--
+.Stil1 {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: xx-large;
+	font-weight: bold;
+}
+.Stil4 {
+	font-size: large;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-weight: bold;
+}
+.Stil6 {font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 12px;}
+.Stil8 {font-family: Verdana, Arial, Helvetica, sans-serif; font-size: larger;}
+.Stil9 {font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: medium;
+	font-weight: bold; }
+.Stil11 {font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 12px; font-weight: bold; }
+.Stil12 {font-family: "Courier New", Courier, mono; font-size: 12px; }
+.Stil13 {font-family: "Courier New", Courier, mono}
+.Stil16 {font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 12px; font-weight: bold; font-style: italic; }
+.Stil18 {font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 12px; font-style: italic; }
+-->
+</style>
+</head>
+
+<body>
+<div align="center">
+  <p align="center" class="Stil1">GUI Overview </p>
+  <p align="left" class="Stil4">1 Introduction</p>
+  <p align="justify" class="Stil6">The main features of APOXI GUI are:</p>
+  <ul>
+    <li class="Stil6">
+      <div align="left">Event-based communication</div>
+    </li>
+    <li class="Stil6">
+      <div align="left">Integrated window system</div>
+    </li>
+    <li class="Stil6">
+      <div align="left">Dynamically changeable look and feel</div>
+    </li>
+    <li class="Stil6">
+      <div align="left">Multilingual support (bidirectional input)</div>
+    </li>
+    <li class="Stil6">
+      <div align="left">Hardware-independent graphical device interface</div>
+    </li>
+  </ul>
+  <p align="justify" class="Stil6">    The document gives an overview of the APOXI-GUI-framework.</p>
+  
+  <p align="justify" class="Stil4">2 Application and Window</p>
+  <p align="justify" class="Stil6">Two main parts of the APOXI-GUI-framework are the classes <em>Application</em> and <em>Window</em>. APOXI windows have the 
+  same features as windows known from modern operating systems on desktop personal computers:</p>
+  <ul>
+    <li class="Stil6">
+      <div align="left">They can change in size and position</div>
+    </li>
+    <li class="Stil6">
+      <div align="left">They have themeable frames</div>
+    </li>
+    <li class="Stil6">
+      <div align="left">They can have child windows, as commonly known from multiple document interfaces</div>
+    </li>
+  </ul>
+  <p align="justify" class="Stil6">    An application may contain a variable number of windows. The drawing of the window and its content is done on 
+    a so called device-context. A device-context is implemented by the class <em>DeviceContext</em> and represents an 
+    abstract drawing area, with defined colors for pens and brushes, text-attributes and raster-operations.</p>
+  <p align="justify" class="Stil6">    It is very important to be aware that a window always belongs to one application and may not be accessed in a 
+    direct manner from other applications. This is because each application might run in its own thread. As a thumb 
+    rule:<br>
+    <em>Applications may only communicate with each other by posting messages. Direct access to the data of another 
+    application is not allowed.</em></p>
+  <p align="justify" class="Stil4">3 Components</p>
+  <p align="justify" class="Stil6">Every graphical object is derived from the class Component, which represents a graphical object with a rectangle 
+    as boundaries. Every component is able to handle and route messages. There are two groups of components, 
+  they are:</p>
+  <ul>
+    <li class="Stil6">
+      <div align="left">Drawable objects</div>
+    </li>
+    <li class="Stil6">
+      <div align="left">Controls</div>
+    </li>
+  </ul>
+  <p align="justify" class="Stil8">3.1 Drawable Objects</p>
+  <p align="justify" class="Stil6">Drawable objects are represented by the class <em>DrawableObject</em>, which is the base for all graphical objects, which 
+    do not interact with the user but receive messages. They can be drawn and have boundaries but have no 
+    distinction between frame and client area and cannot have focus. The classes <em>ImageBox</em>, <em>ProgressBar</em> and 
+  <em>TextBox</em> are examples for drawable objects.</p>
+  <table width="98%"  border="1" align="center" cellpadding="0" cellspacing="0" bordercolor="#000000">
+    <tr>
+      <td height="245"><div align="center"><img src="figures/Drawable_Objects.png" width="613" height="201"></div></td>
+    </tr>
+  </table>
+  <p align="justify" class="Stil11">Figure&nbsp;1. Drawable Objects</p>
+  <p align="justify" class="Stil8">3.2 Controls</p>
+  <p align="justify" class="Stil6">Controls are represented by the class Control and can have one or more child-components which are layouted 
+    inside the control. A control can be drawn and has a distinction between a frame-area and a client-area. 
+    Messages send to a control are handled by the parent-control first and then forwarded to potential childcomponents. 
+    Controls can get the focus and hence interact with the user, as all key-messages are forwarded to 
+  the focused control. The classes <em>CheckBoxControl</em>, <em>LineEditor</em> and <em>PushButton</em> are examples for controls.</p>
+  <table width="98%"  border="1" align="center" cellpadding="0" cellspacing="0" bordercolor="#000000">
+    <tr>
+      <td height="149"><div align="center"><img src="figures/Controls.png" width="532" height="112"></div></td>
+    </tr>
+  </table>
+  <p align="justify" class="Stil11">Figure&nbsp;2. Controls</p>
+  <p align="justify" class="Stil9">3.2.1 Window</p>
+  <p align="justify" class="Stil6">The class Window extends the class Control and has the following additional optional features:</p>
+  <ul>
+    <li class="Stil6">
+      <div align="left">Title</div>
+    </li>
+    <li class="Stil6">
+      <div align="left">Softkey bar</div>
+    </li>
+    <li class="Stil6">
+      <div align="left">Can be opened modal or modeless</div>
+    </li>
+  </ul>
+  <p align="justify" class="Stil11">Opening a Window Modal vs. Opening Modeless</p>
+  <p align="justify" class="Stil6">A window can be opened modal by invoking Window::OpenModal() or modeless by invoking 
+  Window::OpenModeless().</p>
+  <p align="justify" class="Stil12">statement 1;<br>
+ align="justify" class="Stil12">win.OpenModal();<br>
+  align="justify" class="Stil12">statement 2;</p>
+  <p align="justify" class="Stil6">In this case statement 1 is executed and the window is opened modeless. Statement 2 will be executed 
+  immediately after Window has been opened.</p>
+  <p align="justify" class="Stil6 Stil13">    statement 1;<br>
+   align="justify" class="Stil6">win.OpenModal();<br>
+   align="justify" class="Stil6">statement 2;</p>
+  <p align="justify" class="Stil6">    Now statement 1 is executed and the window is opened modal. Statement 2 is executed only after the window has 
+    been closed.</p>
+  <p align="justify" class="Stil8">3.3 Sample Application</p>
+  <p align="justify" class="Stil6">The following implementation of a sample application should convey a feeling of APOXI.</p>
+  <p align="justify" class="Stil9">3.3.1 Displaying &quot;Hello World&quot;</p>
+  <p align="justify" class="Stil6">In order to write a &quot;Hello world&quot;-application on the mobile phone, a window needs to be created for drawing a text. 
+  The header-file for the class MyWindow is shown in the following:</p>
+  <p align="justify" class="Stil12">    #if !defined(Mmi_MyWindow_hpp)<br>
+  #define Mmi_MyWindow_hpp</p>
+  <p align="justify" class="Stil12">#include &lt;GuiExtensions/MmiWindow.hpp&gt;</p>
+  <p align="justify" class="Stil12">    class MyWindow : public Window<br>
+    {<br>
+    <br>
+    typedef MmiWindow Base;</p>
+  <p align="justify" class="Stil12"> protected: <br>
+ virtual void OnPaint(const Rect&amp; repaint_rect);  
+  <p align="justify" class="Stil12">    };
+<p align="justify" class="Stil12">#endif // Mmi_MyWindow_hpp   
+<p align="justify" class="Stil9">3.3.2 The Implementation of MyWindow
+<p align="justify" class="Stil6">The drawing of a window is done on the device context. All drawing operations done on the device context, which represents an abstract drawing area and has defined colors for pens and brushes, text-attributes and rasteroperations. 
+  Device context of control is retrieved via <em>GetDeviceContext()</em> and PaintDc provides comfortable usage 
+of a standard device context. The <em>MyWindow.cpp</em> for &quot;Hello World&quot; is given in the following code: 
+<p align="justify" class="Stil6 Stil13">#include &quot;MyWindow.hpp&quot;
+<p align="justify" class="Stil6 Stil13">void MyWindow::OnPaint(const Rect&amp; repaint_rect)<br>
+{
+<p align="justify" class="Stil6 Stil13"> Base::OnPaint(repaint_rect);<br>
+ PaintDc pdc(GetDeviceContext());<br> 
+pdc.DrawText(5, 10, Tr(L&quot;Hello world&quot;));
+<p align="justify" class="Stil6 Stil13">  }
+<p align="justify" class="Stil6">Windows also need to be embedded in a common context, which is provided by an application. So before opening 
+any window, an application must be created.This application class should be derived from <em>Application</em>.
+<p align="justify" class="Stil8">3.4 Getting Multilingual
+<p align="justify" class="Stil6">In general, the usage of hardcoded strings should be avoided, because applications should support different 
+  languages. For this multilingual support, programmer simply has to pass all texts to the Tr()-method (&quot;Translate&quot;) 
+  before displaying them. This performs fast lookup within current translation table and returns the translated string 
+literal corresponding to the argument. If no translation table is provided, then the argument itself will be returned. E.g. Instead of L&quot;Hello world&quot; , Tr(L&quot;Hello world&quot;) should be used as shown in the <em>MyWindow.cpp</em> example code. 
+<p align="justify" class="Stil8">3.5 Handling key events
+<p align="justify" class="Stil6">Handling of a key event in APOXI is shown in the following figure.
+<table width="98%"  border="1" align="center" cellpadding="0" cellspacing="0" bordercolor="#000000">
+  <tr>
+    <td height="284"><div align="center"><img src="figures/key_handling.png" width="603" height="230"></div></td>
+  </tr>
+</table>
+<p align="justify" class="Stil6">Figure 3. Handling key event
+<p align="justify" class="Stil6">The method <em>Window::OnKeyDown()</em> is invoked whenever a key has been pressed. In the example shown in 
+  figure 3 , when the window is opened <em>MyWindow::OnPaint()</em> is called and &quot;No key pressed&quot; is displayed. Pressing 
+  the key &quot;2&quot; invokes a call of <em>MyWindow::OnKeyDown()</em>. In MyWindow::OnKeyDown() the text in the MyWindow 
+will be updated to display &ldquo;Key 2 has been pressed&rdquo;.
+<p align="justify" class="Stil6">  When changing data which should be displayed, the window must be invalidated to trigger a paint-event. This can 
+  be done by invoking <em>Window::Invalidate()</em>. <em>Window::OnKeyDown()</em> offers a BOOLEAN as return-value, which 
+  indicates whether a key has been dispatched. If the key is not treated, the base-method should be called.
+<p align="justify" class="Stil8">3.6 Items
+<p align="justify" class="Stil6">A lot of GUI controls like menus and lists use items for specifying their content. An Item is at least represented by a text and/or an icon. The drawing of the item properties (like the text or icon) is not done by the item itself but usually by a GUI-control (e. g. <em>ItemMenu</em> or <em>ItemGrid</em>). When creating an item it will be assigned to this control and the item informs the control when an item property like the text has been changed, so that the control can redraw itself to show the changed item properties. The benefit for the application developer is that it is possible to modify the item without the need of taking care which GUI-components must be updated, as this is done automatically.
+<p align="justify" class="Stil6">  The following example shows two windows which contains an ItemGrid and Item-menu with 3 embedded items:
+<table width="98%"  border="1" align="center" cellpadding="0" cellspacing="0" bordercolor="#000000">
+  <tr>
+    <td height="230"><div align="center"><img src="figures/ItemGrid.png" width="316" height="189"></div></td>
+  </tr>
+</table>
+<p align="justify" class="Stil11">Figure 4. Item Grid
+<p align="justify" class="Stil9">3.6.1 AbstractItemContainer and ItemContainer
+<p align="justify" class="Stil6">The class <em>AbstractItemContainer</em> is derived from Item and extends the item by an interface for embedding a variable number of items as part of the item-container. The class <em>ItemContainer</em> offers a default implementation and might be used for building a menu-hierarchy which might be displayed by the controls <em>ItemMenu</em> or ItemTree.
+<p align="justify" class="Stil9">3.6.2 Actions
+<p align="justify" class="Stil6">In GUI applications, various user events can be triggered by Menu entry, Button, Softkey etc. Actions bundle 
+  logical behaviour and graphical representation. Actions can be attached to Dispatchers (<em>Application</em>, <em>Window</em>, 
+  etc.). Dispatchers are informed with <em>ActionExecutedMsg</em> and if action is executed (only if dispatcher is a Window) 
+  <em>OnActionExecuted(Action* action)</em> is called.
+<p align="justify" class="Stil6">  Some predefined actions for common use cases are given in the following:
+<ul>
+  <li>  
+    <div align="left"><span class="Stil16">CheckBoxAction</span><span class="Stil18"></span><span class="Stil6">: Toggles between a selected/deselected state </span></div>
+  </li>
+  <li class="Stil6">
+    <div align="left"><em><strong>RadioButtonAction</strong></em>: One of many choice within <em>RadioButtonGroup</em></div>
+  </li>
+  <li class="Stil6">
+    <div align="left"><em><strong>CloseWindowAction</strong></em>: Closes current window in its default behaviour</div>
+  </li>
+</ul>
+
+<p align="left" class="Stil4">3.7 Device Context </p>
+<p align="justify" class="Stil6">All drawing operations in APOXI are done on the device context, which is represented by the class <em>DeviceContext</em>. A device-context offers methods for drawing lines, rectangles, text and much more. All drawing methods use the current set color, text-format and other attributes which may be modified for each instance of the class DeviceContext. All operations on a device-context must be encapsulated between <em>BeginUpdate()</em> and <em>EndUpdate()</em>. </p>
+</body>
+</html>

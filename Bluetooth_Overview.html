@@ -1,0 +1,219 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<title>Bluetooth Overview</title>
+<style type="text/css">
+<!--
+.Stil1 {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: xx-large;
+	font-weight: bold;
+}
+.Stil4 {
+	font-size: large;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-weight: bold;
+}
+.Stil6 {font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 12px;}
+.Stil22 {font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 12px; font-weight: bold; }
+.Stil23 {font-family: Verdana, Arial, Helvetica, sans-serif; font-size: large;}
+.Stil29 {font-family: Verdana, Arial, Helvetica, sans-serif; font-size: medium; font-weight: bold; }
+-->
+</style>
+</head>
+
+<body>
+<div align="center">
+  <p align="justify" class="Stil1">Bluetooth Overview </p>
+  <p align="justify" class="Stil4">1 Introduction </p>
+  <p align="justify" class="Stil6">Bluetooth is a computing and telecommunications industry specification that describes how mobile phones, 
+  computers and other BT devices can easily interconnect wireless with each other.</p>
+  <p align="justify" class="Stil6">    The APOXI Bluetooth framework forms a part of the APOXI framework and is used to support Bluetooth 
+    functionality to the MMI and MMI Applications. This Bluetooth functionality includes the dial up network, head set 
+support, etc.</p>
+  <p align="justify" class="Stil4">    2 Architecture</p>
+  <p align="justify" class="Stil6">    
+    The APOXI Bluetooth framework connects the Bluetooth MMI &amp; MMI Applications to the Bluetooth API &amp; Bluetooth 
+Stack. The gray areas in the following figure form the APOXI Bluetooth framework.</p>
+  <p align="justify" class="Stil6">    The Bluetooth Java API forms the interface to the &quot;BtAPOXI Base Classes&quot;, so that the can be used out of Java-
+    Applications. The interface to Bluetooth Java-Applications is formed by Java classes that are implemented via the 
+&quot;Java Native Interface (JNI)&quot; to gain access to the classes of the APOXI Bluetooth Framework, which are 
+implemented.</p>
+  
+<div align="justify">
+  <table width="98%"  border="1" align="center" cellpadding="0" cellspacing="0" bordercolor="#000000">
+    <tr>
+      <td height="314"><div align="center"><img src="figures/Bluetooth_Architecture.png" width="465" height="284"></div></td>
+    </tr>
+  </table>
+</div>
+  <p align="justify" class="Stil22">Figure&nbsp;1. Bluetooth Architecture</p>
+  <p align="justify" class="Stil6">The lower level interface - the interface to the Bluetooth API and the Bluetooth Stack - is written in C and SDL. 
+    The BtAPOXI Base Classes do not communicate to the Bluetooth Stack directly. It always uses the Bluetooth API 
+  to query some information from the Bluetooth Stack or send commands to the Bluetooth Stack. </p>
+  <p align="justify" class="Stil6">    Bluetooth is defined of different profiles and each profile provides certain procedures and services.The most basic 
+    profile is the Generic Access Profile.</p>
+  <p align="justify" class="Stil4">3 Generic Functionality</p>
+  <p align="justify" class="Stil6">Bluetooth application is a composition of different BT profiles, specified by [BT-Profiles-Spec]. The basic 
+    application functionality provides a main entry point for the user and common functionality for each profile. 
+    Bluetooth application is unitized on profile level, which means, it is possible to add or remove functionality that is 
+    covered by profile without any impact to the applications architecture. Profiles are encapsulated as separate 
+  modules offering an API to other profiles. Profiles can interact using other profiles APIs.</p>
+  <p align="justify" class="Stil4">4 General Overview of Packages</p>
+  <p align="justify" class="Stil6">    The General overview of packages in APOXI Bluetooth are shown in Figure 2.</p>
+  
+<div align="justify">
+  <table width="98%"  border="1" align="center" cellpadding="0" cellspacing="0" bordercolor="#000000">
+    <tr>
+      <td height="328"><div align="center"><img src="figures/Bluetooth_BasicPackage.png" width="680" height="295"></div></td>
+    </tr>
+  </table>
+</div>
+  <p align="justify" class="Stil22">Figure&nbsp;2. General Overview of Packages</p>
+  <p align="justify" class="Stil4">5 Bluetooth Profiles</p>
+  <p align="justify" class="Stil6">    Bluetooth uses several different &quot;profiles&quot; for different sorts of interaction. These are designed for a specific task, 
+    and not all devices support all profiles. The Bluetooth profiles provided by APOXI Bluetooth and their usecases 
+are described in this section.</p>
+  <p align="justify" class="Stil23">5.1 GAP &amp; SDAP Profile</p>
+<p align="justify" class="Stil6">    The use cases of GAP &amp; SDAP Profile are explained in this section.</p>
+  <p align="justify" class="Stil29">    5.1.1 GAP (Generic Access Profile)</p>
+  <p align="justify" class="Stil6">    Defines the generic requirements for detecting and establishing a connection to a Bluetooth device. This profile 
+    defines the generic procedures related to discovery of Bluetooth devices,connecting to Bluetooth devices etc. This 
+profile defines the usecases for the local device. The use cases are listed in the following:</p>
+  
+  <div align="justify">
+          <ul class="Stil6">
+            <li>
+              <strong>Set Discoverability</strong>: If this is not set for local device, the other devices searching for Bluetooth devices will not be able to discover that particular device</li>
+              <li>
+                <strong>Set Device Name</strong> : Sets the Bluetooth device name for the local device</li>
+              <li>
+                <strong>Set Pairability</strong>: Sets the pairabilty for the local device or in other words enables the device to accept the pairing.</li>
+              <li>
+                <strong>Set Connectivity</strong>: if connectivity is set on local device, other devices can connect to the device when it comes within their area of radio coverage</li>
+              <li>
+                <strong>Pair</strong>: Pairing of devices means to make communication among devices available via a common communication code. To generate this communication code the user is prompted to enter a security code.:When no pairing is done, every time a remote device tries to connect to the local device, depending on the security settings of the requested profile, a request for a pin number is executed.</li>
+              <li>
+                <strong>Unpair</strong>: Unpairing destroys a former created pairing of two Bluetooth Devices i.e, pairing with the selected device is cancelled. The user should be informed that the device is no longer a paired device.</li>
+              <li>
+                <strong>Trust</strong> : This feature is only available if the state of the device is paired and not trusted. It is part of the context menu of the selected device and after selecting this feature the user should be informed that the device is marked as trusted. Marking a device as trusted device overcomes the authorization, i.e. confirming a connection request is no more required because the device is authorized to establish a connection. </li>
+              <li>
+                <strong>Untrust</strong>: This feature is only available if the state of the device is paired and trusted. This feature makes a trusted device not trusted.</li>
+          </ul>
+</div>
+  <p align="justify" class="Stil29">5.1.2 SDAP (Service Discovery Application Profile)</p>
+  <p align="justify" class="Stil6">    Bluetooth device to discover services registered in other Bluetooth devices.This profile is defined for remote 
+devices. The use cases of this profile are listed in the following:</p>
+  
+  <div align="justify">
+          <ul>
+            <li class="Stil6">
+              <strong>Search for devices</strong>: Search for other Bluetooth devices ready for communication </li>
+              <li class="Stil6">
+                <strong>Querying service records</strong></li>
+          </ul>
+</div>
+  <p align="justify" class="Stil23">5.2 FAX and DUN Profile</p>
+  <p align="justify" class="Stil6">    The use cases of FAX Profile and DUN(Dial-up Networking Profile ) Profile are described in this section.<br>
+</p>
+  <p align="justify" class="Stil29">5.2.1 DUN Profile</p>
+  <p align="justify" class="Stil6">    Dial-up Networking Profile (DUN) profile defines the requirements for Bluetooth devices necessary to support the 
+    Dial-up networking use case. The Bluetooth mobile phone can be used as a wireless modem for connecting to a 
+dial-up internet access server. The use cases of DUN Profile are listed in the following:</p>
+  
+  <div align="justify">
+          <ul class="Stil6">
+            <li>
+              <strong>Remote Connect</strong>: Remote DUN-Serivce connects to local device </li>
+              <li>
+                <strong>Remote Disconnect</strong>: Remote DUN-Serivce disconnects from the local device </li>
+              <li>
+                <strong>Local Disconnect</strong>: Local device disconnects from the remote DUN-Serivce </li>
+          </ul>
+</div>
+<p align="justify" class="Stil29"><strong>5.2.2 FAX Profile </strong></p>
+  <p align="justify" class="Stil6"> The Fax profile defines the requirements for Bluetooth devices necessary to support the Fax use case. The 
+    Bluetooth mobile phone can be used bas a wireless fax modem to send or receive a fax message.The use cases 
+of FAX Profile are listed in the following:</p>
+  
+  <div align="justify">
+          <ul>
+            <li class="Stil6">
+              <strong>Remote Connect</strong>: Remote FAX-Serivce connects to local device</li>
+              <li class="Stil6">
+                <strong>Remote Disconnect</strong>: Remote FAX-Serivce disconnects from the local device </li>
+              <li class="Stil6">
+                <strong>Local Disconnect</strong>: Local device disconnects from the remote FAX-Serivce</li>
+          </ul>
+</div>
+  <p align="justify"><span class="Stil23">5.3 HS(Head Set) and HF(Hands Free) Profile</span></p>
+  <p align="justify" class="Stil6">    The use cases of HS Profile and HF Profile are described in this section.</p>
+  <p align="justify" class="Stil29">    5.3.1 HS Profile</p>
+  <p align="justify" class="Stil6">    The Headset (HS) Profile defines the requirements to support the Headset use case. The use cases are listed in 
+the following:</p>
+  
+  <div align="justify">
+          <ul class="Stil6">
+            <li>
+              <strong>Local Connect</strong>: Local device connects to the remote HS</li>
+              <li>
+                <strong>Remote Connect</strong>: Remote HS connects to local device </li>
+              <li>
+                <strong>Remote Disconnect</strong>: Remote HS disconnects from the local device </li>
+              <li>
+                <strong>Local Disconnect</strong>: Local device disconnects from the remote HS </li>
+              <li>
+                <strong>Local / Remote Volume control</strong></li>
+              <li>
+                <strong>Transfer audio to HS from HS or mobile phone</strong>: When there is an on-going call between the mobile and an external telephone, the user can transfer the call to the headset from mobile or from headset.</li>
+              <li>
+                <strong>Transfer of audio from HS to mobile phone</strong></li>
+              <li>
+                <strong>Accept MTC (Mobile Terminated Call) on HS</strong> </li>
+              <li>
+                <strong>Release ongoing call from mobile phone and HS</strong></li>
+          </ul>
+</div>
+  <p align="justify"><span class="Stil29">5.3.1 HF Profile</span></p>
+  <p align="justify" class="Stil6">    The use cases of HF (HandsFree) profile are same as those provided by the HS Profile. In addition, HF Profile 
+    also provides the possibility for multy party call.</p>
+  
+  <div align="justify">
+          <ul class="Stil6">
+            <li>
+              <strong>Local Connect</strong>: Local device connects to the remote HF</li>
+              <li>
+                <strong>Remote Connect</strong>: Remote HF connects to local device </li>
+              <li>
+                <strong>Remote Disconnect</strong>: Remote HF disconnects from the local device </li>
+              <li>
+                <strong>Local Disconnect</strong>: Local device disconnects from the remote HF</li>
+              <li>
+                <strong>Local / Remote Volume control</strong></li>
+              <li>
+                <strong>Transfer audio to HF from HF or mobile phone</strong>: When there is an on-going call between the mobile and an external telephone, the user can transfer the call to the handsfree from mobile or from handsfree.</li>
+              <li>
+                <strong>Transfer of audio from HF to mobile phone</strong></li>
+              <li>
+                <strong>Accept MTC (Mobile Terminated Call) on HF</strong> </li>
+              <li>
+                <strong>Release ongoing call from mobile phone and HF</strong></li>
+              <li>
+                <strong>Voice Recognition</strong></li>
+              <li>
+                <strong>MOC from HF</strong></li>
+          </ul>
+</div>
+  <p align="justify" class="Stil23">5.4  OBEX Profile</p>
+  <p align="justify" class="Stil6">    OBEX profile is used to get and send data from the remote devices. With this profile it is possible to use a Bluetooth 
+    device for exchanging objects with another Bluetooth device. The Bluetooth device can be used as OBEX Server 
+    as well as OBEX Client. The Profile can be used in conjunction with the APOXI OBEX implementation via a 
+    callback interface and also as stand alone Bluetooth only implementation based on a message interface. It 
+    implements the standard OBEX operations like Connect, Disconnect, Put, Get, SetPath and Abort on both sides<br>
+    (server and client).</p>
+  <p align="justify" class="Stil6">&nbsp;</p>
+  <p align="justify" class="Stil6">&nbsp;</p>
+</body>
+</html>

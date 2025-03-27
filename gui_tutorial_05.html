@@ -1,0 +1,2014 @@
+<html>
+    <head>
+        <link href="doxygen.css" rel="stylesheet" type="text/css">
+        <title>5 Controls</title>
+    </head>
+
+    <body>
+        [ Previous: <a href="gui_tutorial_04.html">Items</a> ] [ Next: <a href="gui_tutorial_06.html">Drawable Objects</a> ]
+
+        <h1>5 Controls</h1>
+
+        <p>
+            A control has the following characteristics:
+            <ul style="line-height: 150%">
+                <li>has boundaries</li>
+                <li>can receive messages</li>
+                <li>can be drawn</li>
+                <li>may get the focus</li>
+                <li>has a distinction between a frame-area and a client-area:<br/>
+                    <img src="pics/control.gif" alt="Control"/>
+                </li>
+            </ul>
+        </p>
+
+        <h2>5.1 Window</h2>
+
+        <p>
+            The class <a href="classWindow.html">Window</a> extends the class <a href="classControl.html">Control</a> by the following points:
+            <ul style="line-height: 150%">
+                <li>allows to set softkeys</li>
+                <li>can have a title</li>
+                <li>can be opened modal or modeless</li>
+            </ul>
+
+            It is very important to be aware, that a window may only be modified
+            in the context of the application it belongs to in a synchronous manner. This
+            is because each application might be represented by an own thread.
+            Invoking methods from another application require that the method is explicitely
+            marked as thread safe.
+        </p>
+
+        <p>
+            Example: the phonebook application wants to close a window from the call handling
+            application. This may <em>not</em> be done the following way:
+            <pre>
+<font color="#990000">void PhonebookApp::OnKeyDown(...) {
+    ...
+    call_handling_win->Close(); // wrong! call_handling_win does not belong to the phonebook application
+}</font></pre>
+            To close the window from the call handling application, the phonebook application
+            has to to this in an asynchronous way by posting a message:
+            <pre>void PhonebookApp::OnKeyDown(...) {
+   ...
+   CloseWindowMsg(call_handling_win).Post();
+}</pre>
+
+            This is valid for all other methods of a window too. To be more precise this not related to
+            windows only, but is a general rule when communicating between threads. It's explicitely
+            stated here because accessing windows from other applications is a common made mistake. As a thumb rule:
+            <div class="important">
+                Applications may only communicate with each other by posting messages. Direct access to the data of
+                another application is not allowed.
+            </div>
+
+        </p>
+
+        <h3>5.1.1 Adding Softkeys</h3>
+
+        <p>
+            Per default each application provides a <a href="classPanel.html">Panel</a>, which usually is placed
+            at the bottom of the <a href="classDesktop.html">Desktop</a> and shows the status of the softkeys.
+            The number of softkeys is given by KeyboardConfig::GetSoftkeyCount().
+            Every softkey is represented by an instance of the class <a href="classAction.html">Action</a>.
+            The following code shows how to set the softkeys of a window and react on them:
+        </p>
+
+        <b>MyWindow.hpp</b>
+        <pre>
+#include &lt;Gui/Window.hpp&gt;
+#include &lt;Gui/Action.hpp&gt;
+#include &lt;Gui/CloseWindowAction.hpp&gt;
+
+class MyWindow : public <a href="classWindow.html">Window</a> {
+    public:
+        void Init();
+
+    private:
+        <a href="classConfirmAction.html">Action</a> m_ok_action;
+        <a href="classCloseWindowAction.html">CloseWindowAction</a> m_close_action;
+        
+        void OpenAlert();
+};</pre>
+
+        <b>MyWindow.cpp</b>
+        <pre>
+#include "MyWindow.hpp"
+
+void MyWindow::Init()
+{
+    Window::Init();
+    SetTitle(Tr(L"Softkeys"));
+
+    m_ok_action.Init(this, Tr(L"OK"), (Action::ExecFn)&MyWindow::OpenAlert);
+    SetLeftSoftkey(&m_ok_action);
+
+    m_close_action.Init(this, Tr(L"Close"));
+    SetRightSoftkey(&m_close_action);
+}
+
+void MyWindow::OpenAlert()
+{
+    <a href="classAlert.html">Alert</a> alert(Tr(L"OK has been pressed");
+    alert.OpenModal();
+}</pre>
+
+        <p>
+            After initializing an action it is assigned to the corresponding
+            softkey by SetLeftSoftkey(...) and SetRightSoftkey. When the m_ok_action
+            has been executed by pressing the left softkey, an alert will be opened:
+        </p>
+
+        <p>
+            <img src="pics/softkeys.gif" alt="Softkeys">
+        </p>
+
+        <p>
+            The methods Window::SetLeftSoftkey(Action* action) and
+            Window::SetRightSoftkey(Action* action) are just wrapper-methods for
+            the method Window::SetSoftkey(INT index, Action* action).
+        </p>
+
+        <p>
+            <b>Important:</b> to provide backward compatibility with APOXI-version below 1.8.0 per default
+            no <a href="classDesktop.html">Desktop</a> is instantiated. The desktop contains the
+            <a href="classPanel.html">Panel</a> which is required to display the softkeys. To instantiate
+            the desktop overwrite the method Application::OnStartup of one application (e. g. the main-application
+            of the MMI) the following way:
+            <pre>
+void MyApp::OnStartup()
+{
+    Base::OnStartup();
+    Desktop::CreateInstance();
+}</pre>
+        </p>
+        
+        <h3>5.1.1.1 Using More Than Two Softkeys</h3>
+        
+        <p>APOXI supports a variable number of softkeys. To make them available the following steps are necessary</p>
+        <ul>
+        	<li>Set the define APOXI_MAX_SOFTKEY_COUNT to the number of required softkeys in the build environment.
+        		This usually is done in the file project.cfg.default of the make directory.</li>
+        	<li>Find out the keycode for the additional softkeys. Usually the keycode is defined by low level
+        		drivers and is outside the scope of APOXI. The keycode is required to adjust the following files:</li>
+        		<ul>
+		        	<li>The methods GetSoftkey() and GetSoftkeyCount() from the class KeyboardConfig must
+		        		be implemented (the class KeyboardConfig is located in the directory 'config' of the project).
+		        		Usually GetSoftkeyCount() just returns APOXI_MAX_SOFTKEY_COUNT and GetSoftkey() must be extended
+		        		to return the corresponding keycode for the additional softkeys.</li>
+		        	<li>For the host simulator the file mmisim.xml must be adjusted to be able to click on the additional
+		        		softkeys. It's recommended to use the tags &lt;key name="SoftkeyLeft"...&gt; and &lt;key name="SoftkeyRight"...&gt;
+		        		as reference.
+		        	</li>
+		        </ul>
+	        <li>
+        		The MMI must set the corresponding actions to the additional softkeys.
+        	</li>     	
+        </ul>
+
+        <h3>5.1.2 Opening a Window Modal vs. Opening Modeless</h3>
+
+        <p>
+            A window can be opened modal by invoking Window::OpenModal()
+            or modeless by invoking Window::OpenModeless().
+        </p>
+        <pre>
+statement 1;
+win.OpenModeless();
+statement 2;</pre>
+
+        <p>
+            In this case statement 1 is executed and the window is opened modeless. This means that when invoking win.OpenModeless() the window will be opened immediately and after the window has
+            been opened statement 2 is executed, while the window still is open.
+        </p>
+        <pre>
+statement 1;
+win.OpenModal();
+statement 2;
+        </pre>
+
+        <p>
+            Now statement 1 is executed and the window is opened modal.
+            Opening a window modal means, that the method OpenModal
+            is exited after the window has been closed, even if this takes e. g.
+            some minutes. Hence statement 2 is executed after the window has
+            been closed (e. g. when pressing OK or Cancel in the opened window).
+            Please note that when opening a window modal the system is not blocked:
+            <ul style="line-height: 150%">
+                <li>every application and window of the whole system will get its messages</li>
+                <li>also a window, which opened a modal window, will get its messages</li>
+            </ul>
+        </p>
+
+        <p>
+            This is possible by using a so called Active Wait in the implementation of
+            Window::OpenModal. Opening a window modal makes sense especially for dialog-windows:
+        <p>
+        <pre>
+INT return_code = dialog_win.OpenModal();
+if (return_code == DialogWindow::ConfirmId) {
+    // the dialog-window has been exited by pressing OK
+}
+else {
+    // the dialog-window has been exited by pressing Cancel
+}</pre>
+
+        <p>
+            Opening windows modal burdens the callstack of the system, hence it should be avoided to open windows modal in a recursive manner. 
+      </p>
+  
+        <p>
+            When opening a window, the following methods of
+            the class <a href="classWindow.html">Window</a> are invoked in
+            this order:
+            <ol>
+                <li><b>OnGetFocus:</b> Usually when opening a window it will be opened in foreground
+                and hence get the focus. In this case the method Control::OnGetFocus is invoked
+                which might be overwritten to initialize focus dependand properties. The only case
+                where the window cannot get the focus is if another window is already open which has
+                a higher focus priority.</li>
+
+                <li><b>OnOpen:</b> Overwrite this method to initialize properties on each opening
+                of the window. If expensive operations are done (like reading out data
+                from a <a href="classProvider.html">Provider</a>) it is recommended to
+                disable the window temporary by invoking Window::SetDisabled(TRUE) before
+                the expensive operation and Window::SetDisabled(FALSE) at the end. This
+                assures that the window does not react on e. g. key presses during the
+                expensive operation.</li>
+
+                <li><b>OnLayoutClient:</b> Overwrite this method to layout the sub-components
+                which are embedded inside the window.</li>
+
+                <li><b>OnPaint:</b>Overwrite this method to implement a customized drawing
+                of the window content.</li>
+            </ol>
+
+            It is not allowed to open or close another window inside the context of the methods
+            OnGetFocus, OnOpen, OnLayoutClient and OnPaint.
+        </p>
+
+        <h3>5.1.3 Closing a window</h3>
+
+        <p>
+            A window can be closed by invoking Window::Close. Note that closing a window is only allowed in the context
+            of the application the window belongs to.
+        </p>
+
+        <p>
+            When closing a window, the following methods of the class
+            <a href="classWindow.html">Window</a> are invoked in this order:
+            <ol>
+                <li><b>OnClose:</b> Overwrite this method to cleanup properties on closing the window.</li>
+                <li><b>OnLoseFocus:</b> Is invoked only, if the window has the focus.</li>
+            </ol>
+
+            It is not allowed to open or close another window inside the context of the methods
+            OnLoseFocus and OnClose. If it is required to close a window inside those methods,
+            this can be done asynchronously by invoking 
+            <pre>CloseWindowMsg(win).Post();</pre>
+            By this command the window will be closed as soon as the next idle state is reached.
+        </p>
+        
+        <h3>5.1.4 Multiple Display Support</h3>
+        
+        <p>
+          APOXI supports a varible number of displays at the same time. To show a window on a specific display, the
+          method Window::SetDisplayIndex(INT index) must be invoked, where <em>index</em> specifies the index of the display
+          where the window should be shown. Usually the index 0, which is also the default value, indicates the main display.
+          An already opened window can be moved to another display by invoking this method.
+        </p>
+
+    <p>
+      For the support of multiple display some configuration must be done:
+      <ul>
+        <li>
+          In the class <a href="classDisplayConfig.html">DisplayConfig</a> the methods GetDisplayCount(), GetDisplayWidth(INT display_index),
+          GetDisplayHeight(INT display_index) and GetFrameBuffer(INT display_index) must be adjusted. For example the implementation for
+          two displays might look like this:
+          <pre>
+UINT8 GDI_HUGE* DisplayConfig::GetFrameBuffer(INT display_idx)
+{
+    return (display_idx == 0) ? (UINT8 GDI_HUGE*)v_ram1 : (UINT8 GDI_HUGE*)v_ram2;
+}
+
+INT DisplayConfig::GetDisplayCount()
+{
+    return 2;
+}
+
+XYDIM DisplayConfig::GetWidth(INT display_idx)
+{
+    return (display_idx == 0) ? 128 : 80;   
+}
+
+XYDIM DisplayConfig::GetHeight(INT display_idx)
+{
+    return (display_idx == 0) ? 160 : 100;  
+}</pre>
+        </li>
+        <li>
+          For the MMI Simulator the file display.xml must be adjusted to simulate multiple displays. For example the file
+          display.xml for two displays might look like this (the required additional tags for the second display are noted in <b>bold</b>):
+<pre>
+&lt;?xml version="1.0"?&gt;
+
+<b>&lt;displaylist&gt;</b>
+  &lt;display index="0"&gt;
+    &lt;xdim&gt;128&lt;/xdim&gt;
+    &lt;ydim&gt;160&lt;/ydim&gt;
+    &lt;bpp&gt;16&lt;/bpp&gt;
+    &lt;rgb_mask&gt;
+      &lt;mask color="red" index="15" count="5"/&gt;
+      &lt;mask color="green" index="10" count="6"/&gt;
+      &lt;mask color="blue" index="4" count="5"/&gt;
+    &lt;/rgb_mask&gt;
+    &lt;big_endian/&gt;
+  &lt;/display&gt;
+    
+<b>  &lt;display index="1"&gt;
+    &lt;xdim&gt;80&lt;/xdim&gt;
+    &lt;ydim&gt;100&lt;/ydim&gt;
+    &lt;bpp&gt;16&lt;/bpp&gt;
+    &lt;rgb_mask&gt;
+      &lt;mask color="red" index="15" count="5"/&gt;
+      &lt;mask color="green" index="10" count="6"/&gt;
+      &lt;mask color="blue" index="4" count="5"/&gt;
+    &lt;/rgb_mask&gt;
+    &lt;big_endian/&gt;
+  &lt;/display&gt;
+&lt;/displaylist&gt;</b>
+</pre>
+        </li>    
+      </ul>
+      
+      When working with multiple displays some restrictions must be respected:
+      <ul>
+        <li>
+          The APOXI Resource Compiler in the current version is not aware about multiple displays yet, so the file display.xml
+          must be reverted temporary to one display when starting the Resource Compiler.
+        </li>
+        <li>
+          The APOXI bitmap format is always organized in the same format as a display. This means that if the main display is a 16 bit
+          color display and the second display is a monochrome display, an APOXI bitmap created for the main display cannot be shown
+          on the second display. Complex images like JPEG, PNG and GIF don't have this restriction, but the result of showing a
+          JPEG image on a monochrome display might not be as good than generating an optimized monochrome APOXI bitmap.
+        </li>
+      </ul>
+    </p> 
+    
+        <h2>5.2 PushButton</h2>
+
+        <p>
+            After pressing a push-button the action will be executed, which has been assigned to the push-button.
+        </p>
+
+        <p>
+            <img src="pics/push_button.gif" alt="PushButton"/>
+        </p>
+
+        <p>
+            The following example shows how to embed a push-button inside a window:
+        </p>
+
+        <b>MyWindow.hpp</b>
+        <pre>
+#include &lt;Gui/Window.hpp&gt;
+#include &lt;Gui/Action.hpp&gt;
+#include &lt;Gui/PushButton.hpp&gt;
+
+class MyWindow : public <a href="classWindow.html">Window</a> {
+    public:
+        void Init();
+
+    private:
+        <a href="classAction.html">Action</a> m_my_action;
+        <a href="classPushButton.html">PushButton</a> m_push_button;
+        
+        void OnButtonPressed();
+};</pre>
+
+        <b>MyWindow.cpp</b>
+        <pre>
+#include "MyWindow.hpp"
+
+void MyWindow::Init()
+{
+    Window::Init();
+    m_my_action(this, Tr(L"OK"), (Action::ExecFn)&MyWindow::OnButtonPressed);
+    m_push_button.Init(this, &m_my_action);
+}
+
+void MyWindow::OnButtonPressed()
+{
+    // add code for executing here (e. g. Close())
+}</pre>
+
+        <p>
+            Usually a push-button is pressed by clicking on it with a pen,
+            but due most mobile phones don't support pens, the push-button
+            must be triggered manually by listening to a key, which
+            invokes PushButton::Trigger() to execute the
+            action of the push-button. The look may be adjusted by writing an own view as part of a theme. An available reference-implementation is available under:
+            <ul style="line-height: 150%">
+                <li>Apoxi/GlobalThemes/DefaultTheme/DefaultPushButtonView.</li>
+                <li>Apoxi/GlobalThemes/FoggyTheme/FoggyPushButtonView.</li>
+            </ul>
+        </p>
+
+        <h2>5.3 CheckBoxControl</h2>
+
+        <p>
+            A <a href="classCheckBoxControl.html">CheckBoxControl</a> represents a checkbox, which may be selected or unselected. In contrast to a radiobutton-control, checkboxes are independent from other
+            checkboxes per definition.
+        </p>
+
+        <p>
+            <img src="pics/check_box.gif" alt="Checkbox"/>
+        </p>
+
+        <p>
+            In the following example two checkboxes are added to a window:
+        </p>
+
+        <b>MyWindow.hpp</b>
+        <pre>
+#include &lt;Gui/Window.hpp&gt;
+#include &lt;Gui/CheckBoxControl.hpp&gt;
+
+class MyWindow : public <a href="classWindow.html">Window</a> {
+    public:
+        void Init();
+
+    protected:
+        virtual void OnLayoutClient();
+
+    private:
+        <a href="classCheckBoxControl.html">CheckBoxControl</a> m_checkbox_1;
+        <a href="classCheckBoxControl.html">CheckBoxControl</a> m_checkbox_2;
+}; </pre>
+
+        <b>MyWindow.cpp</b>
+        <pre>
+#include "MyWindow.hpp"
+
+void MyWindow::Init()
+{
+    Window::Init();
+    m_checkbox_1.Init(this, Tr(L"Checkbox 1", TRUE);
+    m_checkbox_2.Init(this, Tr(L"Checkbox 2", FALSE);
+}
+
+void MyWindow::OnLayoutClient()
+{
+    Window::OnLayoutClient();
+    <a href="classLayouter.html">Layouter</a> layouter(1, 2, this);
+    layouter.Arrange(0, 0, &m_checkbox_1);
+    layouter.Arrange(0, 1, &m_checkbox_2);
+}</pre>
+        <p>
+            The image of the checkbox-control may be specified by the
+            theme, by overwriting the method Theme::GetBitmap.
+            An available reference-implementation is available under:
+            <ul style="line-height: 150%">
+                <li>Apoxi/GlobalThemes/DefaultTheme/DefaultTheme.cpp</li>
+                <li>Apoxi/GlobalThemes/FoggyTheme/FoggyTheme.cpp</li>
+            </ul>
+        </p>
+
+        <h2>5.4 RadioButtonControl</h2>
+
+        <p>
+            A <a href="classRadioButtonControl.html">RadioButtonControl</a> represents a radiobutton,
+            which may be selected or unselected. A radiobutton
+            defines a "one of many" choice and makes only sense
+            as part of a radiobutton-group. A radiobutton-group is defined
+            by the class <a href="classRadioButtonGroup.html">RadioButtonGroup</a> and takes care,
+            that only one radiobutton is seleced.
+        </p>
+
+        <p>
+            <img src="pics/radio_button.gif" alt="Radiobutton"/>
+        </p>
+
+        <p>
+            In the following example two radiobuttons are added to a window:
+        </p>
+        <b>MyWindow.hpp</b>
+        <pre>
+#include &lt;Gui/Window.hpp&gt;
+#include &lt;Gui/RadioButtonControl.hpp&gt;
+
+class MyWindow : public <a href="classWindow.html">Window</a> {
+    public:
+        void Init();
+
+    protected:
+        virtual void OnLayoutClient();
+
+    private:
+        <a href="classRadioButtonControl.html">RadioButtonControl</a> m_radiobutton_1;
+        <a href="classRadioButtonControl.html">RadioButtonControl</a> m_radiobutton_2;
+        <a href="classRadioButtonGroup.html">RadioButtonGroup</a> m_rb_group;
+}; </pre>
+
+        <b>MyWindow.cpp</b>
+        <pre>
+#include "MyWindow.hpp"
+
+void MyWindow::Init()
+{
+    Window::Init();
+    m_rb_group.Init();
+    m_radiobutton_1.Init(this, &m_rb_group, Tr(L"Radiobutton 1", TRUE);
+    m_radiobutton_2.Init(this, &m_rb_group, Tr(L"Radiobutton 2", FALSE);
+}
+
+void MyWindow::OnLayoutClient()
+{
+    Window::OnLayoutClient();
+    <a href="classLayouter.html">Layouter</a> layouter(1, 2, this);
+    layouter.Arrange(0, 0, &m_radiobutton_1);
+    layouter.Arrange(0, 1, &m_radiobutton_2);
+}</pre>
+
+        <p>
+            The image of the radiobutton-control may be specified by the
+            theme, by overwriting the method Theme::GetBitmap.
+            An available reference-implementation is available under:
+            <ul style="line-height: 150%">
+                <li>Apoxi/GlobalThemes/DefaultTheme/DefaultTheme.cpp</li>
+                <li>Apoxi/GlobalThemes/FoggyTheme/FoggyTheme.cpp</li>
+            </ul>
+        </p>
+
+        <h2>5.5 Menus and Lists</h2>
+
+        <p>
+            All menus and lists are build by adding instances of the classes
+            <a href="classItem.html">Item</a>
+            and <a href="classAbstractItemContainer.html">AbstractItemContainer</a>
+            to them.
+        </p>
+
+        <h3>5.5.1 ItemGrid</h3>
+
+        <p>
+            The class <a href="classItemGrid.html">ItemGrid</a> is just responsible for displaying a variable number of items.
+            Per default the item-grid only has one column and hence behaves like a listbox. The currently selected item
+            can be retrieved by invoking ItemGrid::GetSelectedItem(), the number of columns can be changed by
+            invoking ItemGrid::SetColumnCount() or by specifying the column count in the
+            <a href="classItemRendererProperties.html">ItemRendererProperties</a>.
+        </p>
+
+        <p>
+            The following example shows how to embed 3 items inside an item-grid:
+        </p>
+
+        <p>
+            <img src="pics/item_grid.gif" alt="Item Grid"/>
+        </p>
+
+        <b>MyWindow.hpp</b>
+        <pre>
+#include &lt;Gui/Window.hpp&gt;
+#include &lt;Gui/ItemGrid.hpp&gt;
+#include &lt;Gui/Item.hpp&gt;
+
+class MyWindow : public <a href="classWindow.html">Window</a> {
+    public:
+        void Init();
+
+    private:
+        ItemGrid m_item_grid;
+        Item m_item_1;
+        Item m_item_2;
+        Item m_item_3;
+
+        CloseWindowAction m_close_win_action;
+};</pre>
+
+        <b>MyWindow.cpp</b>
+        <pre>
+#include "MyWindow.hpp"
+
+#include &lt;Config/Resources/confirm_icon.hpp&gt;
+#include &lt;Config/Resources/cancel_icon.hpp&gt;
+
+void MyWindow::Init()
+{
+    Window::Init();
+
+    SetTitle(Tr(L"Item Grid"));
+
+    m_item_1.Init(this, Tr(L"Item 1"), &confirm_icon);
+    m_item_2.Init(this, Tr(L"Item 2"), &cancel_icon);
+    m_item_2.SetEnabled(FALSE);
+    m_item_3.Init(this, Tr(L"Item 3"));
+
+    m_item_grid.Init(this);
+    m_item_grid.AddItem(&m_item_1);
+    m_item_grid.AddItem(&m_item_2);
+    m_item_grid.AddItem(&m_item_3);
+
+    m_close_win_action.Init(this, this, Tr(L"Close"));
+    SetRightSoftkey(&m_close_win_action);
+}</pre>
+
+        <h3>5.5.2 ItemMenu</h3>
+
+        <p>
+            In APOXI menus are implemented by the class <a href="classItemMenu.html">ItemMenu</a>.
+            An item-menu may contain a variable number of items. One item is represented
+            by the class <a href="classItem.html">Item</a>. As there are also items which
+            recursively may contain other items, it is possible to create a menu-tree.
+        </p>
+
+        <p>
+            Example: A window should be created which contains a menu with the following structure:
+        </p>
+
+        <p>
+            <img src="pics/action_menu.gif" alt="Item Menu"/>
+        </p>
+
+        <p>
+            After pressing "Item 1" a sub-menu showing some
+            radiobuttons and checkboxes should be displayed.
+            When pressing "Item 2" an alert should be displayed,
+            which shows "Item 2 has been triggered". Item 3 should
+            stay disabled and hence cannot be triggered.
+        </p>
+
+        <p>
+            The following code shows the implementation of this menu-structure.
+            The code needed for the hierarchical-menu is noted
+            in <b>bold</b>.
+        </p>
+
+        <b>MyWindow.hpp</b>
+        <pre>
+#include &lt;Gui/Window.hpp&gt;
+#include &lt;Gui/ItemMenu.hpp&gt;
+
+class MyWindow : public <a href="classWindow.html">Window</a> {
+    public:
+        void Init();
+
+    private:
+        <b><a href="classItemMenu.html">ItemMenu</a> m_menu;
+
+        // declarations for main-menu
+        <a href="classItemContainer.html">ItemContainer</a> m_item_1;
+        <a href="classAction.html">Action</a> m_item_2;
+        <a href="classAction.html">Action</a> m_item_3;
+
+        // declarations for sub-menu
+        <a href="classRadioButtonGroup.html">RadioButtonGroup</a> m_rb_group;
+        <a href="classRadioButtonAction.html">RadioButtonAction</a> m_rb_action_1;
+        <a href="classRadioButtonAction.html">RadioButtonAction</a> m_rb_action_2;
+        <a href="classRadioButtonAction.html">RadioButtonAction</a> m_rb_action_3;
+        <a href="classCheckBoxAction.html">CheckBoxAction</a> m_cb_action_1;
+        <a href="classCheckBoxAction.html">CheckBoxAction</a> m_cb_action_2;</b>
+
+        <a href="classAction.html">Action</a> m_select_action;
+        <a href="classAction.html">Action</a> m_close_action;
+        
+        void OnSelectPressed();
+        void OnClosePressed();
+        void OnItem2Pressed();
+};</pre>
+
+        <b>MyWindow.cpp</b>
+        <pre>
+#include "MyWindow.hpp"
+
+#include &lt;Config/Resources/confirm_icon.hpp&gt;
+#include &lt;Config/Resources/cancel_icon.hpp&gt;
+
+void MyWindow::Init()
+{
+    Window::Init();
+
+    SetTitle(Tr(L"Main Menu"));
+
+<b>    // initialize sub-menu
+    m_rb_group.Init();
+    m_rb_action_1.Init(this, &m_rb_group, Tr(L"Radiobutton 1"), TRUE);
+    m_rb_action_2.Init(this, &m_rb_group, Tr(L"Radiobutton 2"));
+    m_rb_action_3.Init(this, &m_rb_group, Tr(L"Radiobutton 3"));
+    m_cb_action_1.Init(this, Tr(L"Checkbox 1"), TRUE, TRUE);
+    m_cb_action_2.Init(this, Tr(L"Checkbox 2"));
+
+    m_item_1.Init(this, Tr(L"Item 1"), &confirm_icon);
+    m_item_1.AddItem(&m_rb_action_1);
+    m_item_1.AddItem(&m_rb_action_2);
+    m_item_1.AddItem(&m_rb_action_3);
+    m_item_1.AddItem(&m_cb_action_1);
+    m_item_1.AddItem(&m_cb_action_2);
+
+    // initialize main-menu
+    m_item_2.Init(this, Tr(L"Item 2"), (Action::ExecFn)&MyWindow::OnItem2Pressed);
+    m_item_2.SetIcon(&cancel_icon);
+    m_item_3.Init(this, Tr(L"Item 3"), &cancel_icon);
+    m_item_3.SetEnabled(FALSE);
+
+    m_menu.Init(this);
+    m_menu.AddItem(&m_item_1);
+    m_menu.AddItem(&m_item_2);
+    m_menu.AddItem(&m_item_3);</b>
+
+    // initialize softkeys
+    m_select_action.Init(this, Tr(L"Select"), (Action::ExecFn)&MyWindow::OnSelectPressed);
+    SetLeftSoftkey(&m_select_action);
+
+    m_close_action.Init(this, Tr(L"Close"), (Action::ExecFn)&MyWindow::OnClosePressed);
+    SetRightSoftkey(&m_close_action);
+}
+
+<b>void MyWindow::OnSelectPressed()
+{
+    m_menu.Trigger();
+}
+
+void MyWindow::OnClosePressed()
+{
+    if (m_menu.GetLevel() == 0)
+        Close();
+    else
+        m_menu.Back();
+}</b>
+
+void MyWindow::OnItem2Pressed()
+{
+    <a href="classAlert.html">Alert</a> alert(Tr(L"Item 2 has been triggered."));
+    alert.OpenModal();
+}
+</pre>
+        <p>
+            In MyWindow::Init the actions of the sub-menu are initialized:
+            <ul style="line-height: 150%">
+                <li>As shown in the chapter for the <a href="classRadioButtonControl.html">RadioButtonControl</a>, each radiobutton must be part of a radiobutton-group to assure that only one radiobutton may get selected.</li>
+                <li>The checkboxes are independent from each other and hence don't need a group.</li>
+                <li>After initializing the actions, they are embedded into the sub-menu.</li>
+            </ul>
+        </p>
+
+        <p>
+            After the sub-menu the main-menu is initialized the same way:
+            <ul style="line-height: 150%">
+                <li>The two remaining actions are initialized.</li>
+                <li>After the initialization the actions are embedded into the menu.</li>
+            </ul>
+        </p>
+
+        <p>
+            The function members OnSelectPressed, OnClosePressed and OnItem2Pressed have
+            been asigned to the actions and are invoked as
+            soon as the action has been executed.
+        </p>
+
+        <h3>5.5.3 ItemTree</h3>
+
+        <p>
+            The class <a href="classItemTree.html">ItemTree</a> implements a tree-view
+            for items. The interface for adding items to the item-tree is nearly identical
+            to adding items to the item-menu (see example in the previous chapter). In
+            opposite to the item-menu the item-tree does not offer the method Back,
+            as the opening and closing of the tree is done by the method ItemTree::Trigger.
+        </p>
+
+
+        <p>
+            The following code shows the implementation of the same menu-hierarchy as in example
+            for the item-menu (chapter 6.5) but using the item-tree. The code needed for the hierarchical-menu is noted
+            in <b>bold</b>.
+        </p>
+
+        <p>
+            <img src="pics/item_tree.gif" alt="Item Tree"/>
+        </p>
+
+        <b>MyWindow.hpp</b>
+        <pre>
+#include &lt;Gui/Window.hpp&gt;
+#include &lt;Gui/ItemMenu.hpp&gt;
+#include &lt;Gui/CloseWindowAction.hpp&gt;
+
+class MyWindow : public <a href="classWindow.html">Window</a> {
+    public:
+        void Init();
+
+    private:
+        <b><a href="classItemTree.html">ItemTree</a> m_menu;
+
+        // declarations for main-menu
+        <a href="classItemContainer.html">ItemContainer</a> m_item_1;
+        <a href="classAction.html">Action</a> m_item_2;
+        <a href="classAction.html">Action</a> m_item_3;
+
+        // declarations for sub-menu
+        <a href="classRadioButtonGroup.html">RadioButtonGroup</a> m_rb_group;
+        <a href="classRadioButtonAction.html">RadioButtonAction</a> m_rb_action_1;
+        <a href="classRadioButtonAction.html">RadioButtonAction</a> m_rb_action_2;
+        <a href="classRadioButtonAction.html">RadioButtonAction</a> m_rb_action_3;
+        <a href="classCheckBoxAction.html">CheckBoxAction</a> m_cb_action_1;
+        <a href="classCheckBoxAction.html">CheckBoxAction</a> m_cb_action_2;</b>
+
+        <a href="classAction.html">Action</a> m_select_action;
+        <a href="classAction.html">CloseWindowAction</a> m_close_action;
+        
+        void OnSelectPressed();
+        void OnItem2Pressed();
+};</pre>
+
+        <b>MyWindow.cpp</b>
+        <pre>
+#include "MyWindow.hpp"
+
+#include &lt;Config/Resources/confirm_icon.hpp&gt;
+#include &lt;Config/Resources/cancel_icon.hpp&gt;
+
+void MyWindow::Init()
+{
+    Window::Init();
+
+    SetTitle(Tr(L"Main Menu"));
+
+<b>    // initialize sub-menu
+    m_rb_group.Init();
+    m_rb_action_1.Init(this, &m_rb_group, Tr(L"Radiobutton 1"), TRUE);
+    m_rb_action_2.Init(this, &m_rb_group, Tr(L"Radiobutton 2"));
+    m_rb_action_3.Init(this, &m_rb_group, Tr(L"Radiobutton 3"));
+    m_cb_action_1.Init(this, Tr(L"Checkbox 1"), TRUE, TRUE);
+    m_cb_action_2.Init(this, Tr(L"Checkbox 2"));
+
+    m_item_1.Init(this, Tr(L"Item 1"), &confirm_icon);
+    m_item_1.AddItem(&m_rb_action_1);
+    m_item_1.AddItem(&m_rb_action_2);
+    m_item_1.AddItem(&m_rb_action_3);
+    m_item_1.AddItem(&m_cb_action_1);
+    m_item_1.AddItem(&m_cb_action_2);
+
+    // initialize main-menu
+    m_item_2.Init(this, Tr(L"Item 2"), (Action::ExecFn)&MyWindow::OnItem2Pressed);
+    m_item_2.SetIcon(&cancel_icon);
+    m_item_3.Init(this, Tr(L"Item 3"), &cancel_icon);
+    m_item_3.SetEnabled(FALSE);
+
+    m_menu.Init(this);
+    m_menu.AddItem(&m_item_1);
+    m_menu.AddItem(&m_item_2);
+    m_menu.AddItem(&m_item_3);</b>
+
+    // initialize softkeys
+    m_select_action.Init(this, Tr(L"Select"), (Action::ExecFn)&MyWindow::OnSelectPressed);
+    SetLeftSoftkey(&m_select_action);
+
+    m_close_action.Init(this, this, Tr(L"Close"));
+    SetRightSoftkey(&m_close_action);
+}
+
+<b>void MyWindow::OnSelectPressed()
+{
+    m_menu.Trigger();
+}</b>
+
+void MyWindow::OnItem2Pressed()
+{
+    <a href="classAlert.html">Alert</a> alert(Tr(L"Item 2 has been triggered."));
+    alert.OpenModal();
+}
+</pre>
+
+
+        <h3>5.5.4 ContextMenu</h3>
+
+        <p>
+            The class <a href="classContextMenu.html">ContextMenu</a> represents a context-menu which
+            may contain a variable number of items. As items representing an instance of the class
+            <a href="classAbstractItemContainer.html">AbstractItemContainer</a> recursively contain
+            other items, a context-menu also may contain sub-menus.
+            The following images show a sample-application, which opens a context-menu above the left
+            softkey including a sub-menu:
+        </p>
+        <p>
+            <img src="pics/context_menu_1.gif" alt="No context menu"/>
+            <img src="pics/context_menu_2.gif" alt="Opened context menu"/>
+            <img src="pics/context_menu_3.gif" alt="Context menu with sub-menu"/>
+        </p>
+
+        <h4>5.5.4.1 Using a OpenContextMenuAction</h4>
+
+        <p>
+            The most comfortable way to open a context-menu is by using
+            a <a href="classOpenContextMenuAction.html">OpenContextMenuAction</a>, which automatically
+            opens a context-menu when it is executed. In the following example a
+            context-menu-action is used for the left softkey:
+        </p>
+
+        <b>MyWindow.hpp</b>
+        <pre>
+#include &lt;Gui/Window.hpp&gt;
+
+class MyWindow : public <a href="classWindow.html">Window</a> {
+    public:
+        void Init();
+
+    private:
+        ...
+        OpenContextMenuAction m_options_action;
+};</pre>
+
+        <b>MyWindow.cpp</b>
+        <pre>
+#include "MyWindow.hpp"
+
+void MyWindow::Init()
+{
+    Window::Init();
+
+    ...
+    <font color="#009900">// initialize items like m_insert, m_selection etc.</font>
+    ...
+
+    m_options_action.Init(this, Tr(L"Options"));
+    m_options_action.AddItem(&m_insert);
+    m_options_action.AddItem(&m_selection);
+    m_options_action.AddItem(&m_clear);
+    m_options_action.AddItem(&m_switch_read_only);
+    m_options_action.AddItem(&m_textformat_1);
+    m_options_action.AddItem(&m_textformat_2);
+
+    SetLeftSoftkey(&m_options_action);
+}</pre>
+
+        <p>
+            The constructor and Init-method of the class <a href="classOpenContextMenuAction.html">OpenContextMenuAction</a>
+            offers parameters for setting an item-container and the position of the context-menu directly.
+        </p>
+
+        <h4>5.5.4.2 Customized Opening</h4>
+
+        <p>
+            Sometimes it might be useful, to build a context-menu without the need of having a context-menu-action.
+            The following sample-code represents more or less the implementation
+            of the context-menu-action:
+        </p>
+
+        <pre>
+<font color="#009900">// x ........... x-position of the context-menu
+// y ........... y-position of the context-menu
+// corner ...... Corner of the x- and y-position:
+//               ContextMenu::TopLeft, ContextMenu::TopRight,
+//               ContextMenu::BottomLeft or ContextMenu::BottomRight
+// item_cont ... Item-Container which represents the items of the context-menu</font>
+ContextMenu* context_menu = new ContextMenu(x, y, corner, item_cont);
+if (context_menu != 0) {<font color="#009900">
+  // use the default item-renderer properties except for:
+  // - the background color: the ContextMenuBackground color should be used
+  // - an item-container should be indicated by an arrow to signalize a sub-menu</font>
+  const ItemRendererProperties* default_prop = GuiEngineConfig::GetDefaultItemRendererProperties();
+  ItemRendererProperties prop(default_prop->GetDisplayType(),
+                              default_prop->GetAnimType(),
+                              default_prop->GetScrollDelay(),
+                              default_prop->GetScrollGap(),
+                              default_prop->GetTextFormat(),
+                              default_prop->FullScreenPerItem(),
+                              default_prop->IsTransparent(),
+                              default_prop->IsMultiLine(),
+                              default_prop->IsVerticalCentered(),
+                              TRUE, <font color="#009900">// indicate item container</font>
+                              Color(Color::ContextMenuBackground)
+                             );
+  context_menu->SetRenderer(&amp;prop);
+  context_menu->OpenModal();
+  delete context_menu;
+}</pre>
+
+        <p>
+            Setting a specialized renderer for the context-menu is not a requirement, but it is recommended to
+            have other renderer-properties as used for the items inside a window. For this example the
+            background-color specified by the theme is used (e. g. usually context-menus have a kind of gray background)
+            and items opening a sub-menu are indicated by a right-arrow.
+        </p>
+        <p>
+            Opening the context-menu modal burdens the callstack, but allows a deleting immediatly afterwards. If the context-menu
+            should be openened modeless, then...
+            <ul>
+                <li>... the application or window opening the context-menu must listen to the message
+                ContextMenuClosedMsg, which will be send after the context-menu has been closed and allows to delete it.</li>
+                <li>... the item renderer properties must declared static, to avoid that they are deleted when leaving the
+                    scope while the context menu is still open. Generally it is recommended that the MMI provides a set of static item renderer
+                    properties, which may be shared by the menus.
+                </li>
+            </ul>
+        </p>
+
+        <h3>5.5.5 Embedding Images</h3>
+
+        <p>
+            When embedding complex images like PNG, JPEG or GIF inside an item, the decoding
+            of such an image might take up to several seconds for very large images. To avoid
+            a blocking user interface all menus and lists of APOXI are implemented in a
+            way, that the decoding of such images is done asynchronously in a separate thread.
+            During the decoding the menus and lists can be navigated as usual and the images
+            are shown automatically as soon as the decoding has been finished. If it's
+            requested to show the images without any delay, than the images must be
+            converted to a <a href="classBitmap.html">Bitmap</a> or
+            <a href="classNativeImage.html">NativeImage</a> and embedded into the item.
+            For a description of the difference between images and bitmaps have a look at
+            <a href="gui_tutorial_06.html">chapter 6.6: ImageBox</a>.
+        </p>
+
+        <h3>5.5.6 Scroll Behavior</h3>
+    
+         <p>
+          The scroll behavior for all lists and menus can be defined by implementing the method
+          GuiEngineConfig::GetScrollBehavior in the file GuiEngineConfig.cpp located in the Config directory.
+          The following scroll behaviors are available:
+         </p>
+          <ul>
+        <li><b>DefaultBehavior:</b> A line-by-line scrolling will be done if the
+          selection reachs the top or
+            bottom of the visible area. If the selection reaches the begin or end
+            of all items, no scrolling is done. The scroll gap defined in
+            OptionalConfig::GetSetting is respected.
+          </li>
+          <li><b>BlockScrollBehavior:</b> Same behavior as the DefaultBehavior, but if the top or bottom
+            of the visible area has been reached, the items are not scrolled
+            line-by-line but per page.
+          </li>
+          <li><b>RotateBehavior:</b> Same behavior as the DefaultBehavior, but if
+            the selection reaches the begin or end
+            of all items, the selection will be rotated to 
+            the other end of the list. The scroll gap defined in
+            OptionalConfig::GetSetting is respected.
+        </li>
+        <li><b>EndlessLoopBehavior:</b> The items will be treated like a ring buffer: if the last
+            item is selected, the next visible item is the first item.
+            If the scroll gap defined in OptionalConfig::GetSetting is -1,
+            the selection will always stay at the vertical center
+            of the visible area.
+          </li>
+          </ul>
+    
+        <h3>5.5.7 Enlarged Selection</h3>
+        
+        <p>
+            It is possible to specify that the selected item is enlarged:
+        </p>
+    
+        <img src="pics/item_grid_enlarged1.jpg" alt="Enlarged selection" />
+        
+        <p>
+            This can be done by setting the selection height property inside the used
+            <a href="classItemRendererProperties.html">ItemRendererProperties</a>. Per default
+            all menus use the item renderer properties returned by
+            <em>const ItemRendererProperties* GuiEngineConfig::GetDefaultItemRendererProperties()</em>.
+            If the selection height is set there, all menus will use this height per default.
+        </p>
+        
+        <p>
+            If the setting should only be valid for one instance of a menu, the renderer of this menu must be
+            initialized with corresponding item renderer properties. In the following example a copy
+            of the default item renderer is used, the selection height is adjusted and assigned to a menu:
+        </p>
+        <pre>
+ItemRendererProperties* prop = new ItemRendererProperties();
+if (prop != 0) {
+  const ItemRendererProperties* default_prop = GuiEngineConfig::GetDefaultItemRendererProperties();
+  ASSERT_DEBUG(default_prop != 0);
+  *prop = *default_prop;
+  prop->SetSelectionHeight(48);
+  menu->SetRenderer(prop);
+  ...
+  <font color="#009900">// note that the renderer properties 'prop' may not get deleted as long as the menu is alive</font>
+}</pre>
+    
+        <p>
+            As the selection is enlarged, it also might be required to use an enlarged and different icon for the selection:
+        </p>
+        <img src="pics/item_grid_enlarged2.jpg" alt="Enlarged selection" />
+    
+        <p>
+            Usually when assigning an icon to an item this is done by assigning a bitmap:
+        </p>
+        <pre>
+Bitmap* bmp = ...;
+item.SetIcon(bmp);</pre>
+        <p>
+            ... or an image embedded inside an image obtainer:
+        </p>
+        <pre>
+JpegImage* jpeg_image = new JpegImage(...);
+item.SetIcon(ImageObtainer(jpeg_image, TRUE));</pre>
+
+        <p>
+            But it is also possible to assign an <a href="classIconSet.hpp">IconSet</a> for an image.
+            The icon set provides the sizes SmallSize, DefaultSize and LargeSize for the modes
+            NormalMode, ActiveMode and DisabledMode:
+        </p>
+        
+        <img src="pics/icon_set.png" alt="Icon set" />
+    
+        <p>
+            The icons for the different modes and sizes can be set the following way
+        </p>
+        <pre>
+NativeImage* default_img = new NativeImage(...);
+NativeImage* default_active_img = new NativeImage(...);
+NativeImage* large_active_img = new NativeImage(...);
+
+IconSet icon_set(ImageObtainer(default_img, TRUE)); <font color="#009900">// default icon</font>
+icon_set.AddIcon(IconState(IconState::DefaultSize, IconState::ActiveMode),
+                 ImageObtainer(default_active_img, TRUE));
+icon_set.AddIcon(IconState(IconState::LargeSize, IconState::ActiveMode),
+                 ImageObtainer(large_active_img, TRUE));
+item.SetIcon(icon_set); </pre>
+        
+        <p>
+            If an icon is not defined for a specific mode and size, the default icon (= mode is NormalMode, size is DefaultSize)
+            will be used.
+        </p>
+        
+        <p>
+            When the icon should be drawn, it is checked which mode is used: When the item is selected,
+            the mode ActiveMode is used, if it is disabled the DisabledMode is used. Also it must be
+            determined, which size should be used: The item renderer properties
+            define the available size for the icon. As the icons usually should not get scaled, the available
+            height is taken and compared to the preferred sizes for the modes SmallSize, DefaultSize and
+            LargeSize, which are defined by <em>static Size GuiEngineConfig::GetIconSize(IconState::Size size)</em>
+            inside the configuration class <a href="classGuiEngineConfig.html">GuiEngineConfig</a>:
+            <pre>
+Size GuiEngineConfig::GetIconSize(IconState::Size size)
+{
+    switch (size) {
+        case IconState::LargeSize:      return Size(32, 32);
+        case IconState::SmallSize:      return Size( 8,  8);
+        case IconState::DefaultSize:
+        default:                        return Size(24, 24);
+    }
+}</pre>
+        <p>
+            This means when e. g. a height of 28 pixels is available, the icon defined for DefaultSize will be used.
+            Specifying the item renderer properties and the preferred sizes for the icon size states should be done
+            in a coordinated manner and fit to the available icon sizes. The best results can be achieved if the icons
+            have exactly the same size as defined for the icon size states.
+        </p>
+
+        <p>
+            The following restriction is given for icon sets: The menu controls only respect icon sets
+            containing images which can be decoded synchronously (e. g.
+            bitmaps or native images). This is because showing an icon set containing images which must be decoded
+            asynchronously  (e. g. JPEGs, GIFs, PNGs) would require a lot of memory for buffering all images.</li>
+        </p>
+        
+        <h2>5.6 Editor Controls</h2>
+
+        <p>
+            APOXI offers the following kind of editor controls:
+            <ul style="line-height: 150%">
+                <li>line-editor</li>
+                <li>date-editor</li>
+                <li>time-editor</li>
+                <li>password-editor</li>
+                <li>multi-line-editor</li>
+                <li>multi-media-editor (as part of the APOXI-AddOn MultiMedia)</li>
+            </ul>
+        </p>
+
+        <p>
+            All editors have in common, that the input-method may be
+            exchanged easily by so called input-mappers, which are derived
+            from the class <a href="classInputMapper.html">InputMapper</a>. APOXI offers default input-mappers
+            for the most usual input-methods, but this may be extended in
+            an easy manner by customized input-mappers: The editor invokes
+            the factory-method EditConfig::AllocInputMapper() with the
+            given ID as input-mapper, which results in creating an
+            instance of the requested input-mapper. This factory-method
+            is customer-specific and must be overwritten in the
+            configuration-file EditConfig.cpp.
+        </p>
+
+        <p>
+            If the editor has the focus it forwards each key-message to
+            its input-mapper. The input-mapper interprets the
+            key-message and controls the cursor and content of the editor
+            by using the public interface of the editor.
+        </p>
+
+        <p>
+            The public interface of the editors distincts between atom-items and compound-items:
+            <ul style="line-height: 150%">
+                <li>An atom-item is an instance of the class <a href="classAtomItem.html">AtomItem</a>
+                and may not get splitted or wrapped by the editor.
+                Examples for an atom-item are a character, an image or
+                an animation. All interfaces of the editor concerning
+                atom-items just require a const-reference as
+                input-parameter. For example when inserting the
+                character 'X' at the end of the editor-content,
+                just editor->InsertItem(CharItem(L'X')) must be
+                invoked.  The editor itself takes care about storing the
+                atom-item in an internal format, hence the atom-items
+                may be created on the stack without doubts concerning
+                dangling pointers or memory-leaks.</li>
+
+                <li>A compound-item is an instance of the class
+                <a href="classCompoundItem.html">CompoundItem</a>. A compound-item contains a
+                variable number of atom-items or recursively other
+                compound-items and may get splitted, merged and
+                wrapped by the editor. An example of a compound-item is
+                a paragraph. All interfaces concerning compound-items
+                require a pointer to a compound-item. Usually an
+                instance is created outside the editor but handled
+                and obtained from the editor itself. Therefor instances
+                may not be constructed directly using a constructor.
+                Any derived class provides a static method
+                CreateInstance(…) to create an instance:
+                <pre>TextCompoundItem* text = TextCompoundItem::CreateInstance(L"Text");</pre>
+                After passing a compound-item-pointer to the editor (e. g.
+                by editor->InsertCompoundItem(text)) the compount item
+                is obtained by this editor per definition and
+                the releasing of the compound-item is done by the
+                editor itself by invoking ReleaseInstance().
+                So never release a compound-item after passing it to the editor.
+                </li>
+            </ul>
+        </p>
+
+        <p>
+            Examples how to insert atom-items and compound-items into the editor are given in the chapter "6.6.6 MultiMediaEditor".
+        </p>
+
+        <h3>5.6.1 LineEditor</h3>
+
+        <p>
+            The line-editor offers the following features:
+            <ul style="line-height: 150%">
+                <li>suitable for the input-mappers for numbers, phonenumbers, multitap and predictive input like T9</li>
+                <li>horizontal scrolling</li>
+                <li>overwrite/insert mode</li>
+                <li>variable font and line height</li>
+            </ul>
+        </p>
+
+        <p>
+            <img src="pics/text_line_editor.gif" alt="LineEditor"/>
+        </p>
+
+        <p>
+            In the following example a line-editor with an additional description is added to a window:
+        </p>
+        <b>MyWindow.hpp</b>
+        <pre>
+#include &lt;ApoxiLib.hpp&gt;
+
+class MyWindow : public <a href="classWindow.html">Window</a> {
+    public:
+        void Init();
+
+    protected:
+        virtual void OnLayoutClient();
+
+    private:
+        <a href="classTextLine.html">TextLine</a> m_descr;
+        <a href="classLineEditor.html">LineEditor</a> m_editor;
+};</pre>
+
+        <b>MyWindow.cpp</b>
+        <pre>
+#include "MyWindow.hpp"
+
+void MyWindow::Init()
+{
+    Window::Init();
+    m_descr.Init(this, Tr(L"Enter a phone number:"));
+    m_editor.Init(this, InputMapper::PhoneNumber);
+}
+
+void MyWindow::OnLayoutClient()
+{
+    Window::OnLayoutClient();
+    <a href="classLayouter.html">Layouter</a> layouter(1, 2, this);
+    layouter.Arrange(0, 0, &m_descr);
+    layouter.Arrange(0, 1, &m_editor);
+}</pre>
+
+        <h3>5.6.2 DateEditor</h3>
+        <p>
+            Represents a line-editor, which uses a date-input-mapper
+            for editing a date.
+        </p>
+        <p>
+            <img src="pics/date_editor.gif" alt="DateEditor"/>
+        </p>
+
+        <h3>5.6.3 TimeEditor</h3>
+
+        <p>
+            Represents a line-editor, which uses a time-input-mapper for editing a time.
+        </p>
+        <p>
+            <img src="pics/time_editor.gif" alt="TimeEditor"/>
+        </p>
+
+        <h3>5.6.4 PasswordEditor</h3>
+
+        <p>
+            Represents a line-editor, which hides each character by a '*'.
+        </p>
+        <p>
+            <img src="pics/password_editor.gif" alt="PasswordEditor"/>
+        </p>
+
+        <h3>5.6.5 MultiLineEditor</h3>
+
+        <p>
+            The multi-line-editor offers the following features:
+            <ul style="line-height: 150%">
+                <li>suitable for the input-mappers for numbers, phonenumbers, multitap and predictive input like T9</li>
+                <li>vertical scrolling including an optional position-indicator</li>
+                <li>overwrite/insert mode</li>
+                <li>variable font and line-height</li>
+                <li>read-only mode</li>
+            </ul>
+        </p>
+        <p>
+            <img src="pics/multi_line_editor.gif" alt="MultiLineEditor"/>
+        </p>
+
+        <h3>5.6.6 MultiMediaEditor</h3>
+
+        <p>
+            The APOXI-AddOn MultiMedia offers a multi-media-editor with the following features:
+            <ul style="line-height: 150%">
+                <li>suitable for the input-mappers for numbers, phonenumbers, multitap and predictive input like T9</li>
+                <li>vertical scrolling including an optional position-indicator</li>
+                <li>overwrite/insert mode</li>
+                <li>allows embedding a variable number of images, animations, sound-objects and other customized editor-items.</li>
+                <li>support of paragraphs, which may aligned left, centered or right</li>
+                <li>support of rich-text:
+                    <ul style="line-height: 150%">
+                        <li>bold, italic, underlined, strikethrough</li>
+                        <li>variable text-color and text-background-color</li>
+                        <li>variable font</li>
+                    </ul>
+                </li>
+                <li>read-only mode which allows triggering actions on images, animations and sound-objects</li>
+            </ul>
+        <p>
+            <img src="pics/multi_media_editor.jpg" alt="MultiMediaEditor"/>
+        </p>
+
+        <p>
+            The following example shows how to the multi-media-editor with paragraphs containing rich-text and images.
+        </p>
+
+        <b>MyWindow.hpp</b>
+        <pre>
+#include &lt;ApoxiLib.hpp&gt;
+
+class MyWindow : public <a href="classWindow.html">Window</a> {
+    public:
+        void Init();
+
+    private:
+        <a href="classMultiMediaEditor.html">MultiMediaEditor</a> m_editor;
+};</pre>
+
+        <b>MyWindow.cpp</b>
+        <pre>
+#include "MyWindow.hpp"
+
+void MyWindow::Init()
+{
+    Window::Init();
+    m_editor.Init(this, InputMapper::MultiTap);
+    const Font& font = System::GetFont(Font::Client);
+
+    <font color="#009900">// create a rich text with red color and grey background</font>
+    RichTextCompoundItem* rich_text_1 = RichTextCompoundItem::CreateInstance(font, L"Rich text compound item 1");
+    rich_text_1->SetForegroundColor(Color(255, 0, 0));  <font color="#009900">// red text</font>
+    rich_text_1->SetBackgroundColor(Color(90, 90, 90)); <font color="#009900">// grey background</font>
+
+    <font color="#009900">// create a rich text with bold font</font>
+    RichTextCompoundItem* rich_text_2 = RichTextCompoundItem::CreateInstance(font, L"Rich text compound item 2");
+    rich_text_2->SetTextAttr(TextFormat::Bold);
+
+    <font color="#009900">// create a right aligned paragraph, which contains both rich texts</font>
+    ParagraphCompoundItem* paragraph_1 = ParagraphCompoundItem::CreateInstance(EditorDocument::RightAlign);
+    paragraph_1->InsertCompoundItem(rich_text_1);
+    paragraph_1->InsertCompoundItem(rich_text_2);
+
+    <font color="#009900">// create two image-items</font>
+    Image* img_1 = ...;     <font color="#009900">// see chapter "7.7 ImageBox" for details</font>
+    <a href="classImageItem.html">ImageItem</a> img_item_1(ImageObtainer(img_1));
+    Image* img_2 = ...;     <font color="#009900">// see chapter "7.7 ImageBox" for details</font>
+    <a href="classImageItem.html">ImageItem</a> img_item_2(ImageObtainer(img_2));
+
+    <font color="#009900">// create a centered paragraph, which contains the image-items</font>
+    ParagraphCompoundItem* paragraph_2 = ParagraphCompoundItem::CreateInstance(EditorDocument::LeftAlign);
+    paragraph_2->InsertItem(img_item_1);
+    paragraph_2->InsertItem(img_item_2);
+
+    <font color="#009900">// insert both paragraphs into the editor</font>
+    m_editor.InsertCompoundItem(paragraph_1);
+    m_editor.InsertCompoundItem(paragraph_2);
+}</pre>
+
+    <p>
+        When working with the multimedia editor it often is required to parse the document content and
+        maybe to adjust compound items. The following code searchs a compound item which has the text "Hello"
+        and adds an image in front of it:
+    </p>
+    
+    <table border="0">
+    	<tr>
+    		<td><img src="pics/multimedia_editor_before.jpg" alt="before"/></td>
+    		<td><img src="pics/multimedia_editor_after.jpg" alt="after"/></td>
+    	</tr>
+    	<tr>
+    		<td align="center">Before</td>
+    		<td align="center">After</td>
+    	</tr>
+    </table>
+    
+<pre>MultiMediaEditorDocument* doc = static_cast&lt;MultiMediaEditorDocument*&gt;(editor.GetDocument());
+CompoundItemIterator it(doc);
+if (it.Begin()) {
+    BOOLEAN found = FALSE;
+    do {
+        INT start_index = 0;
+        const CompoundItem* comp_item = it.Get(&start_index);
+        if (comp_item->IsInstanceOf(TextCompoundItem::ID)) {
+            const TextCompoundItem* text_comp_item = static_cast&lt;const TextCompoundItem*&gt;(comp_item);
+            const WString& text = text_comp_item->GetText();
+            if (text.CompareTo(L"Hello") == 0) {
+            	<font color="#009900">// Text compound item having "Hello" as content has been found.
+            	// Now add an image in front of it.</font>
+                Image* img = ...; <font color="#009900">// see chapter "7.7 ImageBox" for details</font>
+                ImageItem image_item(ImageObtainer(img));
+                doc->InsertItem(image_item, start_index);
+                
+                <font color="#009900">// After the document has been modified directly the editor itself must be updated</font>
+                editor.Update();
+                found = TRUE;
+            }
+        }
+    } while (!found && it.Next());
+}
+</pre>
+	
+	<p>
+		The class <a href="classCompoundItemIterator.html">CompoundItemIterator</a> allows to traverse all leafs
+		of the multimedia editor document. Note that the document content can be very complex and may contain
+		nested compound items as soon as paragraphs are used. To know the internal document structure APOXI offers
+		a hint on the host environment: when inserting the number 5002 to the file DbgOutRange.txt located in the APOXI_TEMP
+		directory, DBG_OUT messages are shown when moving the cursor inside a multimedia editor. For example the output
+		to the corresponding content looks like this:
+	</p>
+
+	<table border="0">
+		<tr>
+			<td valign="top">
+				<img src="pics/multimedia_editor_after.jpg" alt=""/>
+			</td>
+			<td>
+				<font face="Courier">
+				Content of Multimedia-Document:<br/>
+				ParagraphCompoundItem (15)<br/>
+				    &nbsp;&nbsp;&nbsp;&nbsp;RichTextCompoundItem (4): "Abc "<br/>
+				    &nbsp;&nbsp;&nbsp;&nbsp;GeneralCompoundItem (1)<br/>
+				    &nbsp;&nbsp;&nbsp;&nbsp;RichTextCompoundItem (5): "Hello"<br/>
+				    &nbsp;&nbsp;&nbsp;&nbsp;RichTextCompoundItem (4): " Dfg"<br/>
+				    &nbsp;&nbsp;&nbsp;&nbsp;ParagraphMarker (1): "&lt;--"<br/>
+				<br/>
+				total items: 15<br/>
+				</font>
+			</td>
+		</tr>
+		<tr>
+			<td valign="top">
+				<img src="pics/multi_media_editor.jpg" alt=""/>
+			</td>
+			<td>
+				<font face="Courier">
+			Content of Multimedia-Document:<br/>
+ParagraphCompoundItem (65)<br/>
+    &nbsp;&nbsp;&nbsp;&nbsp;RichTextCompoundItem (20): "This is a paragraph "<br/>
+    &nbsp;&nbsp;&nbsp;&nbsp;RichTextCompoundItem (10): "containing"<br/>
+    &nbsp;&nbsp;&nbsp;&nbsp;RichTextCompoundItem (28): " various rich text compound "<br/>
+    &nbsp;&nbsp;&nbsp;&nbsp;RichTextCompoundItem (6): "items."<br/>
+    &nbsp;&nbsp;&nbsp;&nbsp;ParagraphMarker (1): "&lt;--"<br/>
+ParagraphCompoundItem (103)<br/>
+    &nbsp;&nbsp;&nbsp;&nbsp;RichTextCompoundItem (38): "This paragraph contains an animation, "<br/>
+    &nbsp;&nbsp;&nbsp;&nbsp;GeneralCompoundItem (1)<br/>
+    &nbsp;&nbsp;&nbsp;&nbsp;RichTextCompoundItem (61): " a yellow rich text compound item, an image and a sound item:"<br/>
+    &nbsp;&nbsp;&nbsp;&nbsp;GeneralCompoundItem (2)<br/>
+    &nbsp;&nbsp;&nbsp;&nbsp;ParagraphMarker (1): "&lt;--"<br/>
+ParagraphCompoundItem (83)<br/>
+    &nbsp;&nbsp;&nbsp;&nbsp;RichTextCompoundItem (82): "This paragraph is horizontally centered between the left and right editor borders."<br/>
+    &nbsp;&nbsp;&nbsp;&nbsp;ParagraphMarker (1): "&lt;--"<br/>
+ParagraphCompoundItem (61)<br/>
+    &nbsp;&nbsp;&nbsp;&nbsp;RichTextCompoundItem (60): "This paragraph is aligned to the right border of the editor."<br/>
+    &nbsp;&nbsp;&nbsp;&nbsp;ParagraphMarker (1): "&lt;--"<br/>
+<br/>
+total items: 312<br/>
+				</font>
+			</td>
+		</tr>
+	</table>
+	
+
+    <h3>5.6.7 Concept of Input Mappers</h3>
+
+    <p>
+        The editors use an <a href="classInputMapper.html">InputMapper</a> for interpreting pressed keys to
+        modify the content of the document. E. g. when pressing the key 2 the <a href="classNumericInputMapper.html">NumericInputMapper</a>
+        inserts the number 2 into the document. The input mapper also takes
+        care to navigate the caret of the editor.
+        Every input mapper has a unique ID, where the following IDs are available per default in APOXI:
+    </p>
+    
+    <ul>
+        <li><b>Numeric</b>: Allows to input numeric numbers from 0 to 9.</li>
+        <li><b>MultiTap</b>: Allows to input characters by the multi tap input method. The multi tap
+                table can be configured depending from the locale settings inside
+                the class <a href="classLocaleConfig.html">LocaleConfig</a>.</li>
+        <li><b>PhoneNumber</b>:  Allows to input a phone number including the numbers 0 to 9
+                and the characters +, * and #.</li>
+                
+        <li><b>Predictive</b>: Predictive input (e. g. T9 or Zi8). It depends on EditConfig::AllocInputMapper
+                which instance of an input mapper is returned. Using 'Predictive' instead
+                of 'T9' or 'Zi8' is useful when the application should not rely on a specific
+                input method.</li>
+        <li><b>Date</b>: Allows to input a date. The date format can be specified depending
+                from the locale settings inside the class <a href="classLocaleConfig.html">LocaleConfig</a>. This input 
+                mapper ID is used per default for the editor DateEditor.</li>
+        <li><b>Time</b>: Allows to input a time. The date format can be specified depending
+                from the locale settings inside the class <a href="classLocaleConfig.html">LocaleConfig</a>. This input
+                mapper ID is used per default for the editor TimeEditor.</li>
+        <li><b>Calculator</b>: Allows to input characters useful for a calculator (0 - 9, +, -, /, *).</li>
+        <li><b>IpAddress</b>: Allows to input an IP address. This input mapper ID is used per default
+                for the editor IpAddressEditor.</li>
+        <li><b>Zi8</b>: Uses the predictive input eZi text.</li>
+        <li><b>Url</b>: Allows to enter an URL. APOXI does not offer a default
+                implementation for this input mapper ID.</li>
+        <li><b>EMailAddress</b>: Allows to enter an e-mail address. APOXI does not offer a default
+                implementation for this input mapper ID.</li>
+        <li><b>T9</b>: Uses the predictive input method T9.</li>
+        <li><b>Custom</b>: Defined for custom input mappers. Note that the IDs 100 to 999 are
+                reserved for ATL and third party applications.</li>
+    </ul>
+    
+    <p>
+        The following sample code shows how a <a href="classMultiTapInputMapper.html">MultiTapInputMapper</a>
+        is assigned to a line editor:
+    </p>
+   
+   <img src="pics/multi_tap.jpg" alt="multi tap input"/><br/><br/>
+   
+         <b>MyWindow.hpp</b>
+        <pre>
+#include &lt;Gui/Window.hpp&gt;
+#include &lt;Gui/LineEditor.hpp&gt;
+
+class MyWindow : public <a href="classWindow.html">Window</a> {
+    public:
+        void Init();
+
+    private:
+        <a href="classLineEditor.html">LineEditor</a> m_editor;
+};</pre>
+
+        <b>MyWindow.cpp</b>
+        <pre>
+#include "MyWindow.hpp"
+#include &lt;Gui/InputMapper.hpp&gt;
+
+void MyWindow::Init()
+{
+    Window::Init();
+    m_editor.Init(this, InputMapper::MultiTap);
+}</pre>       
+
+    <h4>5.6.7.1 Customization</h4>
+
+    <p>
+        When initializing the editor with the input mapper ID, the instance of the input mapper is created
+        by the factory method AllocInputMapper inside the class <a href="classEditConfig.html">EditConfig</a>:
+    </p>    
+    <pre>
+InputMapper* EditConfig::AllocInputMapper(INT input_mapper_id)
+{
+    InputMapper* input_mapper = 0;
+
+    switch (input_mapper_id) {
+        case InputMapper::Calculator:
+            input_mapper = new CalculatorInputMapper();
+            break;
+
+        case InputMapper::Date:
+            input_mapper = new DateTimeInputMapper(TRUE);
+            break;
+
+        case InputMapper::Time:
+            input_mapper = new DateTimeInputMapper(FALSE);
+            break;
+
+        case InputMapper::MultiTap:
+            input_mapper = new MultiTapInputMapper();
+            break;
+
+        case InputMapper::Numeric:
+            input_mapper = new NumericInputMapper();
+            break;
+
+        case InputMapper::PhoneNumber:
+            input_mapper = new PhoneNumberInputMapper();
+            break;
+            
+        case InputMapper::IpAddress:
+            input_mapper = new IpAddrInputMapper();
+            break;
+
+        default:
+            break;
+    }
+    return input_mapper;
+}</pre>
+
+    <p>
+        The implementation of this method can be customized in any manner. For example it is possible to implement a
+        custom class for the input mapper ID PhoneNumber. By this approach no application code must be changed when a different input
+        mapper should be used for the phone number input method. Here is the original implementation of the class
+        <a href="PhoneNumberInputMapper">PhoneNumberInputMapper</a> as sample for a custom implementation:
+    </p>
+         <b>PhoneNumberInputMapper.hpp</b>
+        <pre>
+#include &lt;Gui/NumericInputMapper.hpp&gt;
+
+class PhoneNumberInputMapper : public NumericInputMapper {
+    public:
+        explicit PhoneNumberInputMapper();
+        virtual ~PhoneNumberInputMapper();
+        virtual INT GetId() const;
+        virtual Alphabet GetAlphabet() const;
+
+    protected:
+        virtual BOOLEAN OnKeyDown(KeyCode key_code);
+        virtual BOOLEAN OnLongKeyPress(KeyCode key_code);
+        
+    private:        
+        void InsertChar(WCHAR chr);
+        void ReplaceChar(WCHAR chr);
+};</pre>
+
+        <b>PhoneNumberInputMapper.cpp</b>
+        <pre>
+#include "PhoneNumberInputMapper.hpp"
+#include &lt;Gui/CharItem.hpp&gt;
+#include &lt;Gui/AbstractEditor.hpp&gt;
+#include &lt;Config/KeyboardConfig.hpp&gt;
+#include &lt;Config/EditConfig.hpp&gt;
+
+PhoneNumberInputMapper::PhoneNumberInputMapper() : NumericInputMapper() {}
+PhoneNumberInputMapper::~PhoneNumberInputMapper() {}
+INT PhoneNumberInputMapper::GetId() const { return PhoneNumber; }
+InputMapper::Alphabet PhoneNumberInputMapper::GetAlphabet() const { return SevenBitAlphabet; }
+
+BOOLEAN PhoneNumberInputMapper::OnKeyDown(KeyCode key_code)
+{
+    BOOLEAN dispatched = TRUE;
+
+    if (key_code == KeyboardConfig::GetCustomKey(L'*')) {
+        InsertChar(L'*');
+    }
+    else if (key_code == KeyboardConfig::GetCustomKey(L'#')) {
+        InsertChar(L'#');
+    }
+    else {
+        dispatched = Base::OnKeyDown(key_code);
+    }
+    
+    return dispatched;
+}
+
+BOOLEAN PhoneNumberInputMapper::OnLongKeyPress(KeyCode key_code)
+{
+    BOOLEAN dispatched = TRUE;
+    
+    if (key_code == KeyboardConfig::GetCustomKey(L'*')) {
+        ReplaceChar(EditConfig::GetWildcard());
+    }
+    else if (key_code == KeyboardConfig::GetCustomKey(L'#')) {
+        ReplaceChar(EditConfig::GetDtmfSeparator());
+    }
+    else if (key_code == KeyboardConfig::GetNumber(0)) {
+        ReplaceChar(L'+');
+    }
+    else {
+        dispatched = Base::OnLongKeyPress(key_code);
+    }
+    
+    return dispatched;
+}
+
+void PhoneNumberInputMapper::InsertChar(WCHAR chr)
+{
+    AbstractEditor* editor = GetEditor();
+    const CharItem ci(chr);
+    if (editor->GetEditMode() == Caret::Overwrite) {
+        editor->ReplaceItem(ci);
+    }
+    else {
+        editor->InsertItem(ci);
+    }
+    
+    editor->MoveCaret(+1);
+}
+
+void PhoneNumberInputMapper::ReplaceChar(WCHAR chr)
+{
+    AbstractEditor* editor = GetEditor();
+    const CharItem ci(chr);
+    const INT index = editor->GetCaretIndex() - 1;
+    editor->ReplaceItem(ci, index);
+}</pre>
+    
+    <p>
+        The input mapper offers the hooks OnKeyDown, OnLongKeyPress and OnKeyUp which are
+        invoked for each key press done inside the editor. The key press is translated
+        into a character which can be added to the editor by invoking Editor::InsertItem or
+        Editor::ReplaceItem. The caret of the editor can be moved by Editor::MoveCaret.
+    </p>
+    
+    <p>
+    	Note that the default input mappers offer some options in their constructor, which might
+    	fulfill requirements already so that no custom implementation is required. For example
+    	the input mappers <a href="classDateTimeInputMapper.html">DateTimeInputMapper</a> and
+    	<a href="classIpAddrInputMapper.html">IpAddrInputMapper</a> allow to highlight the currently
+    	entered field by passing TRUE for the parameter 'highlight_field':
+    </p>
+    
+    <img src="pics/date_time_input_mapper1.png" alt=""/>
+    
+    <p>
+    	Per default the following look is used ('highlight_field' is FALSE):
+    </p>
+    
+    <img src="pics/date_time_input_mapper2.png" alt=""/>
+
+    <h4>5.6.7.2 Caret</h4>
+    
+    <p>
+        The input mapper has a factory method GetCaret, which may be overwritten to implement a customized
+        <a href="classCaret.html">Caret</a>. Every caret is part of an editor and describes the position and
+        the look of the cursor. The position is defined by the row and the
+        column. The caret is allocated and freed
+        by the input mapper; also the input mapper has to provide its caret
+        by the necessary parameters for displaying the right hint or mode.
+    </p>
+    
+    <p>
+        A good example about the capabilities of the caret is the <a href="classMultiTapCaret.html">MultiTapCaret</a>:
+    </p>
+ 
+    <ul>   
+        <li>Default multi tap caret:<br/><img src="pics/multi_tap_caret1.jpg" alt=""/></li>
+        <li>Multi tap caret during input including the preview:<br/><img src="pics/multi_tap_caret2.jpg" alt=""/></li>
+        <li>Multi tap caret in overwrite mode:<br/><img src="pics/multi_tap_caret3.jpg" alt=""/></li>
+    </ul>
+
+    <p>
+        The class <a href="classMultiTapCaret.html">MultiTapCaret</a> has overwritten the GetCaret method the following way:
+    </p>
+<pre>Caret* MultiTapInputMapper::GetCaret()
+{
+    if (m_caret == 0) {
+        m_caret = new MultiTapCaret(GetEditor(), EditConfig::GetBlinkRate(), (BOOLEAN)m_bits.show_preview);
+    }
+    return m_caret;
+}</pre>
+
+    <p>
+        Usually the input mapper and it's caret work together quite close. In the case of the multi tap input mapper
+        all the necessary information for displaying the preview in the multi tap caret is provided. There are a few
+        basic hooks which are documented in detail inside <a href="classCaret.html">Caret</a>
+        and <a href="classInputMapper.html">InputMapper</a>.
+    </p>
+    
+    <h2>5.7 TabControl</h2>
+    
+    <p>
+        A TabControl allows to embed controls inside a variable number of tab pages.
+        The navigation between the tab pages is done by the left and right arrow key.
+        A tab page is represented by a text, an icon and a control which acts as
+        page content. 
+    </p>
+    
+    The following examples shows a tab control with three tab pages:
+    <ul>
+        <li>Tab page one contains a multiline editor.</li>
+        <li>Tab page two contains a text and two checkboxes.</li>
+        <li>Tab page three contains a list with 3 items.</li>
+    </ul>   
+    
+    <img src="pics/tab_control_tab1.jpg" alt="TabControl" /> <img src="pics/tab_control_tab2.jpg" alt="TabControl" /> <img src="pics/tab_control_tab3.jpg" alt="TabControl"/><br/>
+    
+    <b>MyWindow.hpp</b>
+    <pre>
+#include &lt;Gui/Window.hpp&gt;
+#include &lt;Gui/TabControl.hpp&gt;
+#include &lt;Gui/MultiLineEditor.hpp&gt;
+#include &lt;Gui/CheckBoxControl.hpp&gt;
+
+class MyWindow : public Window {
+    public:
+        MyWindow();
+        virtual ~MyWindow();
+        void Init();
+        
+    private:
+        TabControl m_tab_control;
+
+        <font color="#009900">// actions for softkeys</font>
+        Action m_ok_action;
+        CloseWindowAction m_close_action;
+
+        <font color="#009900">// content of tab page 1</font>
+        MultiLineEditor m_editor;
+
+        <font color="#009900">// content of tab page 2</font>
+        GridLayout m_grid_layout;
+        TextLine m_text_line;
+        CheckBoxControl m_checkbox1;
+        CheckBoxControl m_checkbox2;
+
+        <font color="#009900">// content of tab page 3</font>
+        ItemGrid m_list;
+        Item m_item_1;
+        Item m_item_2;
+        Item m_item_3;
+
+        void OnOkPressed();     <font color="#009900">// will be executed if the OK softkey has been pressed</font>
+};  
+    </pre>
+
+    <b>MyWindow.cpp</b>
+    <pre>
+#include "MyWindow.hpp"
+#include &lt;Config/Resources/confirm_icon.hpp&gt;
+#include &lt;Config/Resources/cancel_icon.hpp&gt;
+
+MyWindow::MyWindow()
+{
+}
+
+MyWindow::~MyWindow()
+{
+}
+
+void MyWindow::Init()
+{
+    Window::Init();
+
+    SetTitle(Tr(L"TabControl Test"));
+    Maximize();
+
+    <font color="#009900">// initialize softkeys</font>
+    m_ok_action.Init(this, Tr(L"OK"), (Action::ExecFn)&MyWindow::OnOkPressed);
+    SetLeftSoftkey(&m_ok_action);
+    m_close_action.Init(this, this, Tr(L"Close"));
+    SetRightSoftkey(&m_close_action);
+
+    <font color="#009900">// initialize tab page 1</font>
+    m_editor.Init(this, InputMapper::MultiTap, L"This is a MultiLineEditor embedded into a tab page.");
+    m_editor.SetReadOnly(TRUE);
+    m_editor.SetFrameType(Control::NoFrame);
+
+    <font color="#009900">// initialize tab page 2</font>
+    m_grid_layout.Init(this, 3, 1);
+    m_text_line.Init(&m_grid_layout, Tr(L"Text"));
+    m_checkbox1.Init(&m_grid_layout, Tr(L"Checkbox 1"));
+    m_checkbox2.Init(&m_grid_layout, Tr(L"Checkbox 2"));
+    m_grid_layout.SetCellProperties(0, 0, &m_text_line);
+    m_grid_layout.SetCellProperties(1, 0, &m_checkbox1);
+    m_grid_layout.SetCellProperties(2, 0, &m_checkbox2);
+
+    <font color="#009900">// initialize tab page 3</font>
+    m_list.Init(this);
+    m_item_1.Init(this, L"Max Headroom");
+    m_item_2.Init(this, L"Jeff Wright");
+    m_item_3.Init(this, L"Dennis Righthouse");
+    m_list.AddItem(&m_item_1);
+    m_list.AddItem(&m_item_2);
+    m_list.AddItem(&m_item_3);
+
+    m_tab_control.Init(this);
+    m_tab_control.AddTab(&m_editor, Tr(L"Tab1"), &confirm_icon);
+    m_tab_control.AddTab(&m_grid_layout, Tr(L"Tab2"), &cancel_icon);
+    m_tab_control.AddTab(&m_list, Tr(L"Tab3"), &confirm_icon);
+}
+
+void MyWindow::OnOkPressed()
+{
+    <font color="#009900">// access the current tab control here e. g. toggling the  the checkboxes 
+    // can be done like this:</font>
+    const INT index = m_tab_control.GetActiveTab();
+    if (m_tab_control.GetPage(index) == &m_grid_layout) {
+        Control* focused_control = m_grid_layout.GetFocusedControl();
+        if ((focused_control != 0) && focused_control->IsInstanceOf(CheckBoxControl::ID)) {
+            CheckBoxControl* checkbox = (CheckBoxControl*)focused_control;
+            checkbox->Toggle();
+        }
+    }
+    else {
+        Alert msg_box(Tr(L"OK has been pressed"));
+        msg_box.OpenModal();
+    }
+}
+    </pre>
+
+    <p>
+        When several controls should be part of a page, it is recommended to
+        use a <a href="classGridLayout.html">GridLayout</a> as control
+        representing the page. The grid layout allows to layout any kind of
+        components inside the given boundaries. In the example the tab page two
+        uses a grid layout containing 3 vertical aligned components.
+    </p>
+    
+    <p>
+        How to access the content of an active page is shown inside the method MyWindow::OnOkPressed. The
+        method TabControl::GetActiveTab returns the index of the active tab. This index can be used
+        to get the control representing the page by TabControl::GetPage.
+    </p>
+
+    <h3>5.7.1 Header Line</h3>
+    <p>
+        Per default the text and the icon of a tab page are shown inside the tab button at the top.
+        If the texts are very long and many tabs are shown, it might be useful to enable a
+        <em>header line</em> to reduce clutter. Enabling the header line can be done by invoking
+        the method TabControl::SetHeaderEnabled(TRUE):
+    </p>
+            
+    <img src="pics/tab_control_header_tab1.jpg" alt="TabControl" /> <img src="pics/tab_control_header_tab2.jpg" alt="TabControl" /> <img src="pics/tab_control_header_tab3.jpg" alt="TabControl"/>
+    
+    <p>
+        The text will be shown below the tab buttons using the full available width of the tab control.
+    </p>
+    
+    <h3>5.7.2 Tab Button Size</h3>
+    
+    <p>
+        The width and the height of a tab button is defined by the <a href="classTabButtonView.html">TabButtonView</a>
+        implemented by the current set theme (see <a href="gui_tutorial_08.html">Chapter 8: Themes</a> for details). The
+        following properties can be defined for the tab button:
+    </p>
+    
+    <ul>
+        <li><b>Default height:</b> If -1 is used, the height of the client font is used as default setting.</li>
+        <li><b>Default width:</b> If -1 is used, the buttons are stretched in a way that all buttons
+            are visible inside the available tab control width. </li>
+        <li><b>Minimum width:</b> If
+            a value < 1 is used, a minimum of 1 is assumed. Note
+            that when the header line is turned on by
+            TabControl::SetHeaderEnabled(TRUE), the minimum width
+            is used for the width of the tab buttons instead of the default width, as the tab
+            button will not contain any text.</li>
+        <li><b>Maximum width:</b> If
+            a value < 1 is used, no maximum is given.</li>
+        <li><b>Clipped width of a tab button:</b> If not all tab buttons fit into the tab control width,
+            the clipped width describes the preferred width of the
+            clipped tab button on the left or right.</li>
+    </ul>
+
+    <p>
+        In the following screenshot a default width of 70 pixels has been used. As not all
+        pages fit into the available width, a horizontal scrolling is done.
+    </p>
+    <img src="pics/tab_control_scrolling.jpg" alt="TabControl" />
+    
+    <p>
+        The default theme of APOXI allows to customize the properties for the default height, default width,
+        minimum width, maximum width and clipped inside the class <a href="classOptionalConfig.html">OptionalConfig</a>.
+        For the settings TabButtonDefaultHeight, TabButtonDefaultWidth, TabButtonMinimumWidth, TabButtonMaximumWidth and
+        TabButtonClippedWidth a corresponding value must be returned for the method
+        BOOLEAN OptionalConfig::GetSetting(INT group_id, INT setting_id, INT &result)
+    </p>
+    
+    <h3>5.7.3 Custom Look</h3>
+    
+    <p>
+        The look of the tab control including the tab buttons can be customized by implementing a custom view object for
+        <a href="classTabButtonView.html">TabButtonView</a> and <a href="classTabControlView.html">TabControlView</a>.
+        A sample implementation is available under Apoxi/GlobalThemes/DefaultTheme/DefaultTabButtonView.* and
+        Apoxi/GlobalThemes/DefaultTheme/DefaultTabControlView.*. See also <a href="gui_tutorial_08.html">Chapter 8: Themes</a>
+        for details how to implement views for a custom theme.
+    </p>
+    
+    <br/>   
+        [ Previous: <a href="gui_tutorial_04.html">Items</a> ] [ Next: <a href="gui_tutorial_06.html">Drawable Objects</a> ]
+    </body>
+</html>
+ 

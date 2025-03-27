@@ -1,0 +1,426 @@
+<html>
+	<head>
+		<link href="doxygen.css" rel="stylesheet" type="text/css">
+		<title>9 Multilingual Support</title>
+	</head>
+	
+	<body>
+		[ Previous: <a href="gui_tutorial_08.html">Themes</a> ] [ Next: <a href="gui_tutorial_10.html">Aragon</a> ]
+		
+		<h1>9 Multilingual Support</h1>
+		
+		<p>
+			In general, the usage of hardcoded strings should be avoided, as many applications
+			have to be shipped supporting different languages. 
+		</p>
+		
+		<h2>9.1 Using Tr()</h2>
+		
+		<p>
+			The programmer simply has to pass all texts to the
+			Tr()-method ("Translate") before displaying
+			them or passing them to components. So instead of handing
+			over a hardcoded string like "Main Menu" as input-parameter…
+			<pre>
+m_menu.Init(this, L"Main Menu");</pre>
+			
+			...just embed the string into Tr():
+			<pre>
+m_menu.Init(this, Tr(L"Main Menu"));</pre>
+
+			The translate method performs a fast lookup within the
+			current translation table and returns the text string
+			(translation) corresponding to the argument. Tr()
+			will simply return it's argument, if no translation table
+			is provided. This means that an application will run just
+			fine even if there are no translation tables.
+			The translation table can be generated with the APOXI Language
+			Tool.
+		</p>
+		<p>
+			As a thumb rule: use Tr() only with English strings,
+			as English will represent the key-column in the language
+			table . The key-column in the translation-table is
+			the first column and is sorted alphabetically.
+		</p>
+		
+		<p>
+			Example for a wrong usage: given is a language table which
+			provides the languages English and German. Each language
+			represents one column, where English is the key-column.
+			If the active language is set to English, a <em>Tr(L"Main Menu")</em>
+			returns "Main Menu". If German is used as active
+			language, <em>Tr(L"Main Menu")</em> returns "Hauptmenü".
+			It's important to know, that <em>Tr(L"Hauptmenü")</em> does
+			not return "Main Menu" when the active language is set to
+			English. This is because the input-parameter
+			"Hauptmenü" is not part of the key-column of the
+			language-table. For this case ReTranslate()
+			must be used, which usually is just needed if the
+			language is changed during runtime and the message
+			LanguageChangedMsg is broadcasted.
+		</p>
+		
+		<h2>9.2 Using ReTranslate()</h2>
+		
+		<p>
+			When the language is changed during runtime by
+			LanguageManager::SetLanguage(…),
+			APOXI broadcasts the message LanguageChangedMsg
+			to all applications. All components offer the method
+			OnLanguageChanged, which is triggered by
+			this message. When having a pointer to a string, which
+			has been translated by Tr, it can be
+			retranslated to any other language by invoking
+			ReTranslate. This means that in
+			opposite to Tr the method ReTranslate
+			may get any string which is part of the translation table,
+			not only strings from the key-column.
+		</p>
+		
+		<p>
+			This comfortable usage has the drawback of being a very
+			expensive operation. Hence it is recommended to use the
+			method ReTranslate only inside the method
+			OnLanguageChanged and not for
+			initalizing components.
+		</p>
+			Please note that the retranslation cannot work for merged strings:
+		</p>
+		<pre>
+// current set language is German, m_text is a <a href="classWString.html">WString</a>
+m_text = Tr(L"Main Menu");   // "Hauptmenü" is returned
+m_text << L"(2/10)";         // m_text contains "Hauptmenü (2/10)"
+...
+// language is changed to English from outside
+LanguageManager::SetLanguage(english_id);
+...
+void ...::OnLanguageChanged()
+{
+    ...
+    m_text = ReTranslate(m_text);    // does not work: the string "Hauptmenü (2/10)"
+                                     // is not part of the translation table!
+}</pre>
+
+		<p>
+			In this case OnLanguageChanged must look like this:
+		</p>
+		<pre>
+void ...::OnLanguageChanged()
+{
+	...
+	m_text = Tr(L"Main Menu") << L"(2/10");
+}</pre>
+
+		<p>
+			Per default all APOXI-components having a text use
+			ReTranslate in the implementation of
+			OnLanguageChanged. Please take this
+			into account when developing applications which use
+			merged strings.
+		</p>
+		
+		<h2>9.3 Initialization</h2>
+		
+		<p>
+			The method System::InitLanguage(…) should be
+			invoked, before the first invokement of Tr or ReTranslate.
+			By invoking this method APOXI is informed about the
+			current active language. It is recommended to invoke
+			System::InitLanguage(…) in the method
+			OnOpen of the main-application in MMI,
+			which is started as first application.
+			If this is not done, APOXI assumes that the used language is
+			the first column of the translation table, which
+			usually means English.
+		</p>
+
+		<h2>9.4 Non-Latin Scripts</h2>
+		
+		<p>
+			APOXI supports bidirectional languages like Arabic and Hebrew, as well as languages which use a wide unicode range (e.g. Chinese) or are complex (e.g. with regard to diacritics like Thai). This chapter explains how to integrate the fonts for such languages into the APOXI-configuration.
+		</p>
+		
+		<h3>9.4.1 General Tips</h3>
+	<ul style="line-height: 150%">
+		<li>For testing APOXI language support: To easily generate an APOXI font which supports a wide range of characters, it is recommended to use the "Arial Unicode MS" font, which is installed together with some Microsoft products (e.g. Office). This font implements glyphs for most of the Unicode code pages.
+		<li>The list of Unicode code pages can be found on the WWW page of the Unicode consortium: <a href="http://www.unicode.org/charts/index.html">characters</a> and <a href="http://www.unicode.org/charts/symbols.html">symbols and punctuation</a>.
+		</ul>
+		<h3>9.4.2 Fonts</h3>
+		
+		<p>
+			The APOXI Resource Compiler may generate fonts which cover the whole unicode-range, so that any kind of language can be displayed by using such a font. Because of the high memory demand and the fact, that a mobile phone will only support a subrange of all possible languages, this does not make sense. Hence it is important to generate a font, which covers the unicode-range of the selectable languages. This can be achieved by editing the file resources.xml and generate an APOXI-font with the APOXI Resource Compiler. 			
+		</p>
+			
+		<h4>9.4.2.1 Thai</h4>
+		</p>
+			To handle Thai characters the following tags in resources.xml might be used (the range from 3585 to 3675 handles Thai glyphs):
+		</p>
+		<pre>
+&lt;font&gt;
+	&lt;output_folder&gt;Config/Resources&lt;/output_folder&gt;
+	&lt;infile&gt;XxxFont&lt;/infile&gt;
+	&lt;outfile&gt;DefaultFont&lt;/outfile&gt;
+	&lt;varname&gt;default_font&lt;/varname&gt;
+	&lt;range from="20" to="255"/&gt;
+	&lt;range from="3585" to="3675"/&gt;
+	&lt;size height="14"/&gt;
+	&lt;unicodeunknown&gt;32&lt;/unicodeunknown&gt;
+	&lt;gap&gt;0&lt;/gap&gt;
+&lt;/font&gt;</pre>
+		<h4>9.4.2.2 Chinese</h4>
+		<p>
+			When chinese characters are needed, just
+		</p>
+		<pre>
+	&lt;range from="19968" to="40959"/&gt;</pre>
+			must be added into the font-tag. Further documentation is given in the document ResourceCompiler.pdf.
+		</p>
+		
+		<h4>9.4.2.3 Japanese</h4>
+			Additionally to Kanji characters (i.e. the Unified CJK Ideographs also used for Chinese, above) there are two more syllabaries and some punctuation characters to be considered for Japanese.
+		
+		<pre>
+	&lt;!-- Japanese --&gt;
+		&lt;!-- General Punctuation --&gt;
+	&lt;range from="8216" to="8217"/&gt;
+	&lt;range from="8220" to="8221"/&gt;
+	&lt;range from="8240" to="8240"/&gt;
+	&lt;range from="8242" to="8243"/&gt;
+		&lt;!-- Letterlike Symbols --&gt;
+	&lt;range from="8451" to="8451"/&gt;
+	&lt;range from="8457" to="8457"/&gt;
+		&lt;!-- CJK Symbols and Punctuation --&gt;
+	&lt;range from="12289" to="12351"/&gt;
+		&lt;!-- Hiragana --&gt;
+	&lt;range from="12353" to="12447"/&gt;
+		&lt;!-- Katakana --&gt;
+	&lt;range from="12448" to="12543"/&gt;
+		&lt;!-- Halfwidth and Fullwidth Forms --&gt;
+	&lt;range from="65281" to="65518"/&gt;
+		</pre>
+		
+		<h4>9.4.2.4 Arabic</h4>
+		<p>
+			Arabic resembles cursive writing even on computer terminals. This means that the shape of (some) characters changes according to their position within the word. Characters that do so are called <i>binding letters</i>. All characters have an <i>Isolated</i> form, however, if a letter is a binding letter, it also has a <i>Final</i> (at the end of word), <i>Medial</i> (within a word),  and <i>Initial</i> (start of word) form. These are collectively known as <i>presentation forms</i>. The isolated forms are defined in the <a href="http://www.unicode.org/charts/PDF/U0600.pdf">Arabic</a> Unicode code page, while the other forms are defined in <a href="http://www.unicode.org/charts/PDF/UFB50.pdf">Arabic Presentation Forms A</a> and <a href="http://www.unicode.org/charts/PDF/UFE70.pdf">Arabic Presentation Forms B</a>. Farsi (Arabic script used in Iran) and Urdu (used in India) are also covered in Presentation Forms A and B. For African languages that are written with the Arabic script, there is the <a href="http://www.unicode.org/charts/PDF/U0750.pdf">Arabic Supplement</a> codepage. Thus, to get the collection of (non-African) Arabic characters, the range configuration in <i>resources.xml</i> must look something like this:
+		<pre>
+	&lt;!-- Arabic (also for Urdu, Farsi) --&gt;
+	&lt;range from="1569" to="1610"/&gt;
+	&lt;range from="1632" to="1748"/&gt;
+	&lt;range from="64336" to="64489"/&gt;
+	&lt;range from="65152" to="65276"/&gt;
+		</pre>
+		</p>
+		<h4>9.4.2.5 Vietnamese</h4>
+		<p>
+			Besides using the usual Latin characters, characters required for Vietnamese are widely strewn throughout many Unicode code pages (<a href="http://www.unicode.org/charts/PDF/U0000.pdf">C0 Controls and Basic Latin</a>, <a href="http://www.unicode.org/charts/PDF/U0080.pdf">C1 Controls and Latin-1 Supplement</a>, <a href="http://www.unicode.org/charts/PDF/U0100.pdf">Latin Extended-A</a>, <a href="http://www.unicode.org/charts/PDF/U0180.pdf">Latin Extended-B</a>, and <a href="http://www.unicode.org/charts/PDF/U1E00.pdf">Latin Extended Additional</a>). To simplify generating a font capable of displaying all characters, the ranges are listed below.
+		<pre>
+	&lt;!-- Standard Latin --&gt;
+	&lt;range from="20" to="255"/&gt;
+	
+	&lt;!-- Vietnamese additional to Latin --&gt;
+	&lt;range from="258" to="259"/&gt;
+	&lt;range from="272" to="273"/&gt;
+	&lt;range from="296" to="297"/&gt;
+	&lt;range from="360" to="361"/&gt;
+	&lt;range from="416" to="417"/&gt;
+	&lt;range from="431" to="432"/&gt;
+	&lt;range from="768" to="771"/&gt;
+	&lt;range from="774" to="774"/&gt;
+	&lt;range from="777" to="777"/&gt;
+	&lt;range from="795" to="795"/&gt;
+	&lt;range from="803" to="803"/&gt;
+	&lt;range from="7840" to="7929"/&gt;		
+		</pre>
+		
+		<h3>9.4.3 FontConfig</h3>
+		<p>
+			APOXI accesses to the font-configuration by the class
+			FontConfig, which is implemented by FontConfig.cpp. Usually this file is located in the Config-directory of the MMI-project and may be adjusted to the required needs.
+		</p>
+		
+		<p>
+			As APOXI allows having a variable number of fonts,
+			it is recommended that each font supports
+			all selectable languages. This makes it
+			easy for applications to use an available
+			font without taking care, which language is
+			currently activated. If this approach would
+			require too much memory (e. g. having 10 fonts
+			where each font covers the chinese unicode-range),
+			the applications must take care themselves
+			to respect the selected language and use the
+			font which covers the needed unicode-range.
+			When the applications just use system-fonts, this can
+			be done automatically by implementing the method
+			ThemeConfig::GetFontId() of the file
+			ThemeConfig.cpp (it is located in the folder Config
+			of the MMI-project):
+		</p>
+		<pre>
+INT ThemeConfig::GetFontId(SystemFontId id, const Theme& theme)
+{
+	// the input-parameters in this implementation are ignored, but they
+	// can be used for a more granular solution
+	INT font_id = 0;     // use default font
+	if (LanguageManager::GetActiveLanguageType() == LanguageManager::Thai)
+	    font_id = 1;     // assumed that this font covers Thai
+	else if (LanguageManager::GetActiveLanguageType() == LanguageManager::Chinese)
+	    font_id = 2;     // assumed that this font covers Chinese
+	return font_id;
+}</pre>
+		
+		<h3>9.4.4 Locale Settings</h3>
+
+		<p>
+			APOXI supports locale settings to have:
+			<ul style="line-height: 150%">
+				<li>a specified date- and time-format</li>
+				<li>a decimal-separator</li>
+				<li>a thousands-separator</li>
+				<li>a currency symbol
+				<li>a language</li>
+				<li>text-alignment (left-to-right or right-to-left)</li>
+			</ul>
+		</p>
+		
+		<p>
+			When switching to another language by invoking
+			System::SetLanguage(), only the language
+			of the locale settings is changed (see documentation
+			to the class <a href="classLocale.html">Locale</a> for the offered interfaces).
+			This means that when switching to the the Arabic
+			language by invoking System::SetLanguage() the
+			text-aligment won't be changed automatically
+			by APOXI, as this must be decided on the application-level
+			(e. g. it would be possible, that the wished
+			text-alignment should still be left-to-right,
+			even Arabic is selected).
+		</p>
+		
+		<p>
+			It is recommended to offer one locale-setting for each language, so when changing a language in the MMI, the following code will work:
+		</p>
+		<pre>
+INT lang_id = ...;		// selected language ID by the user
+System::SetLanguage(lang_id);
+Locale::Set(LocaleConfig::GetSetting(lang_id));</pre>
+
+		<p>
+			The class <a href="classLocale.html">Locale</a>, represented by the file LocaleConfig.cpp, does not force to have one locale setting for each language (e. g. it would be possible that one locale-setting would fit for a variable number of languages), but using one locale setting per language does not take much resources and allows an easy implementation for the MMI to select a language and adjust the locale settings.
+		</p>
+
+		<h3>9.4.5 Hints</h3>
+		
+		<ul style="line-height: 150%">
+			<li>The font of a multiline editor may be changed by
+				invoking MultiLineEditor::SetFont().
+				If not all fonts support the glyphs of all possible
+				languages, this font must be adjusted when the language
+				is changed. Otherwise those glyphs may be shown as
+				'invalid glyphs', which usually are represented
+				as space or as a square.</li>
+			<li>When using the multimedia editor, which allows to have
+				richtext compound items, it also is important to check
+				whether the used font of a richtext compound item
+				is able to display all glyphs of the currently used language.</li>
+			<li>When custom controls or drawable-objects have to be
+				implemented, the text-alignment should be respected.
+				If the text-alignment is switched from left-to-right
+				to right-to-left, the output of the text will be done
+				on the left side of the given x-coordinate instead
+				of the right side. The following code-snipplet shows,
+				how this should might be handled:
+				<pre>
+#include &lt;Locale/LocaleConfig.hpp&gt;
+
+...
+
+XYDIM y = ...;
+XYDIM x = ...;
+
+if (Locale::GetTextAlignment() == Locale::RightToLeft)
+	x = GetClientWidth() - x;
+
+<a href="classPaintDc.html">PaintDc</a> pdc(GetDeviceContext());
+pdc.DrawText(x, y, L"Text");</pre>
+			</li>
+			<li>It is recommended to use the class
+				<a href="classLayouter.html">Layouter</a> when overwriting the
+				method Control::OnLayoutClient()
+				to layout the components inside a control.
+				This has the benefit that horizontally aligned
+				cells are flipped automatically when the the
+				alignment is changed to right-to-left.
+			</li>
+		</ul>
+		
+		<h2>9.5 Advance Translation Support</h2>
+		
+		<p>
+			Since APOXI-2.7 a new feature is available which increases the performance of
+			retranslating strings. The feature can be turned on by defining
+			APOXI_ENABLE_ADVANCED_TRANSLATION and requires to regenerate the language
+			translation table by the new APOXI Language Tool (the checkbox 'Advanced translation' must be set).
+		</p>
+		
+		<p>
+			If the feature is not activated, 100 % backward compatibility with the
+			classic format is given. When activating the feature, following adaptions have to be done:
+		</p>
+		
+		<ul>
+			<li>The method MemoryConfig::IsInRom (located in Config/MemoryConfig.cpp) should be implemented like this:
+<pre>
+#include "LanguageRes.hpp"
+
+BOOLEAN MemoryConfig::IsInRom(const void* ptr)
+{
+#if defined(APOXI_ENABLE_ADVANCED_TRANSLATION)
+  return (ptr >= (const void*)c_translations) && (ptr <= (const void*)c_translations_end);
+#else
+  return FALSE;
+#endif
+}</pre></li>
+
+			<li>The method LocaleConfig::GetLanguageCount (located in Config/LocaleConfig.cpp)
+			should be implemented like this: 
+<pre>INT LocaleConfig::GetLanguageCount()
+{
+#if defined(APOXI_ENABLE_ADVANCED_TRANSLATION)
+  return c_language_count; <font color="#009900">// defined inside the generated file LanguageRes.hpp</font>
+#else
+  return N_LANGUAGES;  <font color="#009900">// defined inside the generated file LanguageRes.hpp</font>
+#endif
+}</pre></li>	
+		</ul>
+
+		<p>
+			The methods GetTranslationTable and GetStringCount from the class
+			LocaleConfig (located in the config directory of the project) are not
+			used by APOXI anymore and may get deleted or implemented in a way that 0 is returned.
+		</p>
+
+		
+		Benefits:
+		<ul>
+			<li>The runtime complexity in the classic version to retranslate a string was s * l
+			(where 's' is the number of strings and 'l' the number of languages). With the new
+			translation table format the runtime complexity is 1 and means that a retranslation
+			is as fast as the translation itself.</li>
+			
+			<li>As the method MemoryConfig::IsInRom returns TRUE for all strings located in the
+			language table, the strings are not copied anymore to the RAM dynamically when using
+			WStrings. This reduces the heap demand a lot and improves the general performance of the MMI.</li>
+			
+			<li>If more than 2 languages are used, the ROM demand decreases up to 1 byte per
+			translated word in comparison to the old format.</li>
+		</ul>
+
+		Drawback:
+			<ul><li> The advanced translation table does not work on E-Gold platforms.</li></ul>
+		
+		[ Previous: <a href="gui_tutorial_08.html">Themes</a> ] [ Next: <a href="gui_tutorial_10.html">Aragon</a> ]
+		
+	</body>
+</html>

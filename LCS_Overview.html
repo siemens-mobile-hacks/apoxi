@@ -1,0 +1,180 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<title>LCS Overview</title>
+<style type="text/css">
+<!--
+.Stil1 {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: xx-large;
+	font-weight: bold;
+}
+.Stil4 {
+	font-size: large;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-weight: bold;
+}
+.Stil6 {font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 12px;}
+.Stil22 {font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 12px; font-weight: bold; }
+.Stil23 {font-family: Verdana, Arial, Helvetica, sans-serif; font-size: large;}
+.Stil26 {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: medium;
+	font-weight: bold;
+}
+.Stil28 {font-family: Wingdings}
+.Stil29 {font-family: Verdana, Arial, Helvetica, sans-serif}
+-->
+</style>
+</head>
+
+<body>
+<div align="center">
+  <p align="center" class="Stil1">LCS Overview </p>
+  <p align="justify" class="Stil4">1 Introduction </p>
+  <p align="justify" class="Stil6">AGPS is a concept used for Global Positioning Systems which can provide accurate measurements of the position 
+    even when used indoors. The entire AGPS functionality is implemented as an additional plug and play module 
+    called &quot;LCS&quot; (LoCation Service) in APOXI. Applications using the AGPS feature can be developed over APOXI 
+  using the interfaces provided.</p>
+  <p align="justify" class="Stil4">    2 Modes of operation</p>
+  <p align="justify" class="Stil6">    There are three modes/protocols of operations supported currently in APOXI. they are listed in the following:</p>
+  
+<div align="justify">
+      <ul class="Stil6">
+        <li>
+          <strong>3GPP</strong></li>
+          <li>
+            <strong>GLTP</strong></li>
+          <li>
+            <strong>Stand alone</strong></li>
+      </ul>
+</div>
+  <p align="justify" class="Stil6">    The implementation of these protocols can be included/excluded by switching on/off compile time flags.</p>
+  <p align="justify" class="Stil6">    If supported in a release, these protocols can be loaded/unloaded at run time using Lcs Settings (See 
+    Section 18.5). But stand alone mode is supported by default if it is a part of the deliverable and can not be 
+    loaded/unloaded. LcsProvider selects one of the loaded protocols/modes for position fixes based upon the 
+    parameters passed in interface invocations.</p>
+  <p align="justify" class="Stil4">3 Interfaces</p>
+  <p align="justify" class="Stil6">    The interfaces between LCS and MMI application are shown in Figure 1.</p>
+  
+<div align="justify">
+  <table width="98%"  border="1" align="center" cellpadding="0" cellspacing="0" bordercolor="#000000">
+    <tr>
+      <td height="267"><div align="center"><img src="figures/LCS_Interface.png" width="389" height="232"></div></td>
+    </tr>
+  </table>
+</div>
+  <p align="justify" class="Stil22">Figure&nbsp;1. Interfaces between LCS and MMI application</p>
+  <p align="justify" class="Stil6">I/F 1 is a function based interface and I/F 2 is message based interface.</p>
+  <p align="justify" class="Stil23">3.1 Implementation</p>
+  <p align="justify" class="Stil6">I/F 1 is a functional interface because this invocation is done by the MMI application and is predictable. </p>
+  <p align="justify" class="Stil6">    I/F 2 is asynchronous interface because these are the responses received from the network and are unpredictable. 
+    Also, in the latter case, MMI may want to wait for user inputs which may in turn block the execution of the thread.</p>
+  <p align="justify" class="Stil6">    The LcsProvider provides interfaces to the actual LCS functionality.</p>
+  <p align="justify" class="Stil26">3.1.1 I/F 1</p>
+  <p align="justify" class="Stil6">I/F 1 interfaces provided by Lcs are listed in the following:</p>
+  
+<ul><li><div align="left" class="Stil6">
+      <div align="justify"><strong>SelfLocationReq</strong>: This interface can be used to perform a self-location. It is possible to instruct LcsProviderto select a particular mode based upon the cost of a position fix in different modes. Also, it is possible to repeat a position fix periodically.</div>
+    </div>
+    </li>
+    <li>
+      <div align="left" class="Stil6">
+        <div align="justify"><strong>TransferLocationReq</strong>: This interface can be used to transfer the location information of the MS to an external LCS client via a particular GMLC, if possible. Here also, it is possible to repeat the transfer of location periodically.</div>
+      </div>
+    </li>
+    <li>
+      <div align="left" class="Stil6">
+        <div align="justify"><strong>AbortSelfLocReq</strong>: This interface can be used to abort an ongoing self-location request.</div>
+      </div>
+    </li>
+    <li>
+      <div align="left" class="Stil6">
+        <div align="justify"><strong>SendVerificationResult</strong>: This interface is used to send the user's verification response for a MT- LR request to the network.</div>
+      </div>
+    </li>
+</ul>
+  <p align="justify"><span class="Stil26">3.1.2 I/F 2</span></p>
+  <p align="justify" class="Stil6">I/F 2 interfaces provided by Lcs are listed in the following: 
+</p>
+  
+<div align="justify">
+<ul>
+        <li class="Stil6">
+          <div align="left" class="Stil6">
+            <div align="justify"><strong>LocationResMsg</strong>: This message is sent to the MMI application as a result of a position fix request by it. This message contains position fix details.</div>
+          </div>
+        </li>
+  </ul>
+</div>
+  <ul><li class="Stil6">
+      <div align="left" class="Stil6">
+        <div align="justify"><strong>LocationErrMsg</strong>: This error message indicates the occurrence of error if any in a position fix process. This message contains error details.</div>
+      </div>
+    </li>
+    <li class="Stil6">
+      <div align="left" class="Stil6">
+        <div align="justify"><strong>AbortResMsg</strong>: This message is sent to the MMI application as a result of an abortion request by it. This message indicates that the abortion of an ongoing position fix is successful.</div>
+      </div>
+    </li>
+    <li class="Stil6">
+      <div align="left" class="Stil6">
+        <div align="justify"><strong>LocationNotifInvokeMsg</strong>: This message is sent to the MMI application to indicate that an MT-LR notification has been received from the network.</div>
+      </div>
+    </li>
+  </ul>
+  <p align="justify" class="Stil4">4 Lcs Implementation Details</p>
+  <p align="justify" class="Stil23">    4.1 SDL Signal Definition</p>
+  <p align="justify" class="Stil6">    All the SDL signals needed for Lcs are added to msap_signals_mn.pr file and a tool is used to generate the ms.h 
+    file.</p>
+  <p align="justify" class="Stil23">    4.2 Control Flow</p>
+  <p align="justify" class="Stil6">    The following diagram (Figure 2) depicts a typical control flow within MMI. The interfaces and the messages 
+    exchanged between the various blocks (MN, APC, etc).</p>
+  
+<div align="justify">
+  <table width="98%"  border="1" align="center" cellpadding="0" cellspacing="0" bordercolor="#000000">
+    <tr>
+      <td height="271"><div align="center"><img src="figures/LCS_Control_Flow.png" width="617" height="233"></div></td>
+    </tr>
+  </table>
+</div>
+  <p align="justify" class="Stil6">Figure&nbsp;2. AGPS Message Flow in MMI </p>
+  <p align="justify" class="Stil26">4.2.1 MN Interface  <span class="Stil28">&agrave;</span> APC </p>
+  <p align="justify" class="Stil6">APC maintains a mapping between the incoming SDL signals and the corresponding processing functions in 
+    protocol specific <em>SignalMapTableNode</em> classes. The processing function extracts the parameters from the SDL 
+    signal and posts appropriate argument messages to the dispatcher. When a protocol is loaded/unloaded, these 
+  tables also get loaded/unloaded.</p>
+  <p align="justify" class="Stil26">4.2.2 APC Interface <span class="Stil28">&agrave;</span> ASC</p>
+  <p align="justify" class="Stil6">    The SDL signal processing methods in APC posts appropriate argument messages to the dispatcher. The 
+    dispatcher implementation is actually a part of Lcs implementation. The processing method processes the
+    argument message and takes appropriate action.</p>
+  <p align="justify" class="Stil26">    4.2.3 Lcs Interface <span class="Stil28">&agrave;</span> MMI App</p>
+  <p align="justify" class="Stil6">    The ASC message processing method in Lcs takes out relevant parameters of the argument object (embedded in 
+    the received message) and copies to the corresponding message to be sent to the MMI application. So again, a 
+new MMI message is sent to the Lcs application.</p>
+  <p align="justify" class="Stil6"><br>
+    <span class="Stil26">4.2.4 MMI App <span class="Stil28">&agrave;</span> Lcs and Lcs <span class="Stil28">&agrave;</span> APC Interfaces </span> </p>
+  <p align="justify" class="Stil6">MMI application invokes the appropriate method of LcsProvider for any Lcs-related functionality. Lcs, in turn, 
+    processes the parameters and passes them to the corresponding method of the protocol specific message 
+    processor class in APC. When a protocol is loaded/unloaded, this class object also gets l oaded/unloaded.</p>
+  <p align="justify" class="Stil26">    4.2.5   MN Interfaces <span class="Stil28">&szlig; <span class="Stil29">APC</span></span></p>
+  <p align="justify" class="Stil6">    The processing functions in APC constructs the appropriate SDL signal using the parameters passed and sends 
+it to the SDL environment.</p>
+  <p align="justify" class="Stil4">5 Lcs Settings</p>
+  <p align="justify" class="Stil6">    A settings application is also provided with the Lcs implementation. This application takes care of the following:</p>
+  
+<div align="justify">
+      <ol>
+        <li class="Stil6">
+          Loading/unloading of protocols.</li>
+          <li class="Stil6">
+            Taking input parameters for a position fix so that user need not enter these details for every position fix. Inputs are different for different protocols.</li>
+          <li class="Stil6">
+            Software version information: Please note that the use of Lcs settings application implementation is optional and can be overwritten by any customer specific implementation.</li>
+      </ol>
+</div>
+  <p align="justify" class="Stil6">&nbsp;</p>
+</body>
+</html>

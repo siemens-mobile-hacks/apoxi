@@ -1,0 +1,109 @@
+<html>
+	<head>
+   		<link href="doxygen.css" rel="stylesheet" type="text/css">
+		<title>2 Concepts</title>
+	</head>
+
+	<body>
+		[ Previous: <a href="gui_tutorial_01.html">Introduction</a> ] [ Next: <a href="gui_tutorial_03.html">Sample Application</a> ]
+
+		<h1>2 Concepts</h1>
+
+		<p>
+			The chapter gives an overview about some basic terms and concepts used in the APOXI-GUI-framework.
+		</p>
+
+		<h2>2.1 Application and Window</h2>
+
+		<p>
+			Two main parts of the APOXI-GUI-framework are the classes <a href="classApplication.html">Application</a> and <a href="classWindow.html">Window</a>. APOXI windows have the same features as windows known from modern operating systems on desktop personal computers:
+			<ul style="line-height: 150%">
+				<li>They can change in size and position.</li>
+				<li>They have themeable frames.</li>
+				<li>They can have child windows, as commonly known from multiple document interfaces.</li>
+			</ul>
+		</p>
+
+		<p>
+			An application may contain a variable number of windows.
+			The drawing of the window and its content is done on a so called device-context.
+			A device-context is implemented by the class <a href="classDeviceContext.html">DeviceContext</a>
+			and represents an abstract drawing area, with defined colors for pens and brushes, text-attributes
+			and raster-operations.
+		</p>
+
+		<p>
+			It's very important to be aware that a window always belongs to one application
+			and may not be accessed in a direct manner from other applications. This is because each application
+			might run in its own thread. As a thumb rule:
+			<div class="important">
+				Applications may only communicate with each other by posting messages. Direct access to the data of
+				another application is not allowed.
+			</div>
+			More details regarding how to access windows from other applications are given in <a href="gui_tutorial_05.html">Chapter 5: Controls</a>
+		</p>
+
+		<h2>2.2 Components</h2>
+
+		<p>
+			Every graphical object is derived from the class <a href="classComponent.html">Component</a>, which represents
+			a graphical object with a rectangle as boundaries. Every component is able to
+			handle and route messages. There are two groups of components: drawable objects and controls.
+		</p>
+
+
+		<h3>2.2.1 Drawable Objects</h3>
+
+		<p>
+			Drawable objects are represented by the class <a href="classDrawableObject.html">DrawableObject</a>, which is the
+			base for all graphical objects, which do not interact with the user.
+			The classes <a href="classImageBox.html">ImageBox</a>, <a href="classProgressBar.html">ProgressBar</a> and <a href="classTextBox.html">TextBox</a> are examples for drawable objects:
+		</p>
+
+		<p>
+			<table border="0" width="100%">
+				<tr>
+					<td align="center"><img src="pics/image_box.gif" alt="ImageBox"/></td>
+					<td align="center"><img src="pics/progress_bar.gif" alt="ProgressBar"/></td>
+					<td align="center"><img src="pics/text_box.gif" alt="TextBox"/></td>
+				</tr>
+				<tr>
+					<td align="center">ImageBox</td>
+					<td align="center">ProgressBar</td>
+					<td align="center">TextBox</td>
+				</tr>
+			</table>
+		</p>
+
+		<h3>2.2.1 Controls</h3>
+
+		<p>
+			Controls are represented by the class <a href="classControl.html">Control</a>
+			and can have one or
+			more child-components which are layouted inside the control.
+			Messages sent to a control are handled by the
+			parent-control first and then forwarded to potential child-components.
+			Controls can get the focus and hence interact with the user, as all key-messages
+			are forwarded to the focused control.
+			The classes <a href="classCheckBoxControl">CheckBoxControl</a>, <a href="classLineEditor.html">LineEditor</a> and
+			<a href="classPushButton.html">PushButton</a> are examples for controls:
+		</p>
+
+		<p>
+			<table border="0" width="100%">
+				<tr>
+					<td align="center"><img src="pics/check_box.gif" alt="ImageBox"/></td>
+					<td align="center"><img src="pics/line_editor.gif" alt="ProgressBar"/></td>
+					<td align="center"><img src="pics/push_button.gif" alt="TextBox"/></td>
+				</tr>
+				<tr>
+					<td align="center">CheckBox</td>
+					<td align="center">LineEditor</td>
+					<td align="center">PushButton</td>
+				</tr>
+			</table>
+		</p>
+
+		[ Previous: <a href="gui_tutorial_01.html">Introduction</a> ] [ Next: <a href="gui_tutorial_03.html">Sample Application</a> ]
+	</body>
+</html>

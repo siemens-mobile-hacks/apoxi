@@ -1,0 +1,310 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<title>Auxiliary Overview</title>
+<style type="text/css">
+<!--
+.Stil1 {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: xx-large;
+	font-weight: bold;
+}
+.Stil4 {
+	font-size: large;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-weight: bold;
+}
+.Stil6 {font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 12px;}
+.Stil8 {font-family: Verdana, Arial, Helvetica, sans-serif; font-size: larger;}
+.Stil15 {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: medium;
+	font-weight: bold;
+}
+.Stil17 {font-family: "Courier New", Courier, mono}
+.Stil19 {font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 12px; font-weight: bold; }
+.Stil20 {font-family: "Courier New", Courier, mono; font-size: 12px; }
+-->
+</style>
+</head>
+
+<body>
+<div align="center">
+  <p align="center" class="Stil1">Auxiliary Overview </p>
+  <p align="left" class="Stil4">1 Introduction </p>
+  <p align="justify" class="Stil6">The Auxiliary module of APOXI provides helper-classes for APOXI and custom projects. It allows easy 
+    manipulation of data primitives, like strings, phonenumbers, date and time and provides commonly used data 
+    structures like linked lists, vectors and bitfields. The important classes provided by auxiliary module are described 
+  in the following sections.</p>
+  <p align="justify" class="Stil4">2 Provider Base classes, DataItem</p>
+  <p align="justify" class="Stil8">2.1 Providers</p>
+  <p align="justify" class="Stil6">    Providers make a specific interface available which standardizes the handling of tabular data. A Provider can be 
+  seen as a table of data with methods to read and write data and to get information about the column types.</p>
+  <p align="justify" class="Stil6">    The root class (Provider) does only specify an interface. Data Providers present real data to the application (like 
+phonebook entries, preferred PLMNs, etc.).</p>
+  <p align="justify" class="Stil6">    Providers identified via unique IDs as shown in the following code:</p>
+  <p align="justify" class="Stil6 Stil17">    virtual Provider * GetProvider(INT providerid);</p>
+  <p align="justify" class="Stil6">    There exists quiet a number of predefined Providers. Some examples of such Providers are listed in the following:</p>
+  <ul>
+    <li>
+      <div align="left"><span class="Stil19">Phonebook Providers </span></div>
+    </li>
+    <li>
+      <div align="left"><span class="Stil6"><strong>SMS Providers</strong>: SmsProvider is the base Provider of all sms Providers. It allows retrieving pdus from and changing the state of the pdus on the sim. It presents all sms within the system</span></div>
+    </li>
+    <li>
+      <div align="left"><span class="Stil6"><strong>PlmnProvider</strong>: PlmnProvider is the Provider to retrieve data about plmns&bull;CountryProvider: It is the Provider to retrieve data concerning country codes</span></div>
+    </li>
+  </ul>
+<p align="justify"><br>
+  <span class="Stil6">APOXI also offers a set of generic Providers. They have the same interface as the APOXI Providers. The generic 
+    Providers help to obtain different views on data. This is accomplished by chaining Providers. For example, one 
+    can put a <em>FilterProvider</em> A &quot;in front&quot; of data Provider B. B is said to be the child of A. Of course one can put a third 
+    Provider C (e.g. a <em>SortProvider</em>) in front of A. The purpose of generic Providers is to simplify the sorting, finding 
+and filtering of data (rows). They provides only a view of the child Provider.</span></p>
+<p align="left"><span class="Stil6">  Two types of Providers exist in APOXI, they are:</span></p>
+  <ul>
+    <li>
+      <div align="left"><span class="Stil6"><strong>Data Providers</strong>: Data Providers work directly with data i.e, loading data, storing data etc.</span></div>
+    </li>
+    <li>
+      <div align="left"><span class="Stil6"><strong>View Providers</strong> :View Providers have the same interface as Data Providers. They are used for sorting (e.g. QuickSort Provider), finding( e.g. Find Provider) and filtering( Filter Provider) rows and provides only a view to the child Provider.They also provide cascading of more than one Providers.</span></div>
+    </li>
+  </ul>
+  <p align="left" class="Stil15">2.1.1 Provider Interface</p>
+  <p align="justify" class="Stil6">Providers present data as matrix of data elements (rows x columns). You can think of it as a grid - in terms of the 
+    arrangement - similar to a spread-sheet. All Providers have a unique constant numeric Provider-Id associated.
+    Every column in the grid, which is associated to a specific Provider, has a unique Column-Id. These Ids are unique 
+  throughout APOXI.</p>
+  <p align="justify" class="Stil6">    Reading data is done by <em>GetDataItem</em>. Writing is done row by row. A row has to be locked first, data is modified 
+    by calls of <em>SetDataItem</em>, the changes have to be committed (either by Commit, AppendRow, DeleteRow, or 
+InsertRow), and finally the procedure is closed by Unlock.</p>
+  <p align="left" class="Stil8">    2.2 DataItem</p>
+  <p align="justify" class="Stil6">    <em>DataItem</em> is used to represent data of a Provider. It is used for transporting data to and from Providers.The class 
+    is able to store different types of data and therefore implements a versatile interface. <em>DataItem</em> class supports 
+  <em>Provider</em>, <em>Number</em>, <em>String</em>, <em>WString</em>, <em>PhoneNumber</em>, <em>Date</em>, <em>Time</em>, <em>DateTime</em> and <em>GenericObject</em> classes. <em>DataItem</em>  always contains an object of one of these types but can be reused when storing new data inside the object.</p>
+  <p align="justify" class="Stil6">    The class <em>DataItem</em> offers constructors and copy constructors for all data types supported by it. The Type is 
+    determined by the enum <em>DataType</em> and Set'n'Get methods are provided for changing or retrieving the associated <em>DataType</em>. When a assignment (&quot;Set&quot;) method gets called, the <em>DataItem</em> first destroys a preceding old value if 
+    present.</p>
+  <p align="left" class="Stil4">    3 Collections</p>
+  <p align="justify" class="Stil6">Using collections objects can be organized in to predefined data structures. In auxiliary, collections for different 
+    use cases are provided and iterators are used for implementing convenient access to items. An example for the 
+    use of collections is organizing e-mails in a mobile phone. Some use cases of collections in auxiliary are listed in 
+  the following:</p>
+  <ul class="Stil6">
+    <li>
+      <div align="left"><strong>Linkable Template</strong>: Enables class to be used inside a <em>LinkedList</em> and extends class with pointer to next linkable.</div>
+    </li>
+    <li>
+      <div align="left"><strong>LinkedList Template</strong>: Links linkable objects to list.</div>
+    </li>
+    <li>
+      <div align="left"><strong>IndexTable Template</strong>: Allows creation of a variable index table containing scalar types like LONG,INT16, INT and INT32.</div>
+    </li>
+    <li>
+      <div align="left"><strong>FixedPtrArray Template</strong>: It is used to represent an array of pointers to classes. It is often used in combination with IndexTable.</div>
+    </li>
+    <li>
+      <div align="left"><strong>Vector Template</strong>: Contains elements of certain type and access per index as efficient as accessing fixed array.</div>
+    </li>
+    <li>
+      <div align="left"><strong>SimpleMap Template</strong>: Provides a trivially implemented associative array. An associative array is an array whose values can be referenced by passing a key-value which is not restricted to an integral data type. </div>
+    </li>
+    <li>
+      <div align="left"><strong>HashTable</strong>: HashTable is a container taking objects of type Hashable. It provides a pretty fast access to the stored objects.</div>
+    </li>
+</ul>
+  <p align="left" class="Stil4">4 Bit manipulations</p>
+  <p align="left" class="Stil6">The Bit manipulation templates used in auxiliary are listed in the following:</p>
+  <ul class="Stil6">
+    <li>
+      <div align="left"><strong>BitField Template</strong>: Wraps scalar data types to access single bits and easy to use bit operation methods.</div>
+    </li>
+    <li>
+      <div align="left"><strong>BitVector Template</strong>: Represents a bit field with n bits. It is easy to use because all C bit operations are hidden</div>
+    </li>
+    <li>
+      <div align="left"><strong>DynamicBitVector Class</strong>: Used to represent a bit vector with a variable number of bits. It is instantiated with a variable number of bits at runtime.</div>
+    </li>
+</ul>
+  <p align="left" class="Stil4">5 Data Elements</p>
+  <p align="justify" class="Stil6">The data element classes provided by auxiliary are <em>WString</em> class, String class, <em>PhoneNumber</em> Class, <em>Date</em> Class, 
+    <em>Time</em> Class, <em>TimeSpan</em> Class, <em>DateTime</em> Class, <em>GenericObject</em> Class, <em>BlobPtr</em> Class, <em>BlobObject</em> Class. These 
+  classes are described in the following sections.</p>
+  <p align="left" class="Stil8">5.1 PhoneNumber Class</p>
+  <p align="left" class="Stil6"><em>PhoneNumber</em> class implements phone numbers as defined in GSM 04.08. The properties of <em>PhoneNumber</em> class 
+  are listed in the following:</p>
+  <ul>
+    <li>
+      <div align="left">MOC, MTC and PDU types of presentation are supported</div>
+    </li>
+    <li>
+      <div align="left">Large set of constructors, based on byte buffers or <em>Wstrings</em></div>
+    </li>
+    <li>
+      <div align="left">Access methods for TON/NPI or presentation indicators</div>
+    </li>
+    <li>
+      <div align="left">Type of phone number can be changed inside the object</div>
+    </li>
+    <li>
+      <div align="left">Implicit transformation to string objects with <em>GetWString()</em> or <em>GetString()</em></div>
+    </li>
+    <li>
+      <div align="left">Access methods to the BCD coded representation of the phone number</div>
+    </li>
+    <li>
+      <div align="left">DataItem class support</div>
+    </li>
+  </ul>
+  <p align="left" class="Stil8">5.2 Date Class</p>
+  <p align="justify" class="Stil6">Date Class represents a date consisting of day, month and year. This class provides assignment and comparison 
+    operators and Format methods for string representation in different formats. 
+  In this class there are large set of string representation methods like:</p>
+  <ul>
+    <li class="Stil6">
+      <div align="left" class="Stil17">MonthName()</div>
+    </li>
+    <li class="Stil20">
+      <div align="left">ShortMonthName()</div>
+    </li>
+    <li class="Stil6">
+      <div align="left" class="Stil17">DayName()</div>
+    </li>
+    <li>
+      <div align="left" class="Stil17">...</div>
+    </li>
+  </ul>
+  <p align="left" class="Stil6">It also provides large set of helper methods such as:</p>
+  <ul>
+    <li class="Stil6">
+      <div align="left" class="Stil17">
+      IsLeapYear()</div>
+    </li>
+    <li class="Stil20">
+      <div align="left">
+      DayOfYear()</div>
+    </li>
+    <li class="Stil20">
+      <div align="left">
+      DayOfWeek()</div>
+    </li>
+    <li class="Stil6">
+      <div align="left" class="Stil17">
+      ...</div>
+    </li>
+  </ul>
+  <p align="left" class="Stil8">5.3 Time Class</p>
+  <p align="justify" class="Stil6"><em>Time</em> class represents time consisting of hour, minute and (optional) second, millisecond values. This class 
+    supports <em>DataItem</em> class and provides assignment and comparison operators. Format methods for string 
+    representation in different formats are also available in this class. There are methods for setting and getting hour, 
+  minute, second, and millisecond values.</p>
+  <p align="left" class="Stil8">5.4 TimeSpan Class</p>
+  <p align="justify" class="Stil6"><em>TimeSpan</em> class represents a period of time in seconds and the maximum representation is 2^32 seconds. This 
+    class is used for <em>DateTime</em> operations and contains large set of access methods for getting absolute weeks, days, 
+  hours, minutes, and seconds of the time period.</p>
+  <p align="left" class="Stil8">5.5 DateTime Class</p>
+  <p align="justify" class="Stil6"><em>DateTime</em> Class represents a point of time consisting of date and time. This class is derived from Date class 
+    therefore it inherits all access methods from Date Class. It provides operators and methods for adding and 
+    subtracting TimeSpan values and allows computation of the period between two points of time. <em>DataItem</em> class is 
+  supported in the class.</p>
+  <p align="left" class="Stil8">5.6 GenericObject Class</p>
+  <p align="justify" class="Stil6">    <em>GenericObject</em> is an abstract base class, which can be used inside DataItems. Therefore derived classes can be 
+used to transport data into and out of Providers.</p>
+  <p align="left" class="Stil8">    5.7 BlobPtr Class</p>
+  <p align="justify" class="Stil6">    This class represents a pointer to a byte buffer and the buffer length and no allocation or deallocation of memory 
+    is done. <em>BlobPtr</em> contains a pointer to data and the length of the data. It can be used to export data from a Provider 
+    where data inside the Provider is not changed during the usage of the BlobPtr object.</p>
+  <p align="left" class="Stil8">    5.8 BlobObject Class</p>
+  <p align="justify" class="Stil6">    It contains a byte buffer and its length and allocation, copying and deallocation of memory is done on construction 
+    and destruction. <em>BlobObject</em> contains a pointer to allocated data and the length of the data. All data are copied 
+    during construction time and deleted during destruction time.</p>
+  <p align="left" class="Stil4">    6 String Handling</p>
+  <p align="left" class="Stil6">    Auxiliary provides WString and String classes for string handling.</p>
+  <p align="left" class="Stil8">6.2 WString Class</p>
+  <p align="left" class="Stil6">    <em>WString</em> class is an unicode string class containing 16-bit characters. Some characteristics of WString class are 
+listed in the following:</p>
+  <ul>
+    <li>
+      <div align="left" class="Stil6">
+        <div align="left">Points always to dynamically allocated byte array  with reference counting</div>
+      </div>
+    </li>
+    <li>
+      <div align="left" class="Stil6">
+        <div align="left">Method <em>Format(&hellip;)</em> in the class follows the C-printf standard with variable number of parameters</div>
+      </div>
+    </li>
+    <li class="Stil6">
+      <div align="left">Provides implicit transformation to String objects with <em>ToString()</em></div>
+    </li>
+    <li class="Stil6">
+      <div align="left">DataItem class support</div>
+    </li>
+  </ul>
+  <p align="left" class="Stil8">6.2 String Class</p>
+  <p align="left" class="Stil6">String class contains 8-bit characters. Some characteristics of the String class is listed in the following:</p>
+  <ul>
+    <li>
+      <div align="left" class="Stil6">Points always to dynamically allocated character array  with reference counting</div>
+    </li>
+    <li>
+      <div align="left" class="Stil6">Implicit transformation to WString objects with <em>ToWString()</em></div>
+    </li>
+    <li>
+      <div align="left" class="Stil6">DataItem class support</div>
+    </li>
+  </ul>
+  <p align="left" class="Stil4">7 Data Buffering Classes</p>
+  <p align="left" class="Stil6">Some of the data buffering classes provided in the Auxiliary module are listed in the following:</p>
+  <ul>
+    <li>
+      <div align="left" class="Stil6"><strong>BinData</strong>: BinData defines an interface to access binary data in a way that releases the user from memory management </div>
+    </li>
+    <li>
+      <div align="left" class="Stil6"><strong>RamData</strong>: Provides a BinData interface to a dynamically allocated or statically defined RAM memory area</div>
+    </li>
+    <li>
+      <div align="left" class="Stil6"><strong>BufferedData</strong>: Provides an internal copy of the buffer</div>
+    </li>
+  </ul>
+  <p align="left" class="Stil4">8 GSM Decoding Classes</p>
+  <p align="left" class="Stil6">GSM decoding classes in auxiliary are listed in the following:</p>
+  <ul>
+    <li>
+      <div align="left" class="Stil6"><strong>AlphaCoding</strong>: Implements string coding and decoding as defined in GSM 11.11 Annex B</div>
+    </li>
+    <li>
+      <div align="left" class="Stil6"><strong>DataCoding</strong>: Implements SMS coding and decoding as defined in GSM 03.38</div>
+    </li>
+  </ul>
+  <p align="left" class="Stil4">9  Observer Base Classes</p>
+  <ul>
+    <li class="Stil6">
+      <div align="left"><strong>ObservableObject</strong>: An Observable-Object can be observed by several instances of the class Observer.</div>
+    </li>
+    <li class="Stil6">
+      <div align="left"><strong>Observer</strong>: An Observer is informed about the change of a state of an ObservableObject. To get informed every Observer must attach itself to the Observable-Object. An Observer may attach itself to several Observable Objects.</div>
+    </li>
+  </ul>
+  <p align="left" class="Stil4">10 Miscellaneous Classes</p>
+  <p align="left" class="Stil6">Some other important classes provided by Auxiliary module are described in the following:</p>
+  <ul>
+    <li>
+      <div align="left" class="Stil6"><strong>NiSharedPtr</strong>: <em>NiSharedPtr</em> implements a shared reference-counting non-intrusive smart-pointer. This smart-pointer is non-intrusive with respect to the objects that get reference counted, i.e. the objects do not have to be derived from some dedicated base-class and may stay as they are</div>
+    </li>
+    <li>
+      <div align="left" class="Stil6"><strong>SharedPtr</strong>: It is a shared reference-counting smart-pointer, used only with classes that derive from <em>ReferableObject</em></div>
+    </li>
+    <li>
+      <div align="left" class="Stil6"><strong>MimeTypeTable</strong>: Provides static methods for conversions between MIME type, file extension, and MIME type string. It also can tell whether MIME data is encoded in a binary or textual format</div>
+    </li>
+    <li>
+      <div align="left" class="Stil6"><strong>StateMachine</strong>: Base class for state machines</div>
+    </li>
+  </ul>
+  <p align="justify" class="Stil4">&nbsp;</p>
+</body>
+</html>

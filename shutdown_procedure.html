@@ -1,0 +1,50 @@
+﻿<html>
+  <head>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8">
+	<title>Shutdown Procedure</title>
+
+	<link rel="stylesheet" type="text/css" href="doxygen.css">
+  </head>
+
+  <body>
+	<h1>APOXI Shutdown Procedure</h1>
+	<p>
+        A shut-down of the phone can be triggered by calling <a href="classSystem.html#e1">System::ShutDown(BOOLEAN force = FALSE)</a>. 
+        When using the standard value FALSE for parameter 'force' the system asks all applications if a shut-down 
+        is allowed at the moment. By default this is allowed by all applications. In special situations like during a download 
+        or while encoding some data an application can prevent a shut-down by calling <a href="classApplication.html#a24">Application::SetShutdownAllowed(TRUE)</a>. 
+        From now on the system sends an ShutdownRequesetMsg to that application and so method <a href="classApplication.html#b3">Application::OnShutdownRequest()</a> 
+        is called. Its default implementation is to return FALSE (the state of 'IsShutDownAllowned') and so no shut-down is taking place 
+        until <a href="classApplication.html#a24">SetShutdownAllowed(FALSE)</a> is called.
+	</p>
+	<p>
+        By overwriting the virtual method <a href="classApplication.html#b3">Application::OnShutdownRequest()</a> in the derived application class it is also 
+        possible change than default behavior. For example the application can open a modal dialog to ask the user if 
+        he phone should shut down at the moment or not. The return value decides if the shut-down will be triggered 
+        again (TRUE) or is really canceled (FALSE).
+	</p>
+    <p>
+        If all applications are allowing the shut-down the system sends an AppCloseMsg to all applications which 
+        automatically triggers the call of <a href="classApplication.html#b5">Application::OnClose()</a>. Here all clean-up work should be done and as last statement 
+        there must be a call of <a href="classApplication.html#b5">Application::OnClose()</a> to do all system internal work for closing the application. This is mainly 
+        removing the application out of the application container. If all applications inside an application container are closed the 
+        application container - which is a thread - terminates.
+    </p>
+    <p>
+    In the context of the last application which closes all SubSystems with c_run_level_7 are shut down. In the context of the 
+    last application container which terminates all SubSystems with c_run_level_7 are shut down.
+    </p>
+	<p>
+		When the system starts to close all applications a timer is started. With the compiler define 
+        APOXI_SHUTDOWN_APP_CLOSE_TIMEOUT (which is set to 20 seconds by default) the customer can define 
+        a maximum time period for shutting down. If the timer expires before all applications are closed the system will wait no 
+        longer for the following final shut-down work:
+		<ul>
+			<li>Shut-down of all SubSystems with c_run_level_3 </li>
+			<li>Shut-down of all SubSystems with c_run_level_1</li>
+			<li>call of <a href="classRealTimeClock.html#e3">RealTimeClock::SetSleepMode()</a></li>
+			<li>call of <a href="classPowerHandler.html#e6">PowerHandler::PowerDown()</a>. This finally powers off the phone.</li>
+		</ul>
+	</p>
+  </body>
+</html>

@@ -1,0 +1,113 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<title>Voice Recognition Overview</title>
+<style type="text/css">
+<!--
+.Stil1 {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: xx-large;
+	font-weight: bold;
+}
+.Stil4 {
+	font-size: large;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-weight: bold;
+}
+.Stil6 {font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 12px;}
+.Stil22 {font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 12px; font-weight: bold; }
+.Stil23 {font-family: Verdana, Arial, Helvetica, sans-serif; font-size: large;}
+-->
+</style>
+</head>
+
+<body>
+<div align="center">
+  <p align="center" class="Stil1">Voice Recognition Overview </p>
+  <p align="justify" class="Stil4">1 Introduction </p>
+  <p align="justify" class="Stil6">APOXI Voice Recognition (VR) module provides an object oriented interface for APOXI applications and APOXI 
+  core modules to use Voice Recognition.</p>
+  <p align="justify" class="Stil4">    2 Overview</p>
+  <p align="justify" class="Stil6">    With APOXI VR, applications can start voice recognition for commands they need and train speaker dependent 
+  commands. APOXI VR is also used for managing the commands.</p>
+  <p align="justify" class="Stil6">    An overview of the VR system is given in the following dependency diagram (Figure 1).</p>
+  
+<div align="justify">
+  <table width="98%"  border="1" align="center" cellpadding="0" cellspacing="0" bordercolor="#000000">
+    <tr>
+      <td height="343"><div align="center"><img src="figures/VR_Depenendency.png" width="290" height="304"></div></td>
+    </tr>
+  </table>
+</div>
+  <p align="justify" class="Stil22">Figure&nbsp;1.  VR Dependency Diagram</p>
+  <p align="justify" class="Stil6">APOXI VR and the VR Host Task communication is done by using a function call from APOXI VR to VR. A callback 
+  registered by APOXI VR with VR which is called by VR whenever it wants to send data to APOXI VR.</p>
+  <p align="justify" class="Stil6">    APOXI VR is also responsible for allocating and freeing the audio device used for recording speech. This has to 
+    be done in APOXI VR because the APOXI audio priority mechanisms must not be disturbed by VR Host and VR 
+    Engine.</p>
+  <p align="justify" class="Stil6">    For storing the templates used by the VR Engine for recognition, APOXI VR makes use of the Root File System. 
+    By using the RFS, the storing of template data can be done using various medias like FFS, Memory Cards, etc.</p>
+  <p align="justify" class="Stil4">3 Features of Voice Recognition</p>
+  <p align="justify" class="Stil6">APOXI VR provides:Accessibility for APOXI modules and APOXI-based applications</p>
+  
+    <ul><li><div align="left" class="Stil6">
+        <div align="justify">Mechanism to start a voice recognition process</div>
+      </div>
+    </li>
+    <li>
+      <div align="left" class="Stil6">
+        <div align="justify">Mechanism to train speaker-dependent voice tags for commands/name dialing</div>
+      </div>
+    </li>
+    <li>
+      <div align="left" class="Stil6">
+        <div align="justify">Mechanism to create speaker independent voice tags based on ASCII-strings. This is provided only if the G2A feature is provided by the VR Engine</div>
+      </div>
+    </li>
+    <li>
+      <div align="left" class="Stil6">
+        <div align="justify">Mechanism to playback trained commands</div>
+      </div>
+    </li>
+    <li>
+      <div align="left" class="Stil6">
+        <div align="justify">Mechanism to manage templates (voice tags)</div>
+      </div>
+    </li>
+  </ul>
+  <p align="justify" class="Stil23">3.1 VR Templates</p>
+  <p align="justify" class="Stil6">A VR template represents a voice tag for a command (e.g. name for dialing a phonebook entry, menu item, etc.). 
+    For each recognition process, the VR engine is fed with a set of VR templates to tell the engine, what it should 
+  listen for. Depending on the used recognition mode, one or more of the VR templates will be recognized.</p>
+  <p align="justify" class="Stil6">    There are three types of templates:</p>
+  
+    <div align="justify">
+        <ol>
+          <li>
+            <span class="Stil6">System wide fixed templates: These VR templates can be used by every application</span></li>
+            <li>
+              <span class="Stil6">VR Templates which are created by the applications and are stored to a file system Applications can list, create, and delete their own VR templates but cannot delete system wide fixed templates or 
+                        templates of other applications. Applications can also playback speaker-dependent templates.</span></li>
+        </ol>
+</div>
+  <p align="justify" class="Stil23">3.2 Start voice recognition</p>
+  <p align="justify" class="Stil6">An application can start voice recognition with a set of templates, of which one or more shall be recognized. The 
+    application will be informed which of the templates has been recognized. If necessary it is possible to abort voice 
+  recognition when conflicts with other functions occur (e.g. an incoming call overrides voice recognition).</p>
+  <p align="justify" class="Stil23">    3.3 Train speaker dependent templates</p>
+  <p align="justify" class="Stil6">    An application can do training for a speaker-dependent command (e.g. name-dialing). The recorded template is 
+    stored in the system and can be used by the application until it decides to discard the template. If necessary it is 
+    possible to abort training when conflicts with other tasks occur (e.g. an incoming call overrides training). </p>
+  <p align="justify" class="Stil23">    3.4 Create speaker independent templates</p>
+  <p align="justify" class="Stil6">    A speaker-independent template based on an ASCII-string can be created by an application if G2A is provided by 
+    the VR Engine. The template is stored in the system and can be used by the application until it decides to discard 
+    the template.</p>
+  <p align="justify" class="Stil4">    4 Class architecture</p>
+  <p align="justify" class="Stil6">    The main class for APOXI VR are <em>VrHandler</em>. These class handle the communication between MMI and APOXI 
+    VR as well as between APOXI VR and VR Host Task.</p>
+  <p align="justify" class="Stil6">    The other important classes in APOXI VR are message classes, which are used to transport information from the 
+    VR Engine to MMI.</p>
+</body>
+</html>

@@ -1,0 +1,100 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<title>ADC Overview</title>
+<style type="text/css">
+<!--
+.Stil2 {
+	font-size: xx-large;
+	font-weight: bold;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+}
+.Stil3 {font-size: large; font-weight: bold; font-family: Verdana, Arial, Helvetica, sans-serif; }
+.Stil5 {font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 12px;}
+.Stil12 {font-family: Verdana, Arial, Helvetica, sans-serif; font-size: larger;}
+.Stil14 {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-weight: bold;
+}
+-->
+</style>
+</head>
+
+<body>
+<div align="center">
+  <p class="Stil2">ADC Overview </p>
+  <p align="left" class="Stil3">1 Introduction</p>
+  <p align="justify" class="Stil5">ADC (APOXI Data Control) component is described in this chapter. It is the APOXI subsystem which has access 
+    to SIM-data. It provides interface for accessing data which are stored in different mediums like SIM, RAM, etc. The 
+  ADC provides a generic C++ interface for APOXI and Reference MMI applications.</p>
+  <p align="justify" class="Stil3">2 Overview</p>
+  <p align="justify" class="Stil5">ADC is responsible for retrieving and manipulating structured data (e.g. phonebook) within APOXI. Also it offers 
+    the central point of storage of SIM/USIM. This kind of storage avoids data redundancy, ensure the consistency of 
+  SIM data, and helps to eliminate the consistency problems between applications.</p>
+  <p align="justify" class="Stil5">    ADC hides signal based access to SIM. All low-level calls (access to SIM) are implemented as non-blocking calls, 
+    which means that all messages and events received by applications are still processed i.e. message flow is not 
+    interrupted.</p>
+  <p align="justify" class="Stil5">    ADC is also capable of data caching. The use of data caching can massively increase the performance of 
+    applications. ADC uses generic data types, which means, all data input/output is done via &ldquo;variant&rdquo; data objects. 
+    These data objects are represented by the class DataItem.</p>
+  <p align="justify" class="Stil3">3 Architecture</p>
+  <div align="left">
+    <p>The architecture of ADC is given in the following figure (Figure 1).</p>
+    <table width="98%" height="397"  border="1" align="center" cellpadding="0" cellspacing="0" bordercolor="#000000">
+      <tr valign="middle">
+        <td><div align="center"><img src="figures/ADC_Architecture.jpg" width="625" height="349"></div></td>
+      </tr>
+    </table>
+    <p><strong>Figure&nbsp;1. ADC Architecture</strong></p>
+  </div>
+  <p align="justify" class="Stil3">4 DataControl</p>
+  <p align="justify" class="Stil5"><em>DataControl</em> is the singelton which represents the core ADC functionality.</p>
+  <p align="justify" class="Stil12">4.1 Data access through Provider Interface</p>
+  <p align="justify" class="Stil5">Providers are generic interfaces provided by ADC for presenting data. The entry point for using the ADC&rsquo;s 
+    functionality is the class <em>MainProvider</em>. The <em>MainProvider</em> enables an application, through its interface, to access 
+    all Provider objects which are registered within the system. Providers can execute basic functionalities like Sorting, 
+  Filtering, and Finding. </p>
+  <p align="justify" class="Stil5">    Providers are used for retrieving data from the SIM/USIM. The SIM/USIM features of ADC are listed in the 
+    following: </p>
+	<ul><div align="left" class="Stil5">
+	  <li>
+	    <div align="left"><strong>Phonebooks</strong>: ADN, FDN, BDN (CMI), LND, MSISDN, SDN, CPHS-MBox, CPHS-InfoNumbers</div>
+	  </li>
+	  <li><strong>SMS</strong>: both SIM and Flash Phonebooks, SmsParameters</li>
+	  
+	  
+	  <li><strong>CBMI and CBMI-Ranges</strong></li>
+	  <li><strong>Prefered Plmn</strong>s: EF-Plmn and EF-PlmnwAct</li>
+	  <li><strong>Prefered Plmns</strong>: EF-Plmn and EF-PlmnwAct</li>
+	  <li><strong>Builtin Plmn and Country Lists</strong></li>
+	  <li><strong>IMSI, IMEI, ICCID</strong></li>
+	  <li><strong>ACM, ACMMAX, PUCT</strong></li>
+	  <li><strong>ECC</strong></li>
+	  <li><strong>SST, UST, EST</strong></li>
+	  <li><strong>SPN, SPDI</strong></li>
+	  <li><strong>EONS OPL and PNN</strong></li>
+	  <li><strong>CPHS Phase, OperatorNames, ServiceTable, Orange Specifics Dynflags, CSP</strong></li>
+	 
+	</div></ul>
+	
+	
+	
+</div>
+<div align="left">
+  <p class="Stil14"><span class="Stil3">4.2 Other Interfaces of DataControl</span></p>
+  <p class="Stil5"><em>DataControl</em> has some additional interfaces for retrieving certain states of the underlying SIM /USIM. It also have 
+    some complex methods for a more convenient direct access of data instead of using providers. These methods 
+    are used in some cases, where using providers are not so convenient. 
+  An example for such additional interfaces of DataControl is EONS - Enhanced Operators NameService.</p>
+  <p class="Stil3">4.3 Action Interfaces of DataControl</p>
+  <p class="Stil5">DataControl also provide some action interfaces. Examples for use cases of such interfaces are listed in the 
+  following:</p>
+  <ul><li class="Stil5">PIN Verification
+  </li>
+    <li class="Stil5">FDN Enabling Disabling</li>
+  </ul>
+</div>
+</body>
+</html>

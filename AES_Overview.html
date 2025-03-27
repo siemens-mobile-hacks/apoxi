@@ -1,0 +1,87 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<title>AES Overview</title>
+<style type="text/css">
+<!--
+.Stil1 {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: xx-large;
+	font-weight: bold;
+}
+.Stil4 {
+	font-size: large;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-weight: bold;
+}
+.Stil6 {font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 12px;}
+.Stil30 {font-family: "Courier New", Courier, mono; font-size: 12px; }
+.Stil31 {font-family: Verdana, Arial, Helvetica, sans-serif; font-size: large; }
+-->
+</style>
+</head>
+
+<body>
+<div align="center">
+  <p align="center" class="Stil1">AES Overview </p>
+  <p align="justify" class="Stil4">1 Introduction </p>
+  <p align="justify" class="Stil6">AES decryption add-on for APOXI is intended to provide decryption of AES encrypted data using 128 bit keys and 
+    cipher block size of 16 bytes. Currently only Cipher Block Chaining (CBC) mode of AES is supported. These are 
+  the requirements for OMA DRM V1.0 which is supported by DRM Add On for APOXI.</p>
+  <p align="justify" class="Stil4">    2 Architecture</p>
+  <p align="justify" class="Stil6">    
+    AES for APOXI is based on the free implementation of the AES algorithm in C++ by Prof. Brian Gladman 
+    (<a href="http://fp.gladman.plus.com/cryptography_technology/rijndael/">http://fp.gladman.plus.com/cryptography_technology/rijndael/</a>). 
+    Basic algorithm is used by the APOXI implementation to provide CBC mode.</p>
+  
+  <p align="justify" class="Stil4">3 Features</p>
+  <p align="justify" class="Stil6">    The main features of AES are given in the following list:</p>
+  
+<div align="justify">
+      <ul>
+        <li>AES Decryption</li>
+          <li>Block size: 128 bits</li>
+          <li>Key Size: 128 bits</li>
+          <li>CBC mode</li>
+      </ul>
+</div>
+  <p align="justify" class="Stil4">4 AesCrypt Interface</p>
+<p align="justify" class="Stil6">    <em>AesCrypt</em> is the class that offers the API to decrypt AES encrypted data. The API to be used is:</p>
+  <p align="justify" class="Stil30">    INT DECRYPTBUFFER(CONST BYTE* IN, BYTE* OUT,UINT BUF_LEN, PADDINGMETHOD PAD_METHOD,UINT START_BLOCK=0, UINT END_BLOCK=0);</p>
+  <p align="justify" class="Stil6">    To decrypt a buffer encrypted using AES, you need the following:</p>
+  
+<ul><li><div align="left" class="Stil6">
+      <div align="justify">Cipher text</div>
+    </div>
+    </li>
+    <li>
+      <div align="left" class="Stil6">
+        <div align="justify">A 128 bit key used to encrypt the buffer</div>
+      </div>
+    </li>
+    <li>
+      <div align="left" class="Stil6">
+        <div align="justify">A 128 bit initialization vector used for encryption</div>
+      </div>
+    </li>
+  </ul>
+  <p align="justify" class="Stil6"><br>
+    For further details refer to the following block concept in AES</p>
+  <p align="justify" class="Stil31">    4.1 AES Block concept</p>
+  <p align="justify" class="Stil6">    To use the API, the block numbers are calculated as follows:</p>
+  <p align="justify" class="Stil6">Incoming buffer:</p>
+  
+<div align="justify">
+  <table width="100%"  border="1" align="center" cellpadding="0" cellspacing="0" bordercolor="#000000">
+    <tr>
+      <td height="89"><div align="center"><img src="figures/block_concept_in_AES.png" width="418" height="51"></div></td>
+    </tr>
+          </table>
+</div>
+  <p align="justify" class="Stil6">    In the figure, block 0 of the incoming buffer is the Initialization Vector (IV), hence it will not be used as cipher text. 
+    Block 1 in the incoming buffer is used as block 0 of the cipher text. The start_block and end_block can have values 
+  from 0 to (n-1). And the output buffer will have [end_block - start_block] number of blocks.</p>
+</body>
+</html>

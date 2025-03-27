@@ -1,0 +1,692 @@
+<html>
+    <head>
+        <link href="doxygen.css" rel="stylesheet" type="text/css">
+        <title>4 Items</title>
+    </head>
+
+    <body>
+        [ Previous: <a href="gui_tutorial_03.html">Sample Application</a> ] [ Next: <a href="gui_tutorial_05.html">Controls</a> ]
+
+        <h1>4 Items</h1>
+
+        <p>
+            A lot of GUI controls like menus and lists use items for specifying their content. Before
+            describing the GUI controls in <a href="gui_tutorial_05.html">chapter 5: Controls</a>
+            at first it is necessary to explain the concept behind items.
+        </p>
+
+        <p>
+            An <a href="classItem.html">Item</a> is at least represented by a text
+            and/or an icon...
+        </p>
+        <p>
+            <img src="pics/item.gif" alt="Item"/>
+        </p>
+        <p>
+        ... and can be disabled (usually shown as greyed text):
+        </p>
+        <p>
+            <img src="pics/disabled_item.gif" alt="Disabled Item"/>
+        </p>
+        <p>
+            The drawing of the item properties (like the text or icon) is not done
+            by the item itself but usually by a GUI-control
+            (e. g. <a href="classItemMenu.html">ItemMenu</a> or
+            <a href="classItemGrid.html">ItemGrid</a>) as this control knows best
+            how to display the item properties inside the control-boundaries.
+            When creating an item it will be assigned to this control and the item
+            informs the control when an item property like  the text has been changed, so that
+            the control can redraw itself to show the changed item properties.
+            The benefit for the application developer is that it is possible to modify the item
+            without the need of taking care which GUI-components must be updated,
+            as this is done automatically.
+        </p>
+
+        <p>
+            The following example shows a window which contains an <a href="classItemGrid.html">ItemGrid</a>
+            with 3 embedded items:
+        </p>
+
+        <p>
+            <img src="pics/item_grid.gif" alt="Item Grid"/>
+        </p>
+
+        <h2>4.1 AbstractItemContainer and ItemContainer</h2>
+
+        <p>
+            The class <a href="classAbstractItemContainer.html">AbstractItemContainer</a>
+            is derived from <a href="classItem.html">Item</a> and extends the item by an interface for embedding a variable number
+            of items as part of the item-container. The class <a href="classItemContainer.html">ItemContainer</a>
+            offers a default implementation and might be used for building a menu-hierarchy which might
+            be displayed by the controls <a href="classItemMenu.html">ItemMenu</a> or <a href="classItemTree.html">ItemTree</a>.
+            Examples for using an item-container are shown in <a href="gui_tutorial_05.html">chapter 5: Controls</a>; the following
+            picture shows an <a href="classItemTree.html">ItemTree</a> which opened item 1 represented by an item-container
+            having 5 items:
+        </p>
+
+        <p>
+            <img src="pics/item_tree.gif" alt="Item Tree"/>
+        </p>
+
+        <h2>4.2 Action</h2>
+
+        <p>
+            The class <a href="classAction.html">Action</a>
+            is derived from <a href="classItem.html">Item</a> and extends the item with the ability to
+            be executable. In GUI applications many
+            commands can be invoked by e. g. menus, softkeys or push-buttons.
+            Since the same action can be invoked by different GUI-components it
+            is useful to represent a command as an <a href="classAction.html">Action</a> to ensure a consistent
+            state of the command and its representation. As an action is derived from the class
+            <a href="classItem.html">Item</a> every action has a text, may
+            contain an icon and may be enabled/disabled. The dispatcher provided on initialization will be
+            informed by messages when a property has been changed or the action
+            has been executed.
+        </p>
+
+        <p>
+            <table border="0">
+                <tr>
+                    <td valign="top">
+                        Example: an action can be assigned to a <a href="classPushButton.html">PushButton</a> and is executed, after
+                        the push button has been pressed. The same action also can be assigned to other controls like an
+                        <a href="classItemMenu.html">ItemMenu</a> or to the softkeys of a <a href="classWindow.html">Window</a>.
+                    </td>
+                    <td valign="top">
+                        <img src="pics/push_button.gif" alt="Push Button"/>
+                    </td>
+                </tr>
+            </table>
+        </p>
+
+        <p>
+            The following example shows the recommended usage of actions.
+            Note that in this example no GUI controls are added, which
+            contain and trigger the action. Examples for GUI controls which use actions are
+            given in <a href="gui_tutorial_05.html">chapter 5: Controls</a>.
+        </p>
+        <b>MyWindow.hpp</b>
+        <pre>
+#include &lt;Gui/Window.hpp&gt;
+#include &lt;Gui/Action.hpp&gt;
+
+class MyWindow : public <a href="classWindow.html">Window</a> {
+    public:
+        void Init();
+
+    private:
+        <a href="classAction.html">Action</a> m_add_action;
+        <a href="classAction.html">Action</a> m_delete_action;
+        <a href="classAction.html">Action</a> m_rename_action;
+        <a href="classAction.html">Action</a> m_close_action;
+        
+        void Add();
+        void Delete();
+        void Rename();
+        void Close();
+}</pre>
+
+        <b>MyWindow.cpp</b>
+        <pre>
+#include "MyWindow.hpp"
+...
+
+void MyWindow::Init()
+{
+    Base::Init()
+    m_add_action.Init(this, Tr(L"Add"), (Action::ExecFn)&MyWindow::Add);
+    m_add_action.SetIcon(&confirm_bitmap);
+    m_delete_action.Init(this, Tr(L"Delete"), (Action::ExecFn)&MyWindow::Delete);
+    m_delete_action.SetIcon(&delete_bitmap);
+    m_delete_action.SetEnabled(FALSE);
+    m_rename_action.Init(this, Tr(L"Rename"), (Action::ExecFn)&MyWindow::Rename);
+    m_close_action.Init(this, Tr(L"Close"), (Action::ExecFn)&MyWindow::Close);
+}
+
+void MyWindow::Add()
+{
+    // add code for adding here
+}
+
+void MyWindow::Delete()
+{
+    // add code for deleting here
+}
+
+void MyWindow::Rename()
+{
+    // add code for renaming here
+}
+
+void MyWindow::Close()
+{
+    // add code for closing here
+}
+</pre>
+        <p>
+            In the implementation of MyWindow::Init() every action gets a
+            pointer to a dispatcher, by providing the method Action::Init()
+            with the this-pointer as first argument (each window is a dispatcher).
+            The second argument specifies
+            the name of the action. The third parameter specifies the member function which
+            should be invoked when the action has been executed.
+        </p>
+        <p> 
+            Alternatively instead of providing a member function it is possible
+            to overwrite the virtual method Action::Execute and implement the
+            behavior there.
+        </p>
+        <p>    
+            The default implementation of Action::Execute informs the dispatcher
+            that the action has been executed by sending the message
+            ActionExecutedMsg. The class Window, which is also a dispatcher,
+            automatically listens to this message and invokes 
+            Window::OnActionExecuted(Action* action) which provides a hook
+            to know which action has been executed.
+        </p>
+
+        <h2>4.3 Rendering Items</h2>
+
+        <p>
+            It is not necessary for <a href="gui_tutorial_05.html">chapter 5: Controls</a> to understand
+            how to specify the rendering of the items, but it may be of interest later when customizing the look
+            of the used menus and lists.
+        </p>
+
+        <p>
+            The GUI-controls which have embedded the items are responsible for drawing them. To allow a
+            customizable look, the look is described in an abstract way by so called <em>item renderer
+            properties</em>. Item renderer  properties are given by an instance of the class
+            <a href="classItemRendererProperties.html">ItemRendererProperties</a> and can be assigned
+            to each <a href="classAbstractItemContainer.html">AbstractItemContainer</a> and most GUI-controls using items.
+        </p>
+
+        <p>
+            Example: the default item renderer properties defined by the class <a href="classGuiEngineConfig.html">GuiEngineConfig</a>
+            should be used by an <a href="classItemGrid.html">ItemGrid</a>:
+
+        </p>
+        <pre>
+const ItemRendererProperties* prop = GuiEngineConfig::GetDefaultItemRendererProperties();
+m_item_grid.SetRenderer(prop);</pre>
+
+        <p>
+            The item renderer properties define the used <em>item renderer</em>. The item renderer is an instance
+            of the class <a href="classAbstractItemRenderer.html">AbstractItemRenderer</a> and is used
+            by the item grid (and other controls) to render its items. It is possible
+            to implement customized item renderer properties and customized item renderers, but the
+            <a href="classDefaultItemRenderer.html">DefaultItemRenderer</a> provided by APOXI should
+            be sufficient for most use cases:
+        </p>
+
+        <p>
+            <img src="pics/item_renderer_overview.gif" alt="Rendering Items"/>
+        </p>
+
+        <p>
+            The item renderer properties are defined by:
+            <ul>
+                <li><b>Display type:</b>
+                    <table>
+                        <tr>
+                            <td width="50%" valign="top"><ul><li><b>IconAndTextDisplayType:</b> The text is aligned right beside the icon for languages
+                            written from left to right. For languages like Arabic the text is aligned left beside
+                            the icon.</li></ul></td>
+                            <td><img src="pics/item_text_and_icon.png" alt="Text and icon (L2R)"/> <img src="pics/item_text_and_icon2.png" alt="Text and icon (R2L)"/></td>
+                        </tr>
+                        <tr>
+                            <td valign="top"><ul><li><b>TextAboveIconDisplayType:</b> The text is aligned above the icon.</li></ul></td>
+                            <td><img src="pics/item_text_above_icon.png" alt="Text above icon"/></td>
+                        </tr>
+                        <tr>
+                            <td valign="top"><ul><li><b>TextBelowIconDisplayType:</b> The text is aligned below the icon.</li></ul></td>
+                            <td><img src="pics/item_text_below_icon.png" alt="Text below icon"/></td>
+                        </tr>
+                        <tr>
+                            <td valign="top"><ul><li><b>TextOverlapsIconDisplayType:</b> The icon uses the whole area of the item and the
+                            text overlaps the icon.</li></ul></td>
+                            <td><img src="pics/item_text_overlaps_icon.png" alt="Text overlaps icon"/></td>
+                        </tr>
+                    </table>
+                </li>
+                <li><b>Animation Type:</b> When the text does not fit into the available area,
+                        there is the possibility to animate the text by e. g. scrolling to the left.
+                    <ul>
+                        <li><b>NoAnimation:</b> The text will be clipped if it does not fit into the available area.</li>
+                        <li><b>CycleAnimation:</b> The text will be scrolled to one
+                        direction. Shortly before disappearing, the text scrolls in
+                        again from the opposite side. </li>
+                        <li><b>BounceAnimation:</b> The text will be scrolled to one
+                        direction. Shortly before disappearing, the scroll-direction switches
+                        and the text scrolls back to the original position.</li>
+                    </ul>
+                </li>
+                <li><b>Scroll Delay:</b>Delay in milliseconds until a scrolling of the
+                    text is done.</li>
+                <li><b>Scroll Gap:</b>  Gap in pixels for the textscrolling.</li>
+                <li><b>Textformat:</b>  Textformat of the text.</li>
+                <li><b>Transparent Flag:</b>    If set to TRUE, no background for the
+                    item should be drawn per default.</li>
+                <li><b>Multiline Flag:</b>  If set to TRUE, the text is wrapped
+                    horizontally and displayed in several lines.</li>
+                <li><b>Center Vertical Flag:</b> If set to TRUE, the text will be vertically centered.
+                	The horizontal text alignment can be defined by
+					setting the text format (see ItemRendererProperties::SetTextFormat).</li>
+                <li><b>Indicate Item Container Flag:</b> If set to TRUE, an item container
+                    is indicated by an arrow on the right side.</li>
+                <li><b>Background Color:</b> Specifies the background color of the item. Is
+                    only used, if the Transparent Flag is FALSE.</li>
+                <li><b>Height:</b> Height of the item in pixels. If -1 is used,
+                    the height of the font specified by the Textformat is used.</li>
+                <li><b>Gap:</b> Gap in pixels for the item-border
+                    (= <font color="#ff0000">red border</font>).<br/>
+                    <img src="pics/item_gap.png" alt="Item gap"/>
+                </li>
+                <li><b>Column count:</b> Preferred number of columns, if several
+                 items are rendered inside a control. If a control may only 
+                 contain one item, this parameter is ignored.
+                </li>
+                <li><b>Start delay:</b> Delay in milliseconds until the scrolling of the text is started.</li>
+                <li>Background image: Background image for the item. The
+                    transparent property must be set to TRUE to have a visible background image.
+                </li>
+                <li><b>Text color:</b> Color of the item text.</li>
+            </ul>
+        </p>
+        
+        <h3>4.3.1 Implementing a Custom Item Renderer</h3>
+        
+        <p>
+            The <a href="classDefaultItemRenderer.html">DefaultItemRenderer</a> respects all
+            renderer properties defined by <a href="classItemRendererProperties.html">ItemRendererProperties</a>.
+            But there is enough room for interpretation of those properties, so that it might be necessary
+            to customize the rendering for extended properties or a different interpretation of existing properties.
+        </p>
+        
+        <h4>4.3.1.1 Changing the Selection Background</h4>
+        
+        <p>As a first step a custom item renderer should be implemented, which draws a gradiented selection. The default
+        item renderer draws a selected item with the color Color::SelectionBackground which is defined by the current
+        APOXI <a href="classTheme.html">Theme</a>:</p>
+        
+        <img src="pics/default_selection.png" alt="Default Selection" />
+        
+        <p>The outcome of the new class CustomItemRenderer, which will get derived from the class
+           DefaultItemRenderer, should look like this:
+        </p>
+                
+        <p><img src="pics/custom_selection.png" alt="Custom Selection" /></p>
+
+        <b>CustomItemRenderer.hpp</b>
+        <pre>
+#include &lt;Gui/DefaultItemRenderer.hpp&gt;
+
+class CustomItemRenderer : public DefaultItemRenderer {
+    typedef DefaultItemRenderer Base;
+
+    public:
+        CustomItemRenderer(const ItemRendererProperties* properties = 0);
+        virtual ~CustomItemRenderer();
+        virtual void DrawBackground(DeviceContext* dc,
+                                    const Item& item,
+                                    const Rect& bounds,
+                                    INT item_style) const;
+};
+</pre>
+
+        <b>CustomItemRenderer.cpp</b>
+        <pre>
+#include &lt;Gui/PaintDc.hpp&gt;      
+
+CustomItemRenderer::CustomItemRenderer(const ItemRendererProperties* properties) :
+    Base(properties)
+{
+}
+
+CustomItemRenderer::~CustomItemRenderer()
+{
+}
+void CustomItemRenderer::DrawBackground(DeviceContext* dc,
+                                        const Item& item,
+                                        const Rect& bounds,
+                                        INT item_style) const
+{
+    if (item_style == AbstractItemRenderer::SelectedStyle) {
+        PaintDc pdc(dc);
+        <font color="#009900">// Use grey as starting color for the top...</font>
+        Color color(200, 200, 200);
+        for (XYDIM y = bounds.GetTop(); y <= bounds.GetBottom(); ++y) {
+            pdc.SetPenColor(color);
+            pdc.DrawLine(bounds.GetLeft(), y, bounds.GetRight(), y);
+
+            <font color="#009900">// ... and do a gradient to red</font>
+            color.SetRed(color.GetRed() - 2);
+            color.SetGreen(color.GetGreen() - 5);
+            color.SetBlue(color.GetBlue() - 5);
+        }
+    }
+    else {
+        Base::DrawBackground(dc, item, bounds, item_style);
+    }
+}        
+</pre>
+        <p>
+            The custom item renderer is derived from the <a href="classDefaultItemRenderer.html">DefaultItemRenderer</a> and
+            overwrites the method AbstractItemRenderer::DrawBackground. Only if the item style is marked as 'selected', the
+            custom implementation drawing a gradient is used, otherwise the base implementation of the default item renderer
+            is invoked. 
+        </p>
+        
+        <p>
+            The question remains how the used <a href="classItemGrid.html">ItemGrid</a> of the screenshots knows whether
+            it should use the default item renderer or the custom item renderer: the item grid has a method SetRenderer() with
+            the following signature:</b>
+            <pre>void AbstractItemGrid::SetRenderer(const ItemRendererProperties* properties = 0);</pre>
+            This means that the properties define the used item renderer. For this the following
+            customizable factory method is offered
+            in the class <a href="classGuiEngineConfig.html">GuiEngineConfig</a> (the class GuiEngineConfig is located in the config directory
+            of the project):
+            <pre>static AbstractItemRenderer* GuiEngineConfig::ObtainItemRenderer(const ItemRendererProperties* properties = 0);</pre>
+            The default implementation of ObtainItemRenderer looks like this:
+        </p>
+<pre>
+AbstractItemRenderer* GuiEngineConfig::ObtainItemRenderer(const ItemRendererProperties* properties)
+{
+    return new DefaultItemRenderer(properties);
+}</pre> 
+
+        <p>
+            This means that the default item renderer is used for any kind of item renderer properties.
+            When changing the implementation the following way, the custom item renderer is used instead:
+        </p>
+        
+<pre>
+AbstractItemRenderer* GuiEngineConfig::ObtainItemRenderer(const ItemRendererProperties* properties)
+{
+    return new CustomItemRenderer(properties);
+}</pre> 
+
+        <p>It the custom item renderer should only be used if the item renderer properties have a height smaller than
+            20 pixels, the following implementation would be suitable:
+        </p>
+<pre>AbstractItemRenderer* GuiEngineConfig::ObtainItemRenderer(const ItemRendererProperties* properties)
+{
+    if ((properties != 0) && (properties->GetHeight() < 20) {
+        return new CustomItemRenderer(properties);
+    }
+    
+    return new DefaultItemRenderer(properties); 
+}</pre>   
+        <h4>4.3.1.2 Rendering Complex Items</h4>
+        
+        <p>
+            In the MMI often more complex items are used, which contain more properties than the
+            APOXI class <a href="classItem.html">Item</a> offers. The following example shows
+            how an item renderer can be customized to display those additional properties.
+        </p>
+        
+        <p>
+            In the example is assumed that the MMI implements a custom item which extends the class <a href="classItem.html">Item</a>
+            by the properties 'optional icon' and 'time' (a use case might be items showing the
+            current time zone, where the 'optional icon' might indicate day/night phases). A possible implementation
+            of such a custom item might look like this:
+        </p>
+        
+        <b>CustomItem.hpp</b>
+<pre>
+#include &lt;Gui/Item.hpp&gt; 
+#include &lt;Gui/ImageObtainer.hpp&gt; 
+#include &lt;Auxiliary/Time.hpp&gt; 
+
+class CustomItem : public Item {
+    typedef Item Base;
+
+    public:
+        enum {
+            ID = 1000
+        };
+
+        CustomItem(Dispatcher* dispatcher,
+                   const WString& text,
+                   const ImageObtainer& default_icon,
+                   const ImageObtainer& optional_icon,
+                   const Time& time);
+        virtual ~CustomItem();
+        void SetOptionalIcon(const ImageObtainer& optional_icon);
+        const ImageObtainer& GetOptionalIcon() const { return m_optional_icon; }
+        void SetTime(const Time& time);
+        const Time& GetTime() const { return m_time; }
+        virtual BOOLEAN IsInstanceOf(INT id) const; 
+
+    private:
+        ImageObtainer m_optional_icon;
+        Time m_time;
+};
+
+</pre>
+
+        <b>CustomItem.cpp</b>
+<pre>
+CustomItem::CustomItem(Dispatcher* dispatcher,
+                       const WString& text,
+                       const ImageObtainer& default_icon,
+                       const ImageObtainer& optional_icon,
+                       const Time& time) :
+    Base(dispatcher, text, default_icon),
+    m_optional_icon(optional_icon),
+    m_time(time)
+{
+}
+
+CustomItem::~CustomItem()
+{
+}
+
+void CustomItem::SetOptionalIcon(const ImageObtainer& optional_icon)
+{
+    m_optional_icon = optional_icon;
+    NotifyPropertyChange(UnspecifiedPropertyId);
+}
+
+void CustomItem::SetTime(const Time& time)
+{
+    if (m_time != time) {
+        m_time = time;
+        NotifyPropertyChange(UnspecifiedPropertyId);
+    }
+}
+
+BOOLEAN CustomItem::IsInstanceOf(INT id) const
+{
+    if (ID != id) {
+        return Base::IsInstanceOf(id);
+    }
+    return TRUE;
+}</pre>
+        <p>
+            The implementation is straight forward, but a note to the methods SetTime and SetOptionalIcon might be
+            useful: invoking the method Item::NotifiyPropertyChange informs the dispatcher that a property has been
+            changed and results in a redrawing of the item. This is very important as the application developer only
+            needs to take care to change the properties of the item itself, he does not need to trigger a redraw of
+            any GUI component itself.
+        </p>
+        
+        <p>
+            If this custom item is added to an item grid, the item renderer does not draw the additional properties
+            'optional icon' and 'time'. For this the custom item renderer is extended  by the implementation of
+            the method DrawItem (new code is marked in <b>bold</b>):
+        </p>
+  
+         <b>CustomItemRenderer.hpp</b>
+        <pre>
+#include &lt;Gui/DefaultItemRenderer.hpp&gt;
+
+class CustomItemRenderer : public DefaultItemRenderer {
+    typedef DefaultItemRenderer Base;
+
+    public:
+        CustomItemRenderer(const ItemRendererProperties* properties = 0);
+        virtual ~CustomItemRenderer();
+        virtual void DrawBackground(DeviceContext* dc,
+                                    const Item& item,
+                                    const Rect& bounds,
+                                    INT item_style) const;
+        <b>virtual void DrawItem(DeviceContext* dc,
+                              const Item& item,
+                              const Rect& bounds,
+                              INT item_style) const;</b>
+};
+</pre>
+
+        <b>CustomItemRenderer.cpp</b>
+        <pre>
+#include &lt;Gui/PaintDc.hpp&gt;      
+
+CustomItemRenderer::CustomItemRenderer(const ItemRendererProperties* properties) :
+    Base(properties)
+{
+}
+
+CustomItemRenderer::~CustomItemRenderer()
+{
+}
+void CustomItemRenderer::DrawBackground(DeviceContext* dc,
+                                        const Item& item,
+                                        const Rect& bounds,
+                                        INT item_style) const
+{
+    if (item_style == AbstractItemRenderer::SelectedStyle) {
+        PaintDc pdc(dc);
+        <font color="#009900">// Use grey as starting color for the top...</font>
+        Color color(200, 200, 200);
+        for (XYDIM y = bounds.GetTop(); y <= bounds.GetBottom(); ++y) {
+            pdc.SetPenColor(color);
+            pdc.DrawLine(bounds.GetLeft(), y, bounds.GetRight(), y);
+
+            <font color="#009900">// ... and do a gradient to red</font>
+            color.SetRed(color.GetRed() - 2);
+            color.SetGreen(color.GetGreen() - 5);
+            color.SetBlue(color.GetBlue() - 5);
+        }
+    }
+    else {
+        Base::DrawBackground(dc, item, bounds, item_style);
+    }
+}
+
+<b>void CustomItemRenderer::DrawItem(DeviceContext* dc,
+                                  const Item& item,
+                                  const Rect& bounds,
+                                  INT item_style) const
+{
+    if (item.IsInstanceOf(CustomItem::ID)) {
+        const CustomItem& custom_item = static_cast&lt;const CustomItem&&gt;(item);
+        XYDIM x_start = bounds.GetLeft();
+        XYDIM x_end = bounds.GetRight();
+
+        PaintDc pdc(dc);
+
+        <font color="#009900">// draw time property on the right border</font>
+        const WString time_text(custom_item.GetTime().GetWString(Time::TimeHM));
+        const Font& font = pdc.GetFont();
+        x_end -= font.GetTextWidth(time_text, pdc.GetTextAttr());
+        pdc.DrawTextBox(Rect(x_end, bounds.GetTop(), bounds.GetRight(),bounds.GetBottom()), time_text);
+
+        <font color="#009900">// draw optional icon left from the time property</font>
+        const ImageObtainer& optional_icon = custom_item.GetOptionalIcon();
+        if (optional_icon.GetBitmap() != 0) {
+            x_end -= optional_icon.GetWidth();
+            pdc.DrawBitmap(x_end,
+                           bounds.GetTop() + (bounds.GetHeight() - optional_icon.GetHeight()) / 2,
+                           *optional_icon.GetBitmap());
+        }
+
+        <font color="#009900">// draw default icon on the left border</font>
+        const ImageObtainer& default_icon = custom_item.GetIcon();
+        if (default_icon.GetBitmap() != 0) {
+            pdc.DrawBitmap(x_start,
+                           bounds.GetTop() + (bounds.GetHeight() - default_icon.GetHeight()) / 2,
+                           *default_icon.GetBitmap());
+            x_start += default_icon.GetWidth() + 2;
+        }
+
+        <font color="#009900">// draw text in the remaining space</font>
+        pdc.DrawTextBox(Rect(x_start, bounds.GetTop(), x_end, bounds.GetBottom()), custom_item.GetText());
+    }
+    else {
+        Base::DrawItem(dc, item, bounds, item_style);
+    }
+}</b></pre>
+        
+        <p>
+            The outcome of this implementation will look like this:
+        </p>
+        
+        <p><img src="pics/custom_item.png" alt="Custom Items" /></p>
+        
+        <p>
+        	The method AbstractItemGrid::DrawItem is responsible for drawing all item properties.
+        	By checking whether the item represents a specific instance, it is possible to access
+        	the additional interfaces by the following code:
+<pre>if (item.IsInstanceOf(CustomItem::ID)) {
+     const CustomItem& custom_item = static_cast&lt;const CustomItem&&gt;(item);
+     ...
+}</pre>
+			This approach is useful when having a limited set of extended items or when having very
+			generic items like the <a href="classPropertyItem">PropertyItems</a> provided by ATL. It is
+			in the hand of the customer to decide whether there should be one class of a custom item renderer which
+			is capable of rendering all kind of items or whether there should be separate item renderer classes
+			for each kind of item. A thumb of rule: if inside the drawing methods very much code using
+			the runtime type information by Item::IsInstanceOf is used, it might be better to split up the code
+			into several custom item renderer classes. Chosing the preferred item renderer can
+			be done inside the method GuiEngineConfig::ObtainItemRenderer (some hints: the item renderer property
+			'renderer hint' is very useful, the item renderer also offers runtime
+			type information by ItemRendererProperties::IsInstanceOf).
+        </p>
+        
+        <h2>4.4 Items as Separators</h2>
+        
+        <p>
+          Each item can act as separator by setting the corresponding
+          property with Item::SetSeparator(BOOLEAN flag). It is in the hand of the control
+          which displays the item how to show this property. Most times items acting as 
+          separator are used in <a href="classItemGrid.html">ItemGrids</a> or
+          <a href="classItemMenu.html">ItemMenus</a>. The
+          <a href="classDefaultItemRenderer.html">DefaultItemRenderer</a>, which is responsible
+          for drawing items of menus, draws separators the following way:
+          
+      <ul>
+        <li>Per default the method Item::IsSeparator returns FALSE and an item might look like this:<br/>
+          <img src="pics/separator_item0.gif" alt=""></li>
+        <li>If Item::SetSeparator(TRUE) is invoked for an item having a text and/or and icon, 
+          a thin separator is drawn below the text and the icon:<br/>
+          <img src="pics/separator_item1.gif" alt=""></li>
+        <li>If Item::SetSeparator(TRUE) is invoked for an item which does not have a text or
+          an icon, the item will be treated as "pure separator" and cannot be selected inside
+          a menu. Whether a "pure separator" should be used or just a thin separator is in the hand
+          of the application. It is recommended that User Interface Guidelines for the MMI are
+          given which kind of separator should be used:<br/>
+          <img src="pics/separator_item3.gif" alt="">.
+          </li>
+        <li>If an item has a text and/or an icon, is disabled by Item::SetEnabled(FALSE) and
+          marked as separator by Item::SetSeparator(TRUE), the item will be shown as "pure separator"
+          having a text and/or icon. This might be useful as a nonselectable label for large menus:<br/>
+          <img src="pics/separator_item2.gif" alt=""></li>
+      </ul>
+        </p>
+        
+        <h2>4.5 Marking Items</h2>
+        
+        <p>
+            Especially for menus it is useful that a variable number of items can get marked, so
+            that an action can be applied to all those items. Items can easily marked by invoking
+            Item::SetMarked(TRUE). In the following screenshot the items 1, 7 and 8 are marked, the item
+            4 is selected:
+        </p>
+        
+        <img src="pics/marked_items.jpg" alt="Marked items"/>
+
+        [ Previous: <a href="gui_tutorial_03.html">Sample Application</a> ] [ Next: <a href="gui_tutorial_05.html">Controls</a> ]
+
+    </body>
+</html>

@@ -1,0 +1,165 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<title>Kernel Overview</title>
+<style type="text/css">
+<!--
+.Stil1 {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: xx-large;
+	font-weight: bold;
+}
+.Stil4 {
+	font-size: large;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-weight: bold;
+}
+.Stil6 {font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 12px;}
+.Stil20 {font-family: Verdana, Arial, Helvetica, sans-serif; font-size: large; }
+.Stil21 {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: medium;
+	font-weight: bold;
+}
+.Stil22 {font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 12px; font-weight: bold; }
+-->
+</style>
+</head>
+
+<body>
+<div align="center">
+  <p align="center" class="Stil1">Kernel Overview </p>
+  <p align="left" class="Stil4">1 Introduction </p>
+  <p align="left" class="Stil6">Kernel module defines core-functionality of APOXI and the layer to the operating system. The kernel interfaces for 
+  some core functionalities of APOXI and OS layer are described in the following sections.</p>
+  <p align="left" class="Stil4">2 OS Layer Interfaces</p>
+  <p align="left" class="Stil6">Kernel provides a generalized OS interface for APOXI. OS interfaces provided by kernel are listed in the following:</p>
+  <div align="left">
+    <ul>
+      <li>
+        <span class="Stil6"><strong>Thread</strong>: It is the APOXI interface for mapping all OS thread functions. A thread is the basic unit to which the operating system allocates processor time.</span></li>
+        <li class="Stil6">
+          <div align="justify"><strong>Semaphore</strong>: <em>Semaphore</em> object is a synchronization object that maintains a count between zero and a specified maximum value. The count is decremented each time a thread completes a wait for the semaphore object and incriminated each time a thread releases the semaphore. When the count reaches zero, no more threads can successfully wait for the semaphore state to become signaled. Semaphore is useful in controlling a shared resource that can support a limited number of users. </div>
+        </li>
+        <li class="Stil6">
+          <div align="justify"><strong>SystemTimer</strong>: <em>SystemTimer</em> defines a generic interface for general purpose application timers to support timers also outside application context.</div>
+        </li>
+        <li class="Stil6">
+          <div align="justify"><strong>Scheduler</strong>: This <em>Scheduler</em> is the Nucleus Scheduler implementation. The Scheduler always runs in the context of the RTOS task. Scheduler functions in turn calls <em>AppContext</em> functions to switch the context. This scheduler is used for scheduling applications inside an application container.</div>
+        </li>
+        <li class="Stil6"><strong>Error handling</strong></li>
+        <li class="Stil6"><strong>Debug information/ Tracing</strong></li>
+    </ul>
+  </div>
+  <p align="left" class="Stil4">3 Core Functionality</p>
+  <p align="left" class="Stil20">3.1 Application Container</p>
+  <p align="justify" class="Stil6">An application container is an <em>ApoxiThread</em> and it maps to one operating system thread. Application container 
+    holds a number of applications. These applications are managed by an internal and resource-friendly APOXI 
+    scheduler, which assigns the threads processing time to the applications in a cooperative way.  </p>
+  <p align="justify" class="Stil6">When a message is received, the application container calls the applications which are registered for that 
+  particular message in a sequential manner to handle the message.</p>
+  <p align="left" class="Stil20">3.2 Application</p>
+  <p align="justify" class="Stil6">An application is the instance for handling and routing messages. All incoming messages are treated in 
+    <em>OnMessage()</em> and routed to user-dispatchers and windows. Every application is part of an application container 
+    and can have one or more windows. To extend the handling and routing of messages in an easy manner it is 
+  possible to add user-defined dispatchers to an application.</p>
+  <p align="left" class="Stil20">3.3 Message Handling / Routing</p>
+  <p align="justify" class="Stil6">    The message handling structure includes, application container and application. Message routing is done by 
+    <em>MessageRouter</em>. It is a static class to perform the base functionality of APOXI message routing. Posting a 
+    message in general means to enqueue the message to those message queues of application containers or service 
+    threads which are ready to receive this message.</p>
+  <p align="justify" class="Stil21">    3.3.1 Message Handling in Application Container</p>
+  <p align="justify" class="Stil6">    Each application container contains a message queue and routing table. All the registered messages will be stored 
+    in the routing table and messages sent to application container will be pushed into the message queue. The 
+    message router routes the messages to application containers. There are several generally used message types: MC_SYSTEM, MC_APP, MC_FOCUS, MC_CONTROL, etc. Different message types are dispatched by message 
+    router and application container differently.</p>
+  <p align="left" class="Stil6">The example for handling of messages in application container is shown in figure 1.</p>
+  <div align="left">
+    <table width="98%"  border="1" align="center" cellpadding="0" cellspacing="0" bordercolor="#000000">
+      <tr>
+        <td height="266"><div align="center"><img src="figures/message_Routing_AppContainer.png" width="579" height="211"></div></td>
+      </tr>
+    </table>
+  </div>
+  <p align="left" class="Stil22">Figure&nbsp;1. Message Handling in Application Container</p>
+  <p align="justify" class="Stil21">3.3.2 Message Handling in Application</p>
+  <p align="justify" class="Stil6">Inside application, function <em>RouteMessage()</em> routes the message received. The messages will be first routed to 
+    the user dispatcher list. It contains a series of user defined dispatchers. If the messages cannot be dispatched in 
+  the user dispatcher list, MC_FOCUS type message will be routed directly to the focused window. </p>
+  <p align="justify" class="Stil6">    If the message is not MC_FOCUS type, it will be routed to the child window list of the application. The routing will 
+    not be finished until the message has been dispatched or all windows in the list have analyzed the message.</p>
+  <p align="justify" class="Stil6">    If the dispatching of the message to the child window is not successful, then this message will be processed by 
+    the <em>HandleMessage()</em> in the application.</p>
+  <p align="justify" class="Stil20">3.4 Message Hooking</p>
+  <p align="justify" class="Stil6">Message hooking enables the applications to hook into messages (especially indications, like new SMS, alarm 
+  expired..) and react on them before they are sent to the dedicated applications. </p>
+  <p align="justify" class="Stil6">    The message hook object holds a trigger method, which is called when a posted message matches the message 
+hooks requirements. For the execution of this trigger method there are two policies defined:</p>
+  
+<div align="justify">
+      <ul>
+        <li class="Stil6">
+          Synchronous mode </li>
+          <li class="Stil6">
+            Asynchronous mode</li>
+      </ul>
+</div>
+  <p align="justify" class="Stil21">3.4.1 Hooking Mechanism</p>
+  <p align="justify" class="Stil6">The hooking mechanism is based on a list of message hooks which is stored in a global scope. This list is only be 
+    accessed when message hooks are attached or detached and of course if a message is posted. This list consists 
+    of references to the real message hook instances held by the message hook owner (application/service thread). 
+  Every message hook can be reused as often as needed and is open to all applications.</p>
+  <p align="justify" class="Stil6">    Once there are entries in the global message hook list, every posted message is routed to the message hook&rsquo;s 
+    method <em>Suspend()</em>. In this method the incoming message is checked against every message hook. If the message 
+    ID of message hook matches the message, then a notification of the owner of the message hook is done.</p>
+  <p align="justify" class="Stil6">    The main task of the notification is simply calling the trigger method OnMessage() of the hooking message hook 
+    instance. This notification can be either in asynchronous mode or the synchronous mode depending on the policy 
+    applied to the message hook.</p>
+  <p align="justify" class="Stil6">    Resuming of the message hook is called after the return of the message hook notification method. This return 
+    parameter is used in Resume() to describe whether that instance of message hook wants to discard the hooked 
+    message or mark it to be sent. </p>
+  <p align="justify" class="Stil6"> Message hook is detached from the global list of message hook references using the method <em>Detach()</em>. When detached, the message hook is marked to be deleted from the global list as soon as there is no pending 
+  hooked message referring to this message hook.</p>
+  <p align="justify" class="Stil20">3.5 ServiceThread</p>
+  <p align="justify" class="Stil6"><em>ServiceThread</em> is used to implement services, i.e. tasks which perform permanent background activity like network 
+    services. A service thread does not need any graphical user interface but needs to run as an own thread. It only 
+  awakes from idle when it receives a message or when a timer expires.</p>
+  <p align="justify" class="Stil20">3.6 Timer</p>
+  <p align="justify" class="Stil6">    A timer can be started, stopped, resumed and restarted. It has a time-out value and when this expires, a time-out 
+  message will be sent. A timer always belongs to one application and may not be shared.</p>
+  <p align="justify" class="Stil20">    3.7 Alarm Manager</p>
+  <p align="justify" class="Stil6">    Alarm manager handles multiple alarms. It handles one alarm request per application. This means it holds a list 
+    of each application's next alarm time stamp. </p>
+  <p align="justify" class="Stil6">    Whenever an alarm expires, the corresponding application will get informed by sending the <em>AlarmNotificationMsg</em>. 
+    Applications which receive alarm notification message have to send its next alarm request if it has one. If more 
+    than one applications are requesting an alarm with the same point of time the alarm manager sends the alarm 
+    notification message to all applications.</p>
+  <p align="justify" class="Stil6">    When power is on the alarm manager sends the alarm notification message to all applications which had missed 
+    an alarm during power off. Each alarm can also be defined to power on the phone if it is turned off at alarm time.</p>
+  <p align="justify" class="Stil6"><br>
+    <span class="Stil20">3.8 Memory Management</span></p>
+  <p align="justify" class="Stil6">    One idea behind the APOXI memory management is that it is configurable for certain projects because projects 
+    differ in their memory requirements. So the memory configuration itself is divided from the algorithms which 
+    allocate and free memory. The algorithms are implemented in the kernel and are using the configuration table 
+    defined in <em>MemoryConfig</em> file.</p>
+  <p align="justify" class="Stil6">    The role of kernel in APOXI memory management is shown in the following figure.</p>
+  <div align="justify">
+    <table width="98%"  border="1" align="center" cellpadding="0" cellspacing="0" bordercolor="#000000">
+      <tr>
+        <td height="175"><div align="center"><img src="figures/Memory_Management_Kernel.png" width="577" height="138"></div></td>
+      </tr>
+    </table>
+  </div>
+  <p align="justify" class="Stil6">As shown in the figure, kernel provides the <em>HeapManager</em> and HeapVector. 
+    The allocation/free methods are using the <em>HeapManager</em> which will find a block of requested memory and frees 
+  used memory blocks. </p>
+  <p align="justify" class="Stil20">3.9 Generic Worker Task</p>
+  <p align="justify" class="Stil6">    The generic worker tasks runs on a lower priority than the rest of the system. Applications can submit work 
+    packages (threadlets) to the input queue of this task. The queue will be treated as FIFO queue. A threadlet 
+    exposes a generic interface to executing parts of an application in context of another thread (i.e the 
+    <em>GenericWorkerTask</em>). When the threadlet is executed, the application can decide to wait synchronously by the 
+active wait mechanism. It can also start the threadlet asynchronously.</p>
+</body>
+</html>
