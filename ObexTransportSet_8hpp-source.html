@@ -46,41 +46,41 @@
 <a name="l00057"></a><a class="code" href="classObexTransportSet_1_1Iterator.html#98c7fc60a74f7e44359276a8ac666888">00057</a>             <span class="keyword">friend</span>  <span class="keyword">class </span><a class="code" href="classObexTransportSet.html">ObexTransportSet</a>;
 <a name="l00058"></a>00058 
 <a name="l00059"></a>00059             <span class="keyword">public</span>:
-<a name="l00061"></a>00061                 <span class="keyword">inline</span>  <a class="code" href="group__OBEX.html#g7c0dc29ce4d440ad66dec0442b1ccf2e">Iterator</a>();
+<a name="l00061"></a>00061                 <span class="keyword">inline</span>  <a class="code" href="group__Obex.html#g7c0dc29ce4d440ad66dec0442b1ccf2e">Iterator</a>();
 <a name="l00062"></a>00062 
-<a name="l00064"></a>00064                 <span class="keyword">inline</span>  <a class="code" href="group__OBEX.html#g7c0dc29ce4d440ad66dec0442b1ccf2e">Iterator</a>(<span class="keyword">const</span> <a class="code" href="classObexTransportSet_1_1Iterator.html">Iterator</a> &amp; from);
+<a name="l00064"></a>00064                 <span class="keyword">inline</span>  <a class="code" href="group__Obex.html#g7c0dc29ce4d440ad66dec0442b1ccf2e">Iterator</a>(<span class="keyword">const</span> <a class="code" href="classObexTransportSet_1_1Iterator.html">Iterator</a> &amp; from);
 <a name="l00065"></a>00065 
-<a name="l00067"></a>00067                 <span class="keyword">inline</span>  <a class="code" href="classObexTransportSet_1_1Iterator.html">Iterator</a> &amp;          <a class="code" href="group__OBEX.html#g02fe074eb1924d4bfc41b97a80a4554d">operator=</a>(<span class="keyword">const</span> <a class="code" href="classObexTransportSet_1_1Iterator.html">Iterator</a> &amp; from);
+<a name="l00067"></a>00067                 <span class="keyword">inline</span>  <a class="code" href="classObexTransportSet_1_1Iterator.html">Iterator</a> &amp;          <a class="code" href="group__Obex.html#g02fe074eb1924d4bfc41b97a80a4554d">operator=</a>(<span class="keyword">const</span> <a class="code" href="classObexTransportSet_1_1Iterator.html">Iterator</a> &amp; from);
 <a name="l00068"></a>00068 
 <a name="l00071"></a>00071                 <a class="code" href="classObexAbstractTransport.html">ObexAbstractTransport</a> &amp;     <a class="code" href="classObexTransportSet_1_1Iterator.html#b3fd628f828ffc02102d413333e77110">operator*</a>() <span class="keyword">const</span>;
 <a name="l00072"></a>00072 
 <a name="l00075"></a>00075                 <a class="code" href="classObexAbstractTransport.html">ObexAbstractTransport</a> *     <a class="code" href="classObexTransportSet_1_1Iterator.html#5aeedb0a9440be7b04131ee668493131">operator-&gt;</a>() <span class="keyword">const</span>;
 <a name="l00076"></a>00076 
-<a name="l00082"></a>00082                 <span class="keyword">inline</span>  <a class="code" href="NucInc_8hpp.html#50168fdbaa52d4a0b1c287d476050f12">BOOLEAN</a>             <a class="code" href="group__OBEX.html#g13f34486774e4810da63ce7f26971a09">IsValid</a>() <span class="keyword">const</span>;
+<a name="l00082"></a>00082                 <span class="keyword">inline</span>  <a class="code" href="NucInc_8hpp.html#50168fdbaa52d4a0b1c287d476050f12">BOOLEAN</a>             <a class="code" href="group__Obex.html#g13f34486774e4810da63ce7f26971a09">IsValid</a>() <span class="keyword">const</span>;
 <a name="l00083"></a>00083 
-<a name="l00088"></a>00088                 <span class="keyword">inline</span>  <a class="code" href="classObexTransportSet_1_1Iterator.html">Iterator</a> &amp;          <a class="code" href="group__OBEX.html#g6ee285afd5f7970b78cd954dc3278829">operator++</a>();
+<a name="l00088"></a>00088                 <span class="keyword">inline</span>  <a class="code" href="classObexTransportSet_1_1Iterator.html">Iterator</a> &amp;          <a class="code" href="group__Obex.html#g6ee285afd5f7970b78cd954dc3278829">operator++</a>();
 <a name="l00089"></a>00089 
 <a name="l00095"></a>00095                 <span class="keywordtype">void</span>                        <a class="code" href="classObexTransportSet_1_1Iterator.html#d9d88344881929875b469e58e210798d">Advance</a>();
 <a name="l00096"></a>00096 
 <a name="l00097"></a>00097             <span class="keyword">private</span>:
-<a name="l00104"></a>00104                 <a class="code" href="group__OBEX.html#g7c0dc29ce4d440ad66dec0442b1ccf2e">Iterator</a>(<a class="code" href="classObexTransportSet.html">ObexTransportSet</a> &amp;     set,
-<a name="l00105"></a>00105                          <a class="code" href="group__OBEX.html#g600b47b47493a092cb9f108f25077d5e">ObexTransportId</a>        pos = 0);
+<a name="l00104"></a>00104                 <a class="code" href="group__Obex.html#g7c0dc29ce4d440ad66dec0442b1ccf2e">Iterator</a>(<a class="code" href="classObexTransportSet.html">ObexTransportSet</a> &amp;     set,
+<a name="l00105"></a>00105                          <a class="code" href="group__Obex.html#g600b47b47493a092cb9f108f25077d5e">ObexTransportId</a>        pos = 0);
 <a name="l00106"></a>00106 
 <a name="l00107"></a>00107                 <a class="code" href="classObexTransportSet.html">ObexTransportSet</a> *  m_ptr;  
-<a name="l00108"></a>00108                 <a class="code" href="group__OBEX.html#g600b47b47493a092cb9f108f25077d5e">ObexTransportId</a>     m_pos;  
+<a name="l00108"></a>00108                 <a class="code" href="group__Obex.html#g600b47b47493a092cb9f108f25077d5e">ObexTransportId</a>     m_pos;  
 <a name="l00109"></a>00109         };
 <a name="l00110"></a>00110 
 <a name="l00115"></a><a class="code" href="classObexTransportSet.html#e74751d5b3dc29cffeaf1edccb70b5a7">00115</a>         <span class="keyword">inline</span>  <a class="code" href="classObexTransportSet.html#e74751d5b3dc29cffeaf1edccb70b5a7">ObexTransportSet</a>() {}
 <a name="l00116"></a>00116 
 <a name="l00118"></a>00118         <span class="keyword">inline</span>  <a class="code" href="classObexTransportSet.html#e74751d5b3dc29cffeaf1edccb70b5a7">ObexTransportSet</a>(<span class="keyword">const</span> <a class="code" href="classObexTransportSet.html">ObexTransportSet</a> &amp;  from);
 <a name="l00119"></a>00119 
-<a name="l00121"></a>00121         <span class="keyword">inline</span>  <a class="code" href="classObexTransportSet.html">ObexTransportSet</a> &amp;  <a class="code" href="group__OBEX.html#g60be3a2a9896f3c2afbcab747f82de8b">operator=</a>(<span class="keyword">const</span> <a class="code" href="classObexTransportSet.html">ObexTransportSet</a> &amp;  from);
+<a name="l00121"></a>00121         <span class="keyword">inline</span>  <a class="code" href="classObexTransportSet.html">ObexTransportSet</a> &amp;  <a class="code" href="group__Obex.html#g60be3a2a9896f3c2afbcab747f82de8b">operator=</a>(<span class="keyword">const</span> <a class="code" href="classObexTransportSet.html">ObexTransportSet</a> &amp;  from);
 <a name="l00122"></a>00122 
-<a name="l00124"></a>00124         <span class="keyword">inline</span>  Iterator            <a class="code" href="group__OBEX.html#g097beb41684552395e8176995d38485f">Begin</a>();
+<a name="l00124"></a>00124         <span class="keyword">inline</span>  Iterator            <a class="code" href="group__Obex.html#g097beb41684552395e8176995d38485f">Begin</a>();
 <a name="l00125"></a>00125 
-<a name="l00133"></a>00133         <span class="keyword">inline</span>  <a class="code" href="NucInc_8hpp.html#50168fdbaa52d4a0b1c287d476050f12">BOOLEAN</a>             <a class="code" href="group__OBEX.html#gc047b317428a34aa8ad2c9ae637cfc94">IsEmpty</a>() <span class="keyword">const</span>;
+<a name="l00133"></a>00133         <span class="keyword">inline</span>  <a class="code" href="NucInc_8hpp.html#50168fdbaa52d4a0b1c287d476050f12">BOOLEAN</a>             <a class="code" href="group__Obex.html#gc047b317428a34aa8ad2c9ae637cfc94">IsEmpty</a>() <span class="keyword">const</span>;
 <a name="l00134"></a>00134 
-<a name="l00136"></a>00136         <span class="keyword">inline</span>  <a class="code" href="NucInc_8hpp.html#50168fdbaa52d4a0b1c287d476050f12">BOOLEAN</a>             <a class="code" href="group__OBEX.html#g9d69f7d4e8b557e37f320ef653e91317">Contains</a>(<a class="code" href="group__OBEX.html#g600b47b47493a092cb9f108f25077d5e">ObexTransportId</a>    <span class="keywordtype">id</span>) <span class="keyword">const</span>;
+<a name="l00136"></a>00136         <span class="keyword">inline</span>  <a class="code" href="NucInc_8hpp.html#50168fdbaa52d4a0b1c287d476050f12">BOOLEAN</a>             <a class="code" href="group__Obex.html#g9d69f7d4e8b557e37f320ef653e91317">Contains</a>(<a class="code" href="group__Obex.html#g600b47b47493a092cb9f108f25077d5e">ObexTransportId</a>    <span class="keywordtype">id</span>) <span class="keyword">const</span>;
 <a name="l00137"></a>00137 
 <a name="l00139"></a>00139         <a class="code" href="NucInc_8hpp.html#d8ce12d83f204245685f98caf9d03944">UINT8</a>                       <a class="code" href="classObexTransportSet.html#819573e7e326766ccbd6e2931b20be10">GetCount</a>() <span class="keyword">const</span>;
 <a name="l00140"></a>00140 
@@ -90,7 +90,7 @@
 <a name="l00160"></a>00160 
 <a name="l00164"></a>00164         <span class="keyword">inline</span> <span class="keywordtype">void</span>                 <a class="code" href="classObexTransportSet.html#f3c842454fbda97845029014e65e6582">Include</a>(<span class="keyword">const</span> <a class="code" href="classObexTransportSet.html">ObexTransportSet</a> &amp;        xs);
 <a name="l00165"></a>00165 
-<a name="l00171"></a>00171         <span class="keyword">inline</span>  <span class="keywordtype">void</span>                <a class="code" href="group__OBEX.html#gbcf0fec703f17b5a40343a979ba4e833">Exclude</a>(<span class="keyword">const</span> <a class="code" href="classObexTransportSet.html">ObexTransportSet</a> &amp;        xs);
+<a name="l00171"></a>00171         <span class="keyword">inline</span>  <span class="keywordtype">void</span>                <a class="code" href="group__Obex.html#gbcf0fec703f17b5a40343a979ba4e833">Exclude</a>(<span class="keyword">const</span> <a class="code" href="classObexTransportSet.html">ObexTransportSet</a> &amp;        xs);
 <a name="l00172"></a>00172 
 <a name="l00173"></a>00173     <span class="keyword">private</span>:
 <a name="l00174"></a>00174         <a class="code" href="classBitField.html">BitField8</a>   m_bitset;
@@ -99,7 +99,7 @@
 <a name="l00177"></a>00177 <span class="comment">/*  ----------------------------------------------------------------------</span>
 <a name="l00178"></a>00178 <span class="comment">    Iterator    Default constructor.</span>
 <a name="l00179"></a>00179 <span class="comment">    ---------------------------------------------------------------------- */</span>
-<a name="l00180"></a><a class="code" href="group__OBEX.html#g7c0dc29ce4d440ad66dec0442b1ccf2e">00180</a> <a class="code" href="group__OBEX.html#g7c0dc29ce4d440ad66dec0442b1ccf2e">ObexTransportSet::Iterator::Iterator</a>() :
+<a name="l00180"></a><a class="code" href="group__Obex.html#g7c0dc29ce4d440ad66dec0442b1ccf2e">00180</a> <a class="code" href="group__Obex.html#g7c0dc29ce4d440ad66dec0442b1ccf2e">ObexTransportSet::Iterator::Iterator</a>() :
 <a name="l00181"></a>00181     m_ptr( 0 ),
 <a name="l00182"></a>00182     m_pos( <a class="code" href="group__Currently__Undocumented__Defines.html#gdad3e8cb0ec317056162aa2cd8677658">APOXI_OBEX_MAX_NO_TRANSPORTS</a> )
 <a name="l00183"></a>00183 {
@@ -108,7 +108,7 @@
 <a name="l00186"></a>00186 <span class="comment">/*  ----------------------------------------------------------------------</span>
 <a name="l00187"></a>00187 <span class="comment">    Iterator    Copy constructor.</span>
 <a name="l00188"></a>00188 <span class="comment">    ---------------------------------------------------------------------- */</span>
-<a name="l00189"></a><a class="code" href="group__OBEX.html#ge52442fee9e27a8ce78442d18f3b8d4a">00189</a> <a class="code" href="group__OBEX.html#g7c0dc29ce4d440ad66dec0442b1ccf2e">ObexTransportSet::Iterator::Iterator</a>(<span class="keyword">const</span> <a class="code" href="classObexTransportSet_1_1Iterator.html">Iterator</a> &amp; from) :
+<a name="l00189"></a><a class="code" href="group__Obex.html#ge52442fee9e27a8ce78442d18f3b8d4a">00189</a> <a class="code" href="group__Obex.html#g7c0dc29ce4d440ad66dec0442b1ccf2e">ObexTransportSet::Iterator::Iterator</a>(<span class="keyword">const</span> <a class="code" href="classObexTransportSet_1_1Iterator.html">Iterator</a> &amp; from) :
 <a name="l00190"></a>00190     m_ptr( from.m_ptr ),
 <a name="l00191"></a>00191     m_pos( from.m_pos )
 <a name="l00192"></a>00192 {
@@ -118,7 +118,7 @@
 <a name="l00196"></a>00196 <span class="comment">    Iterator    Assignment operator.</span>
 <a name="l00197"></a>00197 <span class="comment">    ---------------------------------------------------------------------- */</span>
 <a name="l00198"></a>00198 <a class="code" href="classObexTransportSet_1_1Iterator.html">ObexTransportSet::Iterator</a> &amp;
-<a name="l00199"></a><a class="code" href="group__OBEX.html#g02fe074eb1924d4bfc41b97a80a4554d">00199</a> <a class="code" href="group__OBEX.html#g02fe074eb1924d4bfc41b97a80a4554d">ObexTransportSet::Iterator::operator=</a>(<span class="keyword">const</span> <a class="code" href="classObexTransportSet_1_1Iterator.html">Iterator</a> &amp; from)
+<a name="l00199"></a><a class="code" href="group__Obex.html#g02fe074eb1924d4bfc41b97a80a4554d">00199</a> <a class="code" href="group__Obex.html#g02fe074eb1924d4bfc41b97a80a4554d">ObexTransportSet::Iterator::operator=</a>(<span class="keyword">const</span> <a class="code" href="classObexTransportSet_1_1Iterator.html">Iterator</a> &amp; from)
 <a name="l00200"></a>00200 {
 <a name="l00201"></a>00201     m_ptr = from.<a class="code" href="classObexTransportSet_1_1Iterator.html#ff2bc974ff2666823836ec633e710bb2">m_ptr</a>;
 <a name="l00202"></a>00202     m_pos = from.<a class="code" href="classObexTransportSet_1_1Iterator.html#c7fba6168352c586960bad0145d476f0">m_pos</a>;
@@ -128,7 +128,7 @@
 <a name="l00206"></a>00206 <span class="comment">/*  ----------------------------------------------------------------------</span>
 <a name="l00207"></a>00207 <span class="comment">    Iterator::IsValid</span>
 <a name="l00208"></a>00208 <span class="comment">    ---------------------------------------------------------------------- */</span>
-<a name="l00209"></a><a class="code" href="group__OBEX.html#g13f34486774e4810da63ce7f26971a09">00209</a> <a class="code" href="NucInc_8hpp.html#50168fdbaa52d4a0b1c287d476050f12">BOOLEAN</a>     <a class="code" href="group__OBEX.html#g13f34486774e4810da63ce7f26971a09">ObexTransportSet::Iterator::IsValid</a>()<span class="keyword"></span>
+<a name="l00209"></a><a class="code" href="group__Obex.html#g13f34486774e4810da63ce7f26971a09">00209</a> <a class="code" href="NucInc_8hpp.html#50168fdbaa52d4a0b1c287d476050f12">BOOLEAN</a>     <a class="code" href="group__Obex.html#g13f34486774e4810da63ce7f26971a09">ObexTransportSet::Iterator::IsValid</a>()<span class="keyword"></span>
 <a name="l00210"></a>00210 <span class="keyword">const</span>
 <a name="l00211"></a>00211 <span class="keyword"></span>{
 <a name="l00212"></a>00212     <span class="keywordflow">return</span> ( (m_ptr != 0) &amp;&amp;
@@ -139,7 +139,7 @@
 <a name="l00217"></a>00217 <span class="comment">    Iterator::operator++()</span>
 <a name="l00218"></a>00218 <span class="comment">    ---------------------------------------------------------------------- */</span>
 <a name="l00219"></a>00219 <a class="code" href="classObexTransportSet_1_1Iterator.html">ObexTransportSet::Iterator</a> &amp;
-<a name="l00220"></a><a class="code" href="group__OBEX.html#g6ee285afd5f7970b78cd954dc3278829">00220</a> <a class="code" href="group__OBEX.html#g6ee285afd5f7970b78cd954dc3278829">ObexTransportSet::Iterator::operator++</a>()
+<a name="l00220"></a><a class="code" href="group__Obex.html#g6ee285afd5f7970b78cd954dc3278829">00220</a> <a class="code" href="group__Obex.html#g6ee285afd5f7970b78cd954dc3278829">ObexTransportSet::Iterator::operator++</a>()
 <a name="l00221"></a>00221 {
 <a name="l00222"></a>00222     <a class="code" href="classObexTransportSet_1_1Iterator.html#d9d88344881929875b469e58e210798d">Advance</a>();
 <a name="l00223"></a>00223     <span class="keywordflow">return</span> *<span class="keyword">this</span>;
@@ -148,7 +148,7 @@
 <a name="l00226"></a>00226 <span class="comment">/*  ----------------------------------------------------------------------</span>
 <a name="l00227"></a>00227 <span class="comment">    ObexTransportSet Copy</span>
 <a name="l00228"></a>00228 <span class="comment">    ---------------------------------------------------------------------- */</span>
-<a name="l00229"></a><a class="code" href="group__OBEX.html#g32f5c9319b7115ecd57a547089be4810">00229</a> <a class="code" href="classObexTransportSet.html#e74751d5b3dc29cffeaf1edccb70b5a7">ObexTransportSet::ObexTransportSet</a>(<span class="keyword">const</span> <a class="code" href="classObexTransportSet.html">ObexTransportSet</a> &amp;  from) :
+<a name="l00229"></a><a class="code" href="group__Obex.html#g32f5c9319b7115ecd57a547089be4810">00229</a> <a class="code" href="classObexTransportSet.html#e74751d5b3dc29cffeaf1edccb70b5a7">ObexTransportSet::ObexTransportSet</a>(<span class="keyword">const</span> <a class="code" href="classObexTransportSet.html">ObexTransportSet</a> &amp;  from) :
 <a name="l00230"></a>00230     m_bitset( from.m_bitset )
 <a name="l00231"></a>00231 {
 <a name="l00232"></a>00232 }<span class="comment">// ObexTransportSet</span>
@@ -156,7 +156,7 @@
 <a name="l00234"></a>00234 <span class="comment">/*  ----------------------------------------------------------------------</span>
 <a name="l00235"></a>00235 <span class="comment">    ObexTransportSet Assignment</span>
 <a name="l00236"></a>00236 <span class="comment">    ---------------------------------------------------------------------- */</span>
-<a name="l00237"></a><a class="code" href="group__OBEX.html#g60be3a2a9896f3c2afbcab747f82de8b">00237</a> <a class="code" href="classObexTransportSet.html">ObexTransportSet</a> &amp;  <a class="code" href="group__OBEX.html#g60be3a2a9896f3c2afbcab747f82de8b">ObexTransportSet::operator=</a>(<span class="keyword">const</span> <a class="code" href="classObexTransportSet.html">ObexTransportSet</a> &amp;  from)
+<a name="l00237"></a><a class="code" href="group__Obex.html#g60be3a2a9896f3c2afbcab747f82de8b">00237</a> <a class="code" href="classObexTransportSet.html">ObexTransportSet</a> &amp;  <a class="code" href="group__Obex.html#g60be3a2a9896f3c2afbcab747f82de8b">ObexTransportSet::operator=</a>(<span class="keyword">const</span> <a class="code" href="classObexTransportSet.html">ObexTransportSet</a> &amp;  from)
 <a name="l00238"></a>00238 {
 <a name="l00239"></a>00239     m_bitset = from.<a class="code" href="classObexTransportSet.html#bea01924c583dcb1490908e6927b0c76">m_bitset</a>;
 <a name="l00240"></a>00240     <span class="keywordflow">return</span> *<span class="keyword">this</span>;
@@ -165,7 +165,7 @@
 <a name="l00243"></a>00243 <span class="comment">/*  ----------------------------------------------------------------------</span>
 <a name="l00244"></a>00244 <span class="comment">    Begin</span>
 <a name="l00245"></a>00245 <span class="comment">    ---------------------------------------------------------------------- */</span>
-<a name="l00246"></a><a class="code" href="group__OBEX.html#g097beb41684552395e8176995d38485f">00246</a> <a class="code" href="classObexTransportSet_1_1Iterator.html">ObexTransportSet::Iterator</a>  <a class="code" href="group__OBEX.html#g097beb41684552395e8176995d38485f">ObexTransportSet::Begin</a>()
+<a name="l00246"></a><a class="code" href="group__Obex.html#g097beb41684552395e8176995d38485f">00246</a> <a class="code" href="classObexTransportSet_1_1Iterator.html">ObexTransportSet::Iterator</a>  <a class="code" href="group__Obex.html#g097beb41684552395e8176995d38485f">ObexTransportSet::Begin</a>()
 <a name="l00247"></a>00247 {
 <a name="l00248"></a>00248     <span class="keywordflow">return</span> <a class="code" href="classObexTransportSet_1_1Iterator.html">Iterator</a>(*<span class="keyword">this</span>);
 <a name="l00249"></a>00249 }<span class="comment">// Begin</span>
@@ -173,7 +173,7 @@
 <a name="l00251"></a>00251 <span class="comment">/*  ----------------------------------------------------------------------</span>
 <a name="l00252"></a>00252 <span class="comment">    IsEmpty</span>
 <a name="l00253"></a>00253 <span class="comment">    ---------------------------------------------------------------------- */</span>
-<a name="l00254"></a><a class="code" href="group__OBEX.html#gc047b317428a34aa8ad2c9ae637cfc94">00254</a> <a class="code" href="NucInc_8hpp.html#50168fdbaa52d4a0b1c287d476050f12">BOOLEAN</a>     <a class="code" href="group__OBEX.html#gc047b317428a34aa8ad2c9ae637cfc94">ObexTransportSet::IsEmpty</a>()<span class="keyword"></span>
+<a name="l00254"></a><a class="code" href="group__Obex.html#gc047b317428a34aa8ad2c9ae637cfc94">00254</a> <a class="code" href="NucInc_8hpp.html#50168fdbaa52d4a0b1c287d476050f12">BOOLEAN</a>     <a class="code" href="group__Obex.html#gc047b317428a34aa8ad2c9ae637cfc94">ObexTransportSet::IsEmpty</a>()<span class="keyword"></span>
 <a name="l00255"></a>00255 <span class="keyword">const</span>
 <a name="l00256"></a>00256 <span class="keyword"></span>{
 <a name="l00257"></a>00257     <span class="keywordflow">return</span> ( m_bitset.<a class="code" href="classBitField.html#b0568c92a8643c8b6893f6666b8457c8">Get</a>() == 0 );
@@ -182,7 +182,7 @@
 <a name="l00260"></a>00260 <span class="comment">/*  ----------------------------------------------------------------------</span>
 <a name="l00261"></a>00261 <span class="comment">    Contains</span>
 <a name="l00262"></a>00262 <span class="comment">    ---------------------------------------------------------------------- */</span>
-<a name="l00263"></a><a class="code" href="group__OBEX.html#g9d69f7d4e8b557e37f320ef653e91317">00263</a> <a class="code" href="NucInc_8hpp.html#50168fdbaa52d4a0b1c287d476050f12">BOOLEAN</a>     <a class="code" href="group__OBEX.html#g9d69f7d4e8b557e37f320ef653e91317">ObexTransportSet::Contains</a>(<a class="code" href="group__OBEX.html#g600b47b47493a092cb9f108f25077d5e">ObexTransportId</a>  <span class="keywordtype">id</span>)<span class="keyword"></span>
+<a name="l00263"></a><a class="code" href="group__Obex.html#g9d69f7d4e8b557e37f320ef653e91317">00263</a> <a class="code" href="NucInc_8hpp.html#50168fdbaa52d4a0b1c287d476050f12">BOOLEAN</a>     <a class="code" href="group__Obex.html#g9d69f7d4e8b557e37f320ef653e91317">ObexTransportSet::Contains</a>(<a class="code" href="group__Obex.html#g600b47b47493a092cb9f108f25077d5e">ObexTransportId</a>  <span class="keywordtype">id</span>)<span class="keyword"></span>
 <a name="l00264"></a>00264 <span class="keyword">const</span>
 <a name="l00265"></a>00265 <span class="keyword"></span>{
 <a name="l00266"></a>00266     <span class="keywordflow">return</span> m_bitset.<a class="code" href="classBitField.html#3e9dc5467244aa6a38b58e52d434b079">GetBit</a>(<span class="keywordtype">id</span>);
@@ -191,7 +191,7 @@
 <a name="l00269"></a>00269 <span class="comment">/*  ----------------------------------------------------------------------</span>
 <a name="l00270"></a>00270 <span class="comment">    Include</span>
 <a name="l00271"></a>00271 <span class="comment">    ---------------------------------------------------------------------- */</span>
-<a name="l00272"></a><a class="code" href="group__OBEX.html#gaca3203f925eafdf3aa0ba3131159ca6">00272</a> <span class="keywordtype">void</span>    <a class="code" href="classObexTransportSet.html#f3c842454fbda97845029014e65e6582">ObexTransportSet::Include</a>(<span class="keyword">const</span> <a class="code" href="classObexTransportSet.html">ObexTransportSet</a> &amp;  xp_set)
+<a name="l00272"></a><a class="code" href="group__Obex.html#gaca3203f925eafdf3aa0ba3131159ca6">00272</a> <span class="keywordtype">void</span>    <a class="code" href="classObexTransportSet.html#f3c842454fbda97845029014e65e6582">ObexTransportSet::Include</a>(<span class="keyword">const</span> <a class="code" href="classObexTransportSet.html">ObexTransportSet</a> &amp;  xp_set)
 <a name="l00273"></a>00273 {
 <a name="l00274"></a>00274     m_bitset.<a class="code" href="classBitField.html#5a72daf26ef4c731449b7929dabb1b7c">Set</a>( m_bitset.<a class="code" href="classBitField.html#b0568c92a8643c8b6893f6666b8457c8">Get</a>() | xp_set.<a class="code" href="classObexTransportSet.html#bea01924c583dcb1490908e6927b0c76">m_bitset</a>.<a class="code" href="classBitField.html#b0568c92a8643c8b6893f6666b8457c8">Get</a>() );
 <a name="l00275"></a>00275 }<span class="comment">// Include</span>
@@ -199,7 +199,7 @@
 <a name="l00277"></a>00277 <span class="comment">/*  ----------------------------------------------------------------------</span>
 <a name="l00278"></a>00278 <span class="comment">    Exclude</span>
 <a name="l00279"></a>00279 <span class="comment">    ---------------------------------------------------------------------- */</span>
-<a name="l00280"></a><a class="code" href="group__OBEX.html#gbcf0fec703f17b5a40343a979ba4e833">00280</a> <span class="keywordtype">void</span>    <a class="code" href="group__OBEX.html#gbcf0fec703f17b5a40343a979ba4e833">ObexTransportSet::Exclude</a>(<span class="keyword">const</span> <a class="code" href="classObexTransportSet.html">ObexTransportSet</a> &amp;  xp_set)
+<a name="l00280"></a><a class="code" href="group__Obex.html#gbcf0fec703f17b5a40343a979ba4e833">00280</a> <span class="keywordtype">void</span>    <a class="code" href="group__Obex.html#gbcf0fec703f17b5a40343a979ba4e833">ObexTransportSet::Exclude</a>(<span class="keyword">const</span> <a class="code" href="classObexTransportSet.html">ObexTransportSet</a> &amp;  xp_set)
 <a name="l00281"></a>00281 {
 <a name="l00282"></a>00282     m_bitset.<a class="code" href="classBitField.html#5a72daf26ef4c731449b7929dabb1b7c">Set</a>( m_bitset.<a class="code" href="classBitField.html#1c0c9e8c5bd51546ec9ecd8fe774cce7">Mask</a>( ~xp_set.<a class="code" href="classObexTransportSet.html#bea01924c583dcb1490908e6927b0c76">m_bitset</a>.<a class="code" href="classBitField.html#b0568c92a8643c8b6893f6666b8457c8">Get</a>() ) );
 <a name="l00283"></a>00283 }<span class="comment">// Exclude</span>

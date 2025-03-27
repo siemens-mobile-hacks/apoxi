@@ -23,7 +23,7 @@
   </ul></div>
 <h1>ObexOppServer Class Reference<br>
 <small>
-[<a class="el" href="group__OBEX.html">OBEX</a>]</small>
+[<a class="el" href="group__Obex.html">OBEX</a>]</small>
 </h1><!-- doxytag: class="ObexOppServer" -->Base class for <em>OPP</em> servers within applications.  
 <a href="#_details">More...</a>
 <p>
@@ -76,7 +76,7 @@ Inheritance diagram for ObexOppServer:<p><center><img src="classObexOppServer__i
 <tr><td class="memItemLeft" nowrap align="right" valign="top">BOOLEAN&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classObexOppServer.html#a4882519bd935ef0ca5a20a8b993dcfc">IsBoundToMimeType</a> (<a class="el" href="group__Auxiliary.html#g731dfb8199ef3e1157ec61362b0211ea">MimeType</a> mime_type) const </td></tr>
 
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Tells whether the local server has subscribed to MIME type 'mime_type'.  <a href="#a4882519bd935ef0ca5a20a8b993dcfc"></a><br></td></tr>
-<tr><td class="memItemLeft" nowrap align="right" valign="top">BOOLEAN&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classObexOppServer.html#f9f9d7e74282e75224f489f56a5ea196">IsBoundToServerId</a> (<a class="el" href="group__OBEX.html#g07d01897a71cf1c5f8b7abe23ff0bc17">ObexServerId</a> id) const </td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">BOOLEAN&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classObexOppServer.html#f9f9d7e74282e75224f489f56a5ea196">IsBoundToServerId</a> (<a class="el" href="group__Obex.html#g07d01897a71cf1c5f8b7abe23ff0bc17">ObexServerId</a> id) const </td></tr>
 
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Tells whether the local server has been registered under 'id'.  <a href="#f9f9d7e74282e75224f489f56a5ea196"></a><br></td></tr>
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classObexOppServer.html#e0e313b51a5369f4cfeefab6c94912c9">ObexOppServer</a> (<a class="el" href="classExecutionContext.html">ExecutionContext</a> *ctx_ptr, <a class="el" href="group__Auxiliary.html#g731dfb8199ef3e1157ec61362b0211ea">MimeType</a> mime_type)</td></tr>
@@ -330,7 +330,7 @@ When the same type of processing is desired for several different mimetypes (for
 <dl compact><dt><b>Returns:</b></dt><dd><a class="el" href="classObexResult.html">ObexResult</a> which evaluates to <code>'TRUE'</code> in case of success, <code>'FALSE'</code> otherwise. </dd></dl>
 
 <p>
-Reimplemented in <a class="el" href="group__OBEX.html#gd9e9c6b7ed72c03e530291e001eed981">ObexOppDataSinkPushServer</a>.    </td>
+Reimplemented in <a class="el" href="group__Obex.html#gd9e9c6b7ed72c03e530291e001eed981">ObexOppDataSinkPushServer</a>.    </td>
   </tr>
 </table>
 <a class="anchor" name="c561b7c15775996641d9b888c751c00f"></a><!-- doxytag: member="ObexOppServer::CancelOperation" ref="c561b7c15775996641d9b888c751c00f" args="(ObexObject::ResponseCode resp_code, const WString &amp;resp_desc=WString())" --><p>
@@ -406,7 +406,7 @@ Closes the OPP server.
 <p>
 
 <p>
-Reimplemented in <a class="el" href="group__OBEX.html#g9111e19dc3fe2760963bb2bde67c29ad">ObexOppDataSinkPushServer</a>.    </td>
+Reimplemented in <a class="el" href="group__Obex.html#g9111e19dc3fe2760963bb2bde67c29ad">ObexOppDataSinkPushServer</a>.    </td>
   </tr>
 </table>
 <a class="anchor" name="c83c4606e7f26fa12f483de13c5ce3db"></a><!-- doxytag: member="ObexOppServer::DataProcessed" ref="c83c4606e7f26fa12f483de13c5ce3db" args="()" --><p>
@@ -502,7 +502,7 @@ Returns the cumulative progress in transferring data.
 <p>
 This method returns the amount of data already transferred for a pending PUSH (inbound data) or PULL (outbound data) operation. The final value is preserved even beyond completion of that operation, hence it is reset to <code>'0'</code> when a new operation is accepted. 
 <p>
-Reimplemented in <a class="el" href="group__OBEX.html#g64997482d57fc8a41752096b415e2686">ObexOppDataSinkPushServer</a>.    </td>
+Reimplemented in <a class="el" href="group__Obex.html#g64997482d57fc8a41752096b415e2686">ObexOppDataSinkPushServer</a>.    </td>
   </tr>
 </table>
 <a class="anchor" name="3ef90027134fcb59a5229ef0fbf906d6"></a><!-- doxytag: member="ObexOppServer::Init" ref="3ef90027134fcb59a5229ef0fbf906d6" args="(ExecutionContext *ctx_ptr, MimeType mime_type)" --><p>
@@ -650,7 +650,7 @@ Tells whether the local server has subscribed to MIME type 'mime_type'.
         <tr>
           <td class="md" nowrap valign="top">BOOLEAN ObexOppServer::IsBoundToServerId           </td>
           <td class="md" valign="top">(&nbsp;</td>
-          <td class="md" nowrap valign="top"><a class="el" href="group__OBEX.html#g07d01897a71cf1c5f8b7abe23ff0bc17">ObexServerId</a>&nbsp;</td>
+          <td class="md" nowrap valign="top"><a class="el" href="group__Obex.html#g07d01897a71cf1c5f8b7abe23ff0bc17">ObexServerId</a>&nbsp;</td>
           <td class="mdname1" valign="top" nowrap> <em>id</em>          </td>
           <td class="md" valign="top">&nbsp;)&nbsp;</td>
           <td class="md" nowrap> const<code> [inline]</code></td>
@@ -1007,7 +1007,7 @@ Open the OPP server for client requests.
 <p>
 
 <p>
-Reimplemented in <a class="el" href="group__OBEX.html#gec5a68f58dc1974d52a438fff44c1e8c">ObexOppDataSinkPushServer</a>.    </td>
+Reimplemented in <a class="el" href="group__Obex.html#gec5a68f58dc1974d52a438fff44c1e8c">ObexOppDataSinkPushServer</a>.    </td>
   </tr>
 </table>
 <a class="anchor" name="d7fa220dd3ef630491b80a95a7a7c549"></a><!-- doxytag: member="ObexOppServer::ProvideData" ref="d7fa220dd3ef630491b80a95a7a7c549" args="(ObexBuffer &amp;app_data, BOOLEAN end_data=FALSE)" --><p>
@@ -1092,7 +1092,7 @@ Calling <code><a class="el" href="classObexOppServer.html#4c40b3de268dbb2ce43492
 <dl compact><dt><b>Returns:</b></dt><dd><a class="el" href="classObexResult.html">ObexResult</a> which evaluates to <code>'TRUE'</code> is case of success, <code>'FALSE'</code> otherwise. </dd></dl>
 
 <p>
-Reimplemented in <a class="el" href="group__OBEX.html#gd31a92fee21dd83331cce976648cf6ec">ObexOppDataSinkPushServer</a>.    </td>
+Reimplemented in <a class="el" href="group__Obex.html#gd31a92fee21dd83331cce976648cf6ec">ObexOppDataSinkPushServer</a>.    </td>
   </tr>
 </table>
 <hr><h2>Friends And Related Function Documentation</h2>

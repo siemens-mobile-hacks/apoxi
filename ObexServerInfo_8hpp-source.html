@@ -69,7 +69,7 @@
 <a name="l00086"></a>00086 <span class="comment">                                is passed, a regular entry is assumed and the</span>
 <a name="l00087"></a>00087 <span class="comment">                                id is assigned by \c ObexServerMngr. */</span>
 <a name="l00088"></a>00088         <a class="code" href="classObexResult.html">ObexResult</a>  <a class="code" href="classObexServerInfo.html#0c00092bc643475d54df05b09c193e37">Register</a>(<a class="code" href="classObexServerVisitor.html">ObexServerVisitor</a> &amp;    checker,
-<a name="l00089"></a>00089                              <a class="code" href="group__OBEX.html#g07d01897a71cf1c5f8b7abe23ff0bc17">ObexServerId</a>           propose_id = <a class="code" href="classObexServerInfo.html#5e61c86e62e95fe09b2afd2a97ab6c438561e1c54043c35a429a41827147f9c0">FirstServerId</a>);
+<a name="l00089"></a>00089                              <a class="code" href="group__Obex.html#g07d01897a71cf1c5f8b7abe23ff0bc17">ObexServerId</a>           propose_id = <a class="code" href="classObexServerInfo.html#5e61c86e62e95fe09b2afd2a97ab6c438561e1c54043c35a429a41827147f9c0">FirstServerId</a>);
 <a name="l00090"></a>00090 
 <a name="l00092"></a>00092         <span class="keywordtype">void</span>        <a class="code" href="classObexServerInfo.html#58e7433ec461f6dc018c2bbe1a6fcec1">Deregister</a>();
 <a name="l00093"></a>00093 
@@ -77,18 +77,18 @@
 <a name="l00095"></a>00095 <span class="comment"></span>
 <a name="l00096"></a>00096 <span class="comment">            @return \c ObexServerId assigned by the server manager or</span>
 <a name="l00097"></a>00097 <span class="comment">                    \c NoServerId when currectly not registered. */</span>
-<a name="l00098"></a>00098         <span class="keyword">inline</span>  <a class="code" href="group__OBEX.html#g07d01897a71cf1c5f8b7abe23ff0bc17">ObexServerId</a>    <a class="code" href="group__OBEX.html#g02e61dedff64ea012e97b9c24dc3e6b7">GetServerId</a>() <span class="keyword">const</span>;
+<a name="l00098"></a>00098         <span class="keyword">inline</span>  <a class="code" href="group__Obex.html#g07d01897a71cf1c5f8b7abe23ff0bc17">ObexServerId</a>    <a class="code" href="group__Obex.html#g02e61dedff64ea012e97b9c24dc3e6b7">GetServerId</a>() <span class="keyword">const</span>;
 <a name="l00099"></a>00099 
 <a name="l00100"></a>00100     <span class="keyword">private</span>:
-<a name="l00101"></a>00101         <a class="code" href="group__OBEX.html#g07d01897a71cf1c5f8b7abe23ff0bc17">ObexServerId</a>            m_server_id;
+<a name="l00101"></a>00101         <a class="code" href="group__Obex.html#g07d01897a71cf1c5f8b7abe23ff0bc17">ObexServerId</a>            m_server_id;
 <a name="l00102"></a>00102 
-<a name="l00103"></a>00103         <span class="keyword">inline</span>  <span class="keywordtype">void</span>            SetServerId(<a class="code" href="group__OBEX.html#g07d01897a71cf1c5f8b7abe23ff0bc17">ObexServerId</a>    server_id);
+<a name="l00103"></a>00103         <span class="keyword">inline</span>  <span class="keywordtype">void</span>            SetServerId(<a class="code" href="group__Obex.html#g07d01897a71cf1c5f8b7abe23ff0bc17">ObexServerId</a>    server_id);
 <a name="l00104"></a>00104 };
 <a name="l00105"></a>00105 
 <a name="l00106"></a>00106 <span class="comment">/*  ----------------------------------------------------------------------</span>
 <a name="l00107"></a>00107 <span class="comment">    GetServerId</span>
 <a name="l00108"></a>00108 <span class="comment">    ---------------------------------------------------------------------- */</span>
-<a name="l00109"></a><a class="code" href="group__OBEX.html#g02e61dedff64ea012e97b9c24dc3e6b7">00109</a> <a class="code" href="group__OBEX.html#g07d01897a71cf1c5f8b7abe23ff0bc17">ObexServerId</a>    <a class="code" href="group__OBEX.html#g02e61dedff64ea012e97b9c24dc3e6b7">ObexServerInfo::GetServerId</a>()<span class="keyword"></span>
+<a name="l00109"></a><a class="code" href="group__Obex.html#g02e61dedff64ea012e97b9c24dc3e6b7">00109</a> <a class="code" href="group__Obex.html#g07d01897a71cf1c5f8b7abe23ff0bc17">ObexServerId</a>    <a class="code" href="group__Obex.html#g02e61dedff64ea012e97b9c24dc3e6b7">ObexServerInfo::GetServerId</a>()<span class="keyword"></span>
 <a name="l00110"></a>00110 <span class="keyword">const</span>
 <a name="l00111"></a>00111 <span class="keyword"></span>{
 <a name="l00112"></a>00112     <span class="keywordflow">return</span>  m_server_id;
@@ -97,7 +97,7 @@
 <a name="l00115"></a>00115 <span class="comment">/*  ----------------------------------------------------------------------</span>
 <a name="l00116"></a>00116 <span class="comment">    SetServerId</span>
 <a name="l00117"></a>00117 <span class="comment">    ---------------------------------------------------------------------- */</span>
-<a name="l00118"></a>00118 <span class="keywordtype">void</span>    ObexServerInfo::SetServerId(<a class="code" href="group__OBEX.html#g07d01897a71cf1c5f8b7abe23ff0bc17">ObexServerId</a>    server_id)
+<a name="l00118"></a>00118 <span class="keywordtype">void</span>    ObexServerInfo::SetServerId(<a class="code" href="group__Obex.html#g07d01897a71cf1c5f8b7abe23ff0bc17">ObexServerId</a>    server_id)
 <a name="l00119"></a>00119 {
 <a name="l00120"></a>00120     m_server_id = server_id;
 <a name="l00121"></a>00121 }<span class="comment">// SetServerId</span>

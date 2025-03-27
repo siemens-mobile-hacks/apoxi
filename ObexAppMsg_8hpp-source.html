@@ -43,11 +43,11 @@
 <a name="l00022"></a>00022 <span class="comment">    ====================================================================== */</span>
 <a name="l00024"></a><a class="code" href="classObexAppMsg.html">00024</a> <span class="keyword">class </span><a class="code" href="classObexAppMsg.html">ObexAppMsg</a> : <span class="keyword">public</span> <a class="code" href="classContextMsg.html">ContextMsg</a> {
 <a name="l00025"></a>00025     <span class="keyword">public</span>:
-<a name="l00026"></a>00026         <a class="code" href="classObexAppMsg.html#ae2f3df098102bc28b869e27c42c13b0">ObexAppMsg</a>(<a class="code" href="classExecutionContext.html">ExecutionContext</a>* context, <span class="keyword">const</span> <a class="code" href="group__OBEX.html#g73f1e2d18d8a3b3fc1973e62afed6e8e">ObexAppMsgType</a>&amp; msg_type);
+<a name="l00026"></a>00026         <a class="code" href="classObexAppMsg.html#ae2f3df098102bc28b869e27c42c13b0">ObexAppMsg</a>(<a class="code" href="classExecutionContext.html">ExecutionContext</a>* context, <span class="keyword">const</span> <a class="code" href="group__Obex.html#g73f1e2d18d8a3b3fc1973e62afed6e8e">ObexAppMsgType</a>&amp; msg_type);
 <a name="l00027"></a>00027         <span class="keyword">virtual</span> <a class="code" href="classObexAppMsg.html#db6d778413ef828b961affe0a035307b">~ObexAppMsg</a>();
 <a name="l00028"></a>00028         
 <a name="l00029"></a>00029         <span class="keyword">virtual</span> <span class="keyword">const</span> <a class="code" href="structMsgMetaData.html">MsgMetaData</a>&amp; <a class="code" href="classObexAppMsg.html#afe21a3101b8d4bac4f0d1333cec6093">GetMetaData</a>() <span class="keyword">const</span>;
-<a name="l00030"></a><a class="code" href="classObexAppMsg.html#ab02516250d58c1d31022997c84d83d5">00030</a>         <span class="keyword">const</span> <a class="code" href="group__OBEX.html#g73f1e2d18d8a3b3fc1973e62afed6e8e">ObexAppMsgType</a>&amp; <a class="code" href="classObexAppMsg.html#ab02516250d58c1d31022997c84d83d5">GetMsgType</a>()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> m_msg_type; }
+<a name="l00030"></a><a class="code" href="classObexAppMsg.html#ab02516250d58c1d31022997c84d83d5">00030</a>         <span class="keyword">const</span> <a class="code" href="group__Obex.html#g73f1e2d18d8a3b3fc1973e62afed6e8e">ObexAppMsgType</a>&amp; <a class="code" href="classObexAppMsg.html#ab02516250d58c1d31022997c84d83d5">GetMsgType</a>()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> m_msg_type; }
 <a name="l00031"></a>00031         <span class="keyword">virtual</span> <a class="code" href="classMessage.html">Message</a>* <a class="code" href="classObexAppMsg.html#2e691a80ef4175a249cac5413090381b">Clone</a>() <span class="keyword">const</span>;
 <a name="l00032"></a>00032         
 <a name="l00033"></a>00033         <span class="keyword">enum</span>  {
@@ -56,7 +56,7 @@
 <a name="l00036"></a>00036         
 <a name="l00037"></a>00037     <span class="keyword">private</span>:
 <a name="l00038"></a>00038         <span class="keyword">static</span> <span class="keyword">const</span> <a class="code" href="structMsgMetaData.html">MsgMetaData</a> m_meta_data;
-<a name="l00039"></a>00039         <a class="code" href="group__OBEX.html#g73f1e2d18d8a3b3fc1973e62afed6e8e">ObexAppMsgType</a> m_msg_type;
+<a name="l00039"></a>00039         <a class="code" href="group__Obex.html#g73f1e2d18d8a3b3fc1973e62afed6e8e">ObexAppMsgType</a> m_msg_type;
 <a name="l00040"></a>00040         
 <a name="l00041"></a>00041     };
 <a name="l00042"></a>00042 <span class="preprocessor">#endif // Obex_ObexAppMsg_hpp</span>

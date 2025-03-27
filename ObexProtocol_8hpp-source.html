@@ -44,9 +44,9 @@
 <a name="l00048"></a><a class="code" href="classObexProtocol.html">00048</a> <span class="keyword">class </span><a class="code" href="classObexProtocol.html">ObexProtocol</a> : <span class="keyword">public</span> <a class="code" href="classNonCloneable.html">NonCloneable</a> {
 <a name="l00049"></a>00049 
 <a name="l00050"></a>00050     <span class="keyword">public</span>:
-<a name="l00051"></a><a class="code" href="classObexProtocol.html#d637abd91ec318f37c9b0df411f56902">00051</a>         <span class="keyword">typedef</span> <a class="code" href="group__OBEX.html#g82470f6a9b902947df809854fe935d12">ObexProtocolId</a> <a class="code" href="group__OBEX.html#g82470f6a9b902947df809854fe935d12">TypeId</a>;
+<a name="l00051"></a><a class="code" href="classObexProtocol.html#d637abd91ec318f37c9b0df411f56902">00051</a>         <span class="keyword">typedef</span> <a class="code" href="group__Obex.html#g82470f6a9b902947df809854fe935d12">ObexProtocolId</a> <a class="code" href="group__Obex.html#g82470f6a9b902947df809854fe935d12">TypeId</a>;
 <a name="l00052"></a>00052 
-<a name="l00054"></a>00054         <span class="keyword">inline</span> <a class="code" href="group__OBEX.html#g82470f6a9b902947df809854fe935d12">TypeId</a>       <a class="code" href="group__OBEX.html#g6505405df3ed90752405da32581a2f86">GetTypeId</a>() <span class="keyword">const</span>;
+<a name="l00054"></a>00054         <span class="keyword">inline</span> <a class="code" href="group__Obex.html#g82470f6a9b902947df809854fe935d12">TypeId</a>       <a class="code" href="group__Obex.html#g6505405df3ed90752405da32581a2f86">GetTypeId</a>() <span class="keyword">const</span>;
 <a name="l00055"></a>00055 
 <a name="l00073"></a>00073         <span class="keyword">virtual</span> <a class="code" href="classObexResult.html">ObexResult</a>  <a class="code" href="classObexProtocol.html#f27520cab5365171b3b8c8fce2c3310b">AcquireClientChannel</a>(<a class="code" href="classObexChannel.html">ObexChannel</a> &amp;        result,
 <a name="l00074"></a>00074                                                  <span class="keyword">const</span> <a class="code" href="classSharedPtr.html">ObexAddrPtr</a> &amp;  addr_ptr,
@@ -70,7 +70,7 @@
 <a name="l00154"></a>00154                                   <a class="code" href="classObexOperationId.html">ObexOperationId</a>      oper_id) = 0;
 <a name="l00155"></a>00155 
 <a name="l00156"></a>00156     <span class="keyword">protected</span>:
-<a name="l00162"></a>00162         <a class="code" href="classObexProtocol.html#59d7a022d3c1bc0bf048e9b455d7acb5">ObexProtocol</a>(<a class="code" href="group__OBEX.html#g82470f6a9b902947df809854fe935d12">TypeId</a>  type_id);
+<a name="l00162"></a>00162         <a class="code" href="classObexProtocol.html#59d7a022d3c1bc0bf048e9b455d7acb5">ObexProtocol</a>(<a class="code" href="group__Obex.html#g82470f6a9b902947df809854fe935d12">TypeId</a>  type_id);
 <a name="l00163"></a>00163 
 <a name="l00178"></a>00178         <span class="keywordtype">void</span>    <a class="code" href="classObexProtocol.html#5500b4f4d455345c61cb870f18f39cd9">OnTransportError</a>(<span class="keyword">const</span> <a class="code" href="classObexChannel.html">ObexChannel</a> &amp;    channel,
 <a name="l00179"></a>00179                                  <a class="code" href="classObexOperationId.html">ObexOperationId</a>        oper_id,
@@ -80,14 +80,14 @@
 <a name="l00193"></a>00193                            <a class="code" href="classObexOperationId.html">ObexOperationId</a>      oper_id,
 <a name="l00194"></a>00194                            <a class="code" href="classObexResult.html">ObexResult</a>           result);
 <a name="l00195"></a>00195     <span class="keyword">private</span>:
-<a name="l00196"></a>00196         <span class="keyword">const</span> <a class="code" href="group__OBEX.html#g82470f6a9b902947df809854fe935d12">TypeId</a>  m_type_id;
+<a name="l00196"></a>00196         <span class="keyword">const</span> <a class="code" href="group__Obex.html#g82470f6a9b902947df809854fe935d12">TypeId</a>  m_type_id;
 <a name="l00197"></a>00197 };
 <a name="l00198"></a>00198 
 <a name="l00199"></a>00199 
 <a name="l00200"></a>00200 <span class="comment">/*  ----------------------------------------------------------------------</span>
 <a name="l00201"></a>00201 <span class="comment">    GetTypeId</span>
 <a name="l00202"></a>00202 <span class="comment">    ---------------------------------------------------------------------- */</span>
-<a name="l00203"></a><a class="code" href="group__OBEX.html#g6505405df3ed90752405da32581a2f86">00203</a> <a class="code" href="group__OBEX.html#g82470f6a9b902947df809854fe935d12">ObexProtocol::TypeId</a>  <a class="code" href="group__OBEX.html#g6505405df3ed90752405da32581a2f86">ObexProtocol::GetTypeId</a>()<span class="keyword"></span>
+<a name="l00203"></a><a class="code" href="group__Obex.html#g6505405df3ed90752405da32581a2f86">00203</a> <a class="code" href="group__Obex.html#g82470f6a9b902947df809854fe935d12">ObexProtocol::TypeId</a>  <a class="code" href="group__Obex.html#g6505405df3ed90752405da32581a2f86">ObexProtocol::GetTypeId</a>()<span class="keyword"></span>
 <a name="l00204"></a>00204 <span class="keyword">const</span>
 <a name="l00205"></a>00205 <span class="keyword"></span>{
 <a name="l00206"></a>00206     <span class="keywordflow">return</span> m_type_id;

@@ -23,7 +23,7 @@
   </ul></div>
 <h1>ObexServer Class Reference<br>
 <small>
-[<a class="el" href="group__OBEX.html">OBEX</a>]</small>
+[<a class="el" href="group__Obex.html">OBEX</a>]</small>
 </h1><!-- doxytag: class="ObexServer" --><!-- doxytag: inherits="ObexServerDispatcher" -->Internal base class for OBEX servers within applications.  
 <a href="#_details">More...</a>
 <p>
@@ -72,30 +72,30 @@ Inheritance diagram for ObexServer:<p><center><img src="classObexServer__inherit
 <tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="el" href="classObexResult.html">ObexResult</a>&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classObexServer.html#42f6f3030757397fffa716a2279a4ead">DataProcessed</a> (<a class="el" href="classObexBuffer.html">ObexBuffer</a> &amp;buffer, BOOLEAN proceed=<a class="el" href="Kernel_2Types_8hpp.html#bf218ebc7e2ed90798d1f23a29b7ad09">FALSE</a>)</td></tr>
 
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Transfers ownership of a data buffer back to APOXI OBEX.  <a href="#42f6f3030757397fffa716a2279a4ead"></a><br></td></tr>
-<tr><td class="memItemLeft" nowrap align="right" valign="top">UINT32&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__OBEX.html#gf1a6a87bde0e2d8ed02163bb5a63b110">GetConnectionId</a> () const </td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">UINT32&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Obex.html#gf1a6a87bde0e2d8ed02163bb5a63b110">GetConnectionId</a> () const </td></tr>
 
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Returns the Connection Id of the current connection.  <a href="group__OBEX.html#gf1a6a87bde0e2d8ed02163bb5a63b110"></a><br></td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Returns the Connection Id of the current connection.  <a href="group__Obex.html#gf1a6a87bde0e2d8ed02163bb5a63b110"></a><br></td></tr>
 <tr><td class="memItemLeft" nowrap align="right" valign="top">UINT32&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classObexServer.html#b34a00bd94d741ae5f7c015da45a3daf">GetProgressInBytes</a> () const </td></tr>
 
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Returns the cumulative progress in transferring data.  <a href="#b34a00bd94d741ae5f7c015da45a3daf"></a><br></td></tr>
-<tr><td class="memItemLeft" nowrap align="right" valign="top">const <a class="el" href="classByteBuffer.html">ByteBuffer</a> &amp;&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__OBEX.html#g6f1bceef3247cb491ee40ecadc810377">GetTarget</a> () const </td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">const <a class="el" href="classByteBuffer.html">ByteBuffer</a> &amp;&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Obex.html#g6f1bceef3247cb491ee40ecadc810377">GetTarget</a> () const </td></tr>
 
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Returns the target associated with a particular server instance.  <a href="group__OBEX.html#g6f1bceef3247cb491ee40ecadc810377"></a><br></td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Returns the target associated with a particular server instance.  <a href="group__Obex.html#g6f1bceef3247cb491ee40ecadc810377"></a><br></td></tr>
 <tr><td class="memItemLeft" nowrap align="right" valign="top">virtual void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classObexServer.html#e5125f58efcb53c4e7fead52495940df">Init</a> (<a class="el" href="classExecutionContext.html">ExecutionContext</a> *ctx_ptr)</td></tr>
 
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Initializes a default-constructed object.  <a href="#e5125f58efcb53c4e7fead52495940df"></a><br></td></tr>
 <tr><td class="memItemLeft" nowrap align="right" valign="top">BOOLEAN&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classObexServer.html#a1dcd9382ee2a6b81ff3e72195e4e89c">IsActiveOperation</a> (const <a class="el" href="classObexOperationId.html">ObexOperationId</a> &amp;oper_id) const </td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">BOOLEAN&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classObexServer.html#d5cd493cafbf7182dcb106615f7ac452">IsBoundToServerId</a> (<a class="el" href="group__OBEX.html#g07d01897a71cf1c5f8b7abe23ff0bc17">ObexServerId</a> id) const </td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">BOOLEAN&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classObexServer.html#d5cd493cafbf7182dcb106615f7ac452">IsBoundToServerId</a> (<a class="el" href="group__Obex.html#g07d01897a71cf1c5f8b7abe23ff0bc17">ObexServerId</a> id) const </td></tr>
 
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Internal interface methods not intended for use by application SW.  <a href="#d5cd493cafbf7182dcb106615f7ac452"></a><br></td></tr>
 <tr><td class="memItemLeft" nowrap align="right" valign="top">BOOLEAN&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classObexServer.html#b3a6a9709781fdcb0fda3c427867ad77">IsBoundToTarget</a> () const </td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">BOOLEAN&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classObexServer.html#c767f2169b0630d7fdaf9251d31d9909">IsBoundToTarget</a> (const <a class="el" href="classByteBuffer.html">ByteBuffer</a> &amp;target) const </td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">BOOLEAN&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__OBEX.html#g308a82f51f936d4376c993f9852d6631">IsConnected</a> () const </td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">BOOLEAN&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Obex.html#g308a82f51f936d4376c993f9852d6631">IsConnected</a> () const </td></tr>
 
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Tells whether the server has accepted an OBEX CONNECT.  <a href="group__OBEX.html#g308a82f51f936d4376c993f9852d6631"></a><br></td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Tells whether the server has accepted an OBEX CONNECT.  <a href="group__Obex.html#g308a82f51f936d4376c993f9852d6631"></a><br></td></tr>
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classObexServer.html#a18d73aa648e9f91225d500863f6a31e">ObexServer</a> (<a class="el" href="classExecutionContext.html">ExecutionContext</a> *ctx_ptr)</td></tr>
 
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Constructor. Constructs a usable object instance.  <a href="#a18d73aa648e9f91225d500863f6a31e"></a><br></td></tr>
@@ -111,7 +111,7 @@ Inheritance diagram for ObexServer:<p><center><img src="classObexServer__inherit
 <tr><td colspan="2"><br><h2>Protected Member Functions</h2></td></tr>
 <tr><td class="memItemLeft" nowrap align="right" valign="top">virtual <a class="el" href="classObexResult.html">ObexResult</a>&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classObexServer.html#41210485d4f74ec5c0df90ef8b0228a1">CloseAction</a> ()</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">virtual <a class="el" href="group__OBEX.html#g07d01897a71cf1c5f8b7abe23ff0bc17">ObexServerId</a>&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classObexServer.html#d251e72b4cee1d0506bd012b0c04b5c0">GetDefaultServerId</a> () const </td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">virtual <a class="el" href="group__Obex.html#g07d01897a71cf1c5f8b7abe23ff0bc17">ObexServerId</a>&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classObexServer.html#d251e72b4cee1d0506bd012b0c04b5c0">GetDefaultServerId</a> () const </td></tr>
 
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Returns the server id when no target is specified.  <a href="#d251e72b4cee1d0506bd012b0c04b5c0"></a><br></td></tr>
 <tr><td class="memItemLeft" nowrap align="right" valign="top">virtual BOOLEAN&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classObexServer.html#d8155c194918c111672216058670b787">IsRequestForMe</a> (const <a class="el" href="classObexMsg.html">ObexMsg</a> &amp;msg, <a class="el" href="classObexDispatcher.html">ObexDispatcher</a> *&amp;dispatcher_ptr)</td></tr>
@@ -409,7 +409,7 @@ Must be invoked on any buffer which was delivered within a response after having
     <td class="mdRow">
       <table cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td class="md" nowrap valign="top"><a class="el" href="group__OBEX.html#g07d01897a71cf1c5f8b7abe23ff0bc17">ObexServerId</a> ObexServer::GetDefaultServerId           </td>
+          <td class="md" nowrap valign="top"><a class="el" href="group__Obex.html#g07d01897a71cf1c5f8b7abe23ff0bc17">ObexServerId</a> ObexServer::GetDefaultServerId           </td>
           <td class="md" valign="top">(&nbsp;</td>
           <td class="mdname1" valign="top" nowrap>          </td>
           <td class="md" valign="top">&nbsp;)&nbsp;</td>
@@ -540,7 +540,7 @@ Reimplemented in <a class="el" href="classObexDataServer.html#a1051d34039a6cf50e
         <tr>
           <td class="md" nowrap valign="top">BOOLEAN ObexServer::IsBoundToServerId           </td>
           <td class="md" valign="top">(&nbsp;</td>
-          <td class="md" nowrap valign="top"><a class="el" href="group__OBEX.html#g07d01897a71cf1c5f8b7abe23ff0bc17">ObexServerId</a>&nbsp;</td>
+          <td class="md" nowrap valign="top"><a class="el" href="group__Obex.html#g07d01897a71cf1c5f8b7abe23ff0bc17">ObexServerId</a>&nbsp;</td>
           <td class="mdname1" valign="top" nowrap> <em>id</em>          </td>
           <td class="md" valign="top">&nbsp;)&nbsp;</td>
           <td class="md" nowrap> const<code> [inline]</code></td>

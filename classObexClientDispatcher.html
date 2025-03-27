@@ -23,7 +23,7 @@
   </ul></div>
 <h1>ObexClientDispatcher Class Reference<br>
 <small>
-[<a class="el" href="group__OBEX.html">OBEX</a>]</small>
+[<a class="el" href="group__Obex.html">OBEX</a>]</small>
 </h1><!-- doxytag: class="ObexClientDispatcher" --><!-- doxytag: inherits="ObexEventHandler" -->Internal abstraction of a client OBEX transport connection.  
 <a href="#_details">More...</a>
 <p>
@@ -106,7 +106,7 @@ Inheritance diagram for ObexClientDispatcher:<p><center><img src="classObexClien
 
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight"><a class="el" href="classAction.html">Action</a> method initiating opening of a transport connection.  <a href="#26935e6c1f25d63f0bdf26c3feae86ad"></a><br></td></tr>
 <tr><td colspan="2"><br><h2>Static Protected Member Functions</h2></td></tr>
-<tr><td class="memItemLeft" nowrap align="right" valign="top">static BOOLEAN&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__OBEX.html#gc8ea14fa62fe67a4ed0a336aa59b959d">IsValidPortPtr</a> (const <a class="el" href="classNiSharedPtr.html">ClientPortPtr</a> &amp;port_ptr)</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">static BOOLEAN&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Obex.html#gc8ea14fa62fe67a4ed0a336aa59b959d">IsValidPortPtr</a> (const <a class="el" href="classNiSharedPtr.html">ClientPortPtr</a> &amp;port_ptr)</td></tr>
 
 <tr><td colspan="2"><br><h2>Friends</h2></td></tr>
 <tr><td class="memItemLeft" nowrap align="right" valign="top">class&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classObexClientDispatcher.html#fb556ad57804c237e296d8e987923846">ObexClientPort</a></td></tr>
@@ -329,7 +329,7 @@ Implementations should follow the example below: <div class="fragment"><pre clas
                 <a class="code" href="classObexResult.html">ObexResult</a>  result = Base::CloseAction();
 
                 <span class="comment">// Don't proceed when inherited method failed !</span>
-                <span class="keywordflow">if</span> ( result.<a class="code" href="group__OBEX.html#g40e2b7a8ebfc05b3cbd19543f2b951d6">IsOk</a>() ) {
+                <span class="keywordflow">if</span> ( result.<a class="code" href="group__Obex.html#g40e2b7a8ebfc05b3cbd19543f2b951d6">IsOk</a>() ) {
                     <span class="comment">// Your new code goes here ...</span>
                 }
                 <span class="keywordflow">return</span> result;
@@ -700,7 +700,7 @@ Opens a transport connection to a remote server.
 When the procedure was properly initiated, the <a class="el" href="classObexResult.html">ObexResult</a> value returned indicates success, otherwise it carries an error code. In the former case, the notification method <code><a class="el" href="classObexClientDispatcher.html#9487ad797011b3bde4d199c82a6df72b">OnOpen()</a></code> is called on completion of the asynchronous procedure.<p>
 <dl compact><dt><b>Parameters:</b></dt><dd>
   <table border="0" cellspacing="2" cellpadding="0">
-    <tr><td valign="top"></td><td valign="top"><em>obex_addr_url</em>&nbsp;</td><td>OBEX address in URL format. Please see <a class="el" href="group__OBEX.html#ObexUrls">OBEX URL's</a> for further explanation. </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>obex_addr_url</em>&nbsp;</td><td>OBEX address in URL format. Please see <a class="el" href="group__Obex.html#ObexUrls">OBEX URL's</a> for further explanation. </td></tr>
   </table>
 </dl>
     </td>
@@ -746,7 +746,7 @@ Derived classes may re-implement this method to perform additional tasks when a 
                 <a class="code" href="classObexResult.html">ObexResult</a>  result = Base::OpenAction();
 
                 <span class="comment">// Don't proceed when inherited method failed !</span>
-                <span class="keywordflow">if</span> ( result.<a class="code" href="group__OBEX.html#g40e2b7a8ebfc05b3cbd19543f2b951d6">IsOk</a>() ) {
+                <span class="keywordflow">if</span> ( result.<a class="code" href="group__Obex.html#g40e2b7a8ebfc05b3cbd19543f2b951d6">IsOk</a>() ) {
                     <span class="comment">// Your new code goes here ...</span>
                 }
                 <span class="keywordflow">return</span> result;

@@ -66,7 +66,7 @@
 <a name="l00092"></a>00092 
 <a name="l00097"></a>00097         <a class="code" href="classNiSharedPtr.html">ClientPortPtr</a>           <a class="code" href="classObexClientDispatcher.html#014aec9b0a27ee46fccd932efcc65787">GetActivePortPtr</a>() <span class="keyword">const</span>;
 <a name="l00098"></a>00098 
-<a name="l00099"></a>00099         <span class="keyword">static</span>  <span class="keyword">inline</span> <a class="code" href="NucInc_8hpp.html#50168fdbaa52d4a0b1c287d476050f12">BOOLEAN</a>  <a class="code" href="group__OBEX.html#gc8ea14fa62fe67a4ed0a336aa59b959d">IsValidPortPtr</a>(<span class="keyword">const</span> <a class="code" href="classNiSharedPtr.html">ClientPortPtr</a> &amp;    port_ptr);
+<a name="l00099"></a>00099         <span class="keyword">static</span>  <span class="keyword">inline</span> <a class="code" href="NucInc_8hpp.html#50168fdbaa52d4a0b1c287d476050f12">BOOLEAN</a>  <a class="code" href="group__Obex.html#gc8ea14fa62fe67a4ed0a336aa59b959d">IsValidPortPtr</a>(<span class="keyword">const</span> <a class="code" href="classNiSharedPtr.html">ClientPortPtr</a> &amp;    port_ptr);
 <a name="l00100"></a>00100 
 <a name="l00105"></a>00105         <a class="code" href="classObexClientDispatcher.html#a86378e74ecdadac48bc13ce68c3fb14">ObexClientDispatcher</a>();
 <a name="l00106"></a>00106 
@@ -98,7 +98,7 @@
 <a name="l00209"></a>00209             IsOpenNotified,     
 <a name="l00210"></a>00210             IsCloseNotified,    
 <a name="l00211"></a>00211             IsEventPending,     
-<a name="l00212"></a>00212             <a class="code" href="group__OBEX.html#g4bdd1f62515ede65469074a6ea8cf3f8">IsConnected</a>,        
+<a name="l00212"></a>00212             <a class="code" href="group__Obex.html#g4bdd1f62515ede65469074a6ea8cf3f8">IsConnected</a>,        
 <a name="l00213"></a>00213         };
 <a name="l00214"></a>00214 
 <a name="l00215"></a>00215         <a class="code" href="classBitField.html">BitField8</a>               m_client_state;
@@ -109,15 +109,15 @@
 <a name="l00220"></a>00220         <a class="code" href="classObexClientDispatcher.html#c121c8f541de261e6fb4604df3e94e6f">ClientPortPtr</a>           m_active_port_ptr;
 <a name="l00221"></a>00221 
 <a name="l00222"></a>00222         <span class="keywordtype">void</span>                    OnPortOpened(<a class="code" href="classObexResult.html">ObexResult</a>     result);
-<a name="l00223"></a>00223         <span class="keywordtype">void</span>                    OnPortClosed(<a class="code" href="group__OBEX.html#g600b47b47493a092cb9f108f25077d5e">ObexTransportId</a>    <span class="keywordtype">id</span>);
-<a name="l00224"></a>00224         <a class="code" href="classObexResult.html">ObexResult</a>              OnTransportSelected(<a class="code" href="group__OBEX.html#g600b47b47493a092cb9f108f25077d5e">ObexTransportId</a> <span class="keywordtype">id</span>);
+<a name="l00223"></a>00223         <span class="keywordtype">void</span>                    OnPortClosed(<a class="code" href="group__Obex.html#g600b47b47493a092cb9f108f25077d5e">ObexTransportId</a>    <span class="keywordtype">id</span>);
+<a name="l00224"></a>00224         <a class="code" href="classObexResult.html">ObexResult</a>              OnTransportSelected(<a class="code" href="group__Obex.html#g600b47b47493a092cb9f108f25077d5e">ObexTransportId</a> <span class="keywordtype">id</span>);
 <a name="l00225"></a>00225         <span class="keywordtype">void</span>                    <a class="code" href="LcsTypes_8hpp.html#4e7adf88168356b5dace6c239a8af674180b2f2f3142d39912f52b354dbc81e2">Notify</a>();
 <a name="l00226"></a>00226         <span class="keywordtype">void</span>                    NotifyOpened();
 <a name="l00227"></a>00227         <span class="keywordtype">void</span>                    NotifyClosed();
 <a name="l00228"></a>00228         <span class="keywordtype">void</span>                    CleanUp();
 <a name="l00229"></a>00229 };
 <a name="l00230"></a>00230 
-<a name="l00231"></a><a class="code" href="group__OBEX.html#gc8ea14fa62fe67a4ed0a336aa59b959d">00231</a> <a class="code" href="NucInc_8hpp.html#50168fdbaa52d4a0b1c287d476050f12">BOOLEAN</a>     <a class="code" href="group__OBEX.html#gc8ea14fa62fe67a4ed0a336aa59b959d">ObexClientDispatcher::IsValidPortPtr</a>(<span class="keyword">const</span> <a class="code" href="classNiSharedPtr.html">ClientPortPtr</a> &amp;   port_ptr)
+<a name="l00231"></a><a class="code" href="group__Obex.html#gc8ea14fa62fe67a4ed0a336aa59b959d">00231</a> <a class="code" href="NucInc_8hpp.html#50168fdbaa52d4a0b1c287d476050f12">BOOLEAN</a>     <a class="code" href="group__Obex.html#gc8ea14fa62fe67a4ed0a336aa59b959d">ObexClientDispatcher::IsValidPortPtr</a>(<span class="keyword">const</span> <a class="code" href="classNiSharedPtr.html">ClientPortPtr</a> &amp;   port_ptr)
 <a name="l00232"></a>00232 {
 <a name="l00233"></a>00233     <span class="keywordflow">return</span>  ( port_ptr.<a class="code" href="classNiSharedPtr.html#d94c3d349a5a503c3d394842e1765f50">Get</a>() != 0 );
 <a name="l00234"></a>00234 }

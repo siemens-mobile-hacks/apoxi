@@ -23,7 +23,7 @@
   </ul></div>
 <h1>ObexAbstractTransport Class Reference<br>
 <small>
-[<a class="el" href="group__OBEX.html">OBEX</a>]</small>
+[<a class="el" href="group__Obex.html">OBEX</a>]</small>
 </h1><!-- doxytag: class="ObexAbstractTransport" --><!-- doxytag: inherits="Observer" -->Internal abstract interface base class for OBEX transports.  
 <a href="#_details">More...</a>
 <p>
@@ -54,37 +54,37 @@ Inheritance diagram for ObexAbstractTransport:<p><center><img src="classObexAbst
 <tr><td class="memItemLeft" nowrap align="right" valign="top">enum &nbsp;</td><td class="memItemRight" valign="bottom">{ <a class="el" href="classObexAbstractTransport.html#5b49f400a4501afbdce4342ba7101904cefb7e3870098c05ceb547b4784ac25e">NoObjectId</a> =  APOXI_OBEX_MAX_NO_TRANSPORTS
  }</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">typedef <a class="el" href="group__OBEX.html#g600b47b47493a092cb9f108f25077d5e">ObexTransportId</a>&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classObexAbstractTransport.html#a10ee38eb7c8067ce1969d61b962224e">ObjectId</a></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">typedef <a class="el" href="group__Obex.html#g600b47b47493a092cb9f108f25077d5e">ObexTransportId</a>&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classObexAbstractTransport.html#a10ee38eb7c8067ce1969d61b962224e">ObjectId</a></td></tr>
 
 <tr><td colspan="2"><br><h2>Public Member Functions</h2></td></tr>
 <tr><td class="memItemLeft" nowrap align="right" valign="top">virtual void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classObexAbstractTransport.html#a1579cd914114732c0daa6f479e9aaf5">AbortResolveClientAddr</a> (const <a class="el" href="classObexOperationId.html">ObexOperationId</a> &amp;job_id)</td></tr>
 
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Aborts a running client address resolution procedure.  <a href="#a1579cd914114732c0daa6f479e9aaf5"></a><br></td></tr>
-<tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="el" href="group__OBEX.html#ge965b8b6ebcd235d3723fa7aebe1de09">ObexAddrTypeId</a>&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__OBEX.html#gc9c5da0f9ad69437084c2e3db36baa3c">GetClientAddrTypeId</a> () const </td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="el" href="group__Obex.html#ge965b8b6ebcd235d3723fa7aebe1de09">ObexAddrTypeId</a>&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Obex.html#gc9c5da0f9ad69437084c2e3db36baa3c">GetClientAddrTypeId</a> () const </td></tr>
 
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Returns the type identifier of a client address.  <a href="group__OBEX.html#gc9c5da0f9ad69437084c2e3db36baa3c"></a><br></td></tr>
-<tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="el" href="classAbstractTransport.html">AbstractTransport</a> &amp;&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__OBEX.html#g20715c0889d791c7e8da6dede054f6ea">GetDeviceAbstraction</a> () const </td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Returns the type identifier of a client address.  <a href="group__Obex.html#gc9c5da0f9ad69437084c2e3db36baa3c"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="el" href="classAbstractTransport.html">AbstractTransport</a> &amp;&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Obex.html#g20715c0889d791c7e8da6dede054f6ea">GetDeviceAbstraction</a> () const </td></tr>
 
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Returns the associated transport device abstraction.  <a href="group__OBEX.html#g20715c0889d791c7e8da6dede054f6ea"></a><br></td></tr>
-<tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="el" href="classObexAbstractTransport.html#a10ee38eb7c8067ce1969d61b962224e">ObjectId</a>&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__OBEX.html#gb7c079e1eeeb49863711fcda370b80ba">GetObjectId</a> () const </td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Returns the associated transport device abstraction.  <a href="group__Obex.html#g20715c0889d791c7e8da6dede054f6ea"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="el" href="classObexAbstractTransport.html#a10ee38eb7c8067ce1969d61b962224e">ObjectId</a>&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Obex.html#gb7c079e1eeeb49863711fcda370b80ba">GetObjectId</a> () const </td></tr>
 
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Return the unique object id of the transport.  <a href="group__OBEX.html#gb7c079e1eeeb49863711fcda370b80ba"></a><br></td></tr>
-<tr><td class="memItemLeft" nowrap align="right" valign="top">virtual <a class="el" href="classObexProtocol.html">ObexProtocol</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classObexAbstractTransport.html#52d7ceb8181954cf29bf76a24c2807dd">GetProtocol</a> (<a class="el" href="group__OBEX.html#g82470f6a9b902947df809854fe935d12">ObexProtocolId</a> level)=0</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Return the unique object id of the transport.  <a href="group__Obex.html#gb7c079e1eeeb49863711fcda370b80ba"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">virtual <a class="el" href="classObexProtocol.html">ObexProtocol</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classObexAbstractTransport.html#52d7ceb8181954cf29bf76a24c2807dd">GetProtocol</a> (<a class="el" href="group__Obex.html#g82470f6a9b902947df809854fe935d12">ObexProtocolId</a> level)=0</td></tr>
 
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Provides access to the protocol layer object of the specified level.  <a href="#52d7ceb8181954cf29bf76a24c2807dd"></a><br></td></tr>
-<tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="el" href="group__OBEX.html#ge965b8b6ebcd235d3723fa7aebe1de09">ObexAddrTypeId</a>&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__OBEX.html#gc4dc8b6c1c62cb3bd22e5e2a068a508d">GetServerAddrTypeId</a> () const </td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="el" href="group__Obex.html#ge965b8b6ebcd235d3723fa7aebe1de09">ObexAddrTypeId</a>&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Obex.html#gc4dc8b6c1c62cb3bd22e5e2a068a508d">GetServerAddrTypeId</a> () const </td></tr>
 
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Returns the type identifier of a server address.  <a href="group__OBEX.html#gc4dc8b6c1c62cb3bd22e5e2a068a508d"></a><br></td></tr>
-<tr><td class="memItemLeft" nowrap align="right" valign="top">const CHAR *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__OBEX.html#ge73ee1fc7e7ad7764391b070f6612a04">GetUrlScheme</a> () const </td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Returns the type identifier of a server address.  <a href="group__Obex.html#gc4dc8b6c1c62cb3bd22e5e2a068a508d"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">const CHAR *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Obex.html#ge73ee1fc7e7ad7764391b070f6612a04">GetUrlScheme</a> () const </td></tr>
 
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Returns the URL scheme (name that preceedes ://).  <a href="group__OBEX.html#ge73ee1fc7e7ad7764391b070f6612a04"></a><br></td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Returns the URL scheme (name that preceedes ://).  <a href="group__Obex.html#ge73ee1fc7e7ad7764391b070f6612a04"></a><br></td></tr>
 <tr><td class="memItemLeft" nowrap align="right" valign="top">BOOLEAN&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classObexAbstractTransport.html#3bcd1b802f07e9785488d9cddb9d6d0b">IsMatchedByUrl</a> (const <a class="el" href="classString.html">String</a> &amp;obex_url) const </td></tr>
 
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Tells if the passed URL scheme matches the transport.  <a href="#3bcd1b802f07e9785488d9cddb9d6d0b"></a><br></td></tr>
-<tr><td class="memItemLeft" nowrap align="right" valign="top">virtual void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classObexAbstractTransport.html#80cb1bf257f9f690efc048a5c6c82ad2">ResolveClientAddr</a> (const <a class="el" href="classString.html">String</a> &amp;remote_url, <a class="el" href="group__OBEX.html#g82470f6a9b902947df809854fe935d12">ObexProtocolId</a> prot_id, <a class="el" href="classObexOperationId.html">ObexOperationId</a> job_id)=0</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">virtual void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classObexAbstractTransport.html#80cb1bf257f9f690efc048a5c6c82ad2">ResolveClientAddr</a> (const <a class="el" href="classString.html">String</a> &amp;remote_url, <a class="el" href="group__Obex.html#g82470f6a9b902947df809854fe935d12">ObexProtocolId</a> prot_id, <a class="el" href="classObexOperationId.html">ObexOperationId</a> job_id)=0</td></tr>
 
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Resolves an OBEX client address URL.  <a href="#80cb1bf257f9f690efc048a5c6c82ad2"></a><br></td></tr>
-<tr><td class="memItemLeft" nowrap align="right" valign="top">virtual void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classObexAbstractTransport.html#22db51d856d4c97fae5083ae530caf94">ResolveServerAddr</a> (const <a class="el" href="classString.html">String</a> &amp;local_url, <a class="el" href="group__OBEX.html#g82470f6a9b902947df809854fe935d12">ObexProtocolId</a> prot_id, BOOLEAN sdb_autocreate, <a class="el" href="classObexOperationId.html">ObexOperationId</a> job_id)=0</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">virtual void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classObexAbstractTransport.html#22db51d856d4c97fae5083ae530caf94">ResolveServerAddr</a> (const <a class="el" href="classString.html">String</a> &amp;local_url, <a class="el" href="group__Obex.html#g82470f6a9b902947df809854fe935d12">ObexProtocolId</a> prot_id, BOOLEAN sdb_autocreate, <a class="el" href="classObexOperationId.html">ObexOperationId</a> job_id)=0</td></tr>
 
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Resolves an OBEX server address URL.  <a href="#22db51d856d4c97fae5083ae530caf94"></a><br></td></tr>
 <tr><td colspan="2"><br><h2>Protected Member Functions</h2></td></tr>
@@ -129,7 +129,7 @@ This class mainly serves the following purposes:<p>
     <td class="mdRow">
       <table cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td class="md" nowrap valign="top">typedef <a class="el" href="group__OBEX.html#g600b47b47493a092cb9f108f25077d5e">ObexTransportId</a> <a class="el" href="classObexAbstractTransport.html#a10ee38eb7c8067ce1969d61b962224e">ObexAbstractTransport::ObjectId</a>          </td>
+          <td class="md" nowrap valign="top">typedef <a class="el" href="group__Obex.html#g600b47b47493a092cb9f108f25077d5e">ObexTransportId</a> <a class="el" href="classObexAbstractTransport.html#a10ee38eb7c8067ce1969d61b962224e">ObexAbstractTransport::ObjectId</a>          </td>
         </tr>
       </table>
     </td>
@@ -284,7 +284,7 @@ Reimplemented in <a class="el" href="classIrdaObexTransport.html#af4829319f62482
         <tr>
           <td class="md" nowrap valign="top">virtual <a class="el" href="classObexProtocol.html">ObexProtocol</a>* ObexAbstractTransport::GetProtocol           </td>
           <td class="md" valign="top">(&nbsp;</td>
-          <td class="md" nowrap valign="top"><a class="el" href="group__OBEX.html#g82470f6a9b902947df809854fe935d12">ObexProtocolId</a>&nbsp;</td>
+          <td class="md" nowrap valign="top"><a class="el" href="group__Obex.html#g82470f6a9b902947df809854fe935d12">ObexProtocolId</a>&nbsp;</td>
           <td class="mdname1" valign="top" nowrap> <em>level</em>          </td>
           <td class="md" valign="top">&nbsp;)&nbsp;</td>
           <td class="md" nowrap><code> [pure virtual]</code></td>
@@ -466,7 +466,7 @@ Should be called by every transport implementation at startup time, but only aft
         <tr>
           <td class="md" nowrap align="right"></td>
           <td class="md"></td>
-          <td class="md" nowrap><a class="el" href="group__OBEX.html#g82470f6a9b902947df809854fe935d12">ObexProtocolId</a>&nbsp;</td>
+          <td class="md" nowrap><a class="el" href="group__Obex.html#g82470f6a9b902947df809854fe935d12">ObexProtocolId</a>&nbsp;</td>
           <td class="mdname" nowrap> <em>prot_id</em>, </td>
         </tr>
         <tr>
@@ -521,7 +521,7 @@ Implemented in <a class="el" href="classUsbObexTransport.html#94472347d9f23c67b7
         <tr>
           <td class="md" nowrap align="right"></td>
           <td class="md"></td>
-          <td class="md" nowrap><a class="el" href="group__OBEX.html#g82470f6a9b902947df809854fe935d12">ObexProtocolId</a>&nbsp;</td>
+          <td class="md" nowrap><a class="el" href="group__Obex.html#g82470f6a9b902947df809854fe935d12">ObexProtocolId</a>&nbsp;</td>
           <td class="mdname" nowrap> <em>prot_id</em>, </td>
         </tr>
         <tr>
@@ -615,7 +615,7 @@ Return an OBEX address to the requester asynchronously.
   <table border="0" cellspacing="2" cellpadding="0">
     <tr><td valign="top"></td><td valign="top"><em>addr_ptr</em>&nbsp;</td><td>ObexAddrPtr which holds the <a class="el" href="classObexAddress.html">ObexAddress</a> instance to be delivered.</td></tr>
     <tr><td valign="top"></td><td valign="top"><em>oper_id</em>&nbsp;</td><td>Associated Operation Id which was passed to <code><a class="el" href="classObexAbstractTransport.html#80cb1bf257f9f690efc048a5c6c82ad2">ResolveClientAddr()</a></code> or <code><a class="el" href="classObexAbstractTransport.html#22db51d856d4c97fae5083ae530caf94">ResolveServerAddr()</a></code> </td></tr>
-    <tr><td valign="top"></td><td valign="top"><em>result</em>&nbsp;</td><td><a class="el" href="group__OBEX.html#g9902a9ddb2bb629a80c982372fd883bb">ObexResult::Ok()</a> should be passed when URL parsing has produced a valid address instance. Otherwise, addr_ptr should be left empty (pass <a class="el" href="group__OBEX.html#g72ea246684ef8b797c1fb09c8fa0fa9a">ObexAddrPtr()</a>) and the result should indicate an appropriate error cause. </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>result</em>&nbsp;</td><td><a class="el" href="group__Obex.html#g9902a9ddb2bb629a80c982372fd883bb">ObexResult::Ok()</a> should be passed when URL parsing has produced a valid address instance. Otherwise, addr_ptr should be left empty (pass <a class="el" href="group__Obex.html#g72ea246684ef8b797c1fb09c8fa0fa9a">ObexAddrPtr()</a>) and the result should indicate an appropriate error cause. </td></tr>
   </table>
 </dl>
     </td>

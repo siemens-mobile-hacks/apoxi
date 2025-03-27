@@ -55,23 +55,23 @@
 <a name="l00100"></a>00100             <span class="keyword">virtual</span> <span class="keywordtype">void</span>    <a class="code" href="classObexOppDataSinkPushServer.html#931bd4858b9f75b37c0f1e15ac9a662b">Init</a>(<a class="code" href="classExecutionContext.html">ExecutionContext</a> *     ctx_ptr,
 <a name="l00101"></a>00101                                  <a class="code" href="group__Auxiliary.html#g731dfb8199ef3e1157ec61362b0211ea">MimeType</a>               mime_type);
 <a name="l00102"></a>00102 
-<a name="l00120"></a>00120         <span class="keyword">inline</span>  <a class="code" href="classObexResult.html">ObexResult</a>  <a class="code" href="group__OBEX.html#gd9e9c6b7ed72c03e530291e001eed981">BindToMimeType</a>(<a class="code" href="group__Auxiliary.html#g731dfb8199ef3e1157ec61362b0211ea">MimeType</a>     mime_type);
+<a name="l00120"></a>00120         <span class="keyword">inline</span>  <a class="code" href="classObexResult.html">ObexResult</a>  <a class="code" href="group__Obex.html#gd9e9c6b7ed72c03e530291e001eed981">BindToMimeType</a>(<a class="code" href="group__Auxiliary.html#g731dfb8199ef3e1157ec61362b0211ea">MimeType</a>     mime_type);
 <a name="l00121"></a>00121 
-<a name="l00134"></a>00134         <span class="keyword">inline</span>  <a class="code" href="classObexResult.html">ObexResult</a>  <a class="code" href="group__OBEX.html#gd31a92fee21dd83331cce976648cf6ec">UnbindMimeType</a>(<a class="code" href="group__Auxiliary.html#g731dfb8199ef3e1157ec61362b0211ea">MimeType</a>     mime_type);
+<a name="l00134"></a>00134         <span class="keyword">inline</span>  <a class="code" href="classObexResult.html">ObexResult</a>  <a class="code" href="group__Obex.html#gd31a92fee21dd83331cce976648cf6ec">UnbindMimeType</a>(<a class="code" href="group__Auxiliary.html#g731dfb8199ef3e1157ec61362b0211ea">MimeType</a>     mime_type);
 <a name="l00135"></a>00135 
-<a name="l00140"></a>00140         <span class="keyword">inline</span>  <a class="code" href="classObexResult.html">ObexResult</a>  <a class="code" href="group__OBEX.html#gec5a68f58dc1974d52a438fff44c1e8c">Open</a>();
+<a name="l00140"></a>00140         <span class="keyword">inline</span>  <a class="code" href="classObexResult.html">ObexResult</a>  <a class="code" href="group__Obex.html#gec5a68f58dc1974d52a438fff44c1e8c">Open</a>();
 <a name="l00141"></a>00141 
-<a name="l00148"></a>00148         <span class="keyword">inline</span>  <a class="code" href="classObexResult.html">ObexResult</a>  <a class="code" href="group__OBEX.html#g9111e19dc3fe2760963bb2bde67c29ad">Close</a>();
+<a name="l00148"></a>00148         <span class="keyword">inline</span>  <a class="code" href="classObexResult.html">ObexResult</a>  <a class="code" href="group__Obex.html#g9111e19dc3fe2760963bb2bde67c29ad">Close</a>();
 <a name="l00149"></a>00149 
-<a name="l00161"></a>00161         <span class="keyword">inline</span>  <a class="code" href="classObexResult.html">ObexResult</a>  <a class="code" href="group__OBEX.html#ge1bbec0e4c268a962efd1dab8c2059a5">Accept</a>(<a class="code" href="classDataSink.html">DataSink</a> *   obj_sink_ptr,
+<a name="l00161"></a>00161         <span class="keyword">inline</span>  <a class="code" href="classObexResult.html">ObexResult</a>  <a class="code" href="group__Obex.html#ge1bbec0e4c268a962efd1dab8c2059a5">Accept</a>(<a class="code" href="classDataSink.html">DataSink</a> *   obj_sink_ptr,
 <a name="l00162"></a>00162                                    <a class="code" href="NucInc_8hpp.html#69afa2e50b905f4eab1f2df8a3fd9f23">UINT32</a>       max_obj_size = 0xFFFFFFFFul);
 <a name="l00163"></a>00163 
-<a name="l00173"></a>00173         <span class="keyword">inline</span>  <a class="code" href="classObexResult.html">ObexResult</a>  <a class="code" href="group__OBEX.html#ga4aec90e1d93de564571fee9a2f3c3ee">Cancel</a>(<a class="code" href="classObexObject.html#106adb48f1cbc9d4b082f3b499c23ba5">ObexObject::ResponseCode</a>     resp_code,
+<a name="l00173"></a>00173         <span class="keyword">inline</span>  <a class="code" href="classObexResult.html">ObexResult</a>  <a class="code" href="group__Obex.html#ga4aec90e1d93de564571fee9a2f3c3ee">Cancel</a>(<a class="code" href="classObexObject.html#106adb48f1cbc9d4b082f3b499c23ba5">ObexObject::ResponseCode</a>     resp_code,
 <a name="l00174"></a>00174                                    <span class="keyword">const</span> <a class="code" href="classWString.html">WString</a> &amp;              resp_desc = L<span class="stringliteral">""</span>);
 <a name="l00175"></a>00175 
-<a name="l00180"></a>00180         <span class="keyword">inline</span>  <a class="code" href="classObexResult.html">ObexResult</a>  <a class="code" href="group__OBEX.html#g142e2ef42e8c1969ad841906571a2afd">Confirm</a>();
+<a name="l00180"></a>00180         <span class="keyword">inline</span>  <a class="code" href="classObexResult.html">ObexResult</a>  <a class="code" href="group__Obex.html#g142e2ef42e8c1969ad841906571a2afd">Confirm</a>();
 <a name="l00181"></a>00181 
-<a name="l00189"></a>00189         <span class="keyword">inline</span>  <a class="code" href="NucInc_8hpp.html#69afa2e50b905f4eab1f2df8a3fd9f23">UINT32</a>      <a class="code" href="group__OBEX.html#g64997482d57fc8a41752096b415e2686">GetProgressInBytes</a>() <span class="keyword">const</span>;
+<a name="l00189"></a>00189         <span class="keyword">inline</span>  <a class="code" href="NucInc_8hpp.html#69afa2e50b905f4eab1f2df8a3fd9f23">UINT32</a>      <a class="code" href="group__Obex.html#g64997482d57fc8a41752096b415e2686">GetProgressInBytes</a>() <span class="keyword">const</span>;
 <a name="l00190"></a>00190 
 <a name="l00191"></a>00191 <span class="comment">//  protected:</span>
 <a name="l00210"></a>00210 <span class="comment"></span>        <span class="keyword">virtual</span> <span class="keywordtype">void</span>    <a class="code" href="classObexOppDataSinkPushServer.html#6ccf3893b81f91c29ee52b29f943b749">OnPushIncoming</a>(<span class="keyword">const</span> <a class="code" href="classWString.html">WString</a> &amp;  obj_name,
@@ -90,7 +90,7 @@
 <a name="l00248"></a>00248             <span class="keyword">public</span>:
 <a name="l00249"></a>00249                 OppImpl(<a class="code" href="classObexOppDataSinkPushServer.html">ObexOppDataSinkPushServer</a> &amp;     frontend);
 <a name="l00250"></a>00250 
-<a name="l00251"></a>00251                 <a class="code" href="classObexResult.html">ObexResult</a>      <a class="code" href="group__OBEX.html#ge1bbec0e4c268a962efd1dab8c2059a5">Accept</a>(<a class="code" href="classDataSink.html">DataSink</a> *   obj_sink_ptr,
+<a name="l00251"></a>00251                 <a class="code" href="classObexResult.html">ObexResult</a>      <a class="code" href="group__Obex.html#ge1bbec0e4c268a962efd1dab8c2059a5">Accept</a>(<a class="code" href="classDataSink.html">DataSink</a> *   obj_sink_ptr,
 <a name="l00252"></a>00252                                        <a class="code" href="NucInc_8hpp.html#69afa2e50b905f4eab1f2df8a3fd9f23">UINT32</a>       max_obj_size = 0xFFFFFFFFul);
 <a name="l00253"></a>00253 
 <a name="l00254"></a>00254                 <a class="code" href="classObexResult.html">ObexResult</a>      CloseOppServer();
@@ -122,7 +122,7 @@
 <a name="l00280"></a>00280 <span class="comment">/*  ----------------------------------------------------------------------</span>
 <a name="l00281"></a>00281 <span class="comment">    BindToMimeType</span>
 <a name="l00282"></a>00282 <span class="comment">    ---------------------------------------------------------------------- */</span>
-<a name="l00283"></a><a class="code" href="group__OBEX.html#gd9e9c6b7ed72c03e530291e001eed981">00283</a> <a class="code" href="classObexResult.html">ObexResult</a>  <a class="code" href="group__OBEX.html#gd9e9c6b7ed72c03e530291e001eed981">ObexOppDataSinkPushServer::BindToMimeType</a>(<a class="code" href="group__Auxiliary.html#g731dfb8199ef3e1157ec61362b0211ea">MimeType</a>  mime_type)
+<a name="l00283"></a><a class="code" href="group__Obex.html#gd9e9c6b7ed72c03e530291e001eed981">00283</a> <a class="code" href="classObexResult.html">ObexResult</a>  <a class="code" href="group__Obex.html#gd9e9c6b7ed72c03e530291e001eed981">ObexOppDataSinkPushServer::BindToMimeType</a>(<a class="code" href="group__Auxiliary.html#g731dfb8199ef3e1157ec61362b0211ea">MimeType</a>  mime_type)
 <a name="l00284"></a>00284 {
 <a name="l00285"></a>00285     <span class="keywordflow">return</span>  m_impl.BindToMimeType(mime_type);
 <a name="l00286"></a>00286 }<span class="comment">// BindToMimeType</span>
@@ -130,7 +130,7 @@
 <a name="l00288"></a>00288 <span class="comment">/*  ----------------------------------------------------------------------</span>
 <a name="l00289"></a>00289 <span class="comment">    UnbindMimeType</span>
 <a name="l00290"></a>00290 <span class="comment">    ---------------------------------------------------------------------- */</span>
-<a name="l00291"></a><a class="code" href="group__OBEX.html#gd31a92fee21dd83331cce976648cf6ec">00291</a> <a class="code" href="classObexResult.html">ObexResult</a>  <a class="code" href="group__OBEX.html#gd31a92fee21dd83331cce976648cf6ec">ObexOppDataSinkPushServer::UnbindMimeType</a>(<a class="code" href="group__Auxiliary.html#g731dfb8199ef3e1157ec61362b0211ea">MimeType</a>  mime_type)
+<a name="l00291"></a><a class="code" href="group__Obex.html#gd31a92fee21dd83331cce976648cf6ec">00291</a> <a class="code" href="classObexResult.html">ObexResult</a>  <a class="code" href="group__Obex.html#gd31a92fee21dd83331cce976648cf6ec">ObexOppDataSinkPushServer::UnbindMimeType</a>(<a class="code" href="group__Auxiliary.html#g731dfb8199ef3e1157ec61362b0211ea">MimeType</a>  mime_type)
 <a name="l00292"></a>00292 {
 <a name="l00293"></a>00293     <span class="keywordflow">return</span>  m_impl.UnbindMimeType(mime_type);
 <a name="l00294"></a>00294 }<span class="comment">// UnbindMimeType</span>
@@ -138,7 +138,7 @@
 <a name="l00296"></a>00296 <span class="comment">/*  ----------------------------------------------------------------------</span>
 <a name="l00297"></a>00297 <span class="comment">    Open</span>
 <a name="l00298"></a>00298 <span class="comment">    ---------------------------------------------------------------------- */</span>
-<a name="l00299"></a><a class="code" href="group__OBEX.html#gec5a68f58dc1974d52a438fff44c1e8c">00299</a> <a class="code" href="classObexResult.html">ObexResult</a>  <a class="code" href="group__OBEX.html#gec5a68f58dc1974d52a438fff44c1e8c">ObexOppDataSinkPushServer::Open</a>()
+<a name="l00299"></a><a class="code" href="group__Obex.html#gec5a68f58dc1974d52a438fff44c1e8c">00299</a> <a class="code" href="classObexResult.html">ObexResult</a>  <a class="code" href="group__Obex.html#gec5a68f58dc1974d52a438fff44c1e8c">ObexOppDataSinkPushServer::Open</a>()
 <a name="l00300"></a>00300 {
 <a name="l00301"></a>00301     <span class="keywordflow">return</span>  m_impl.Open();
 <a name="l00302"></a>00302 }<span class="comment">// Open</span>
@@ -146,7 +146,7 @@
 <a name="l00304"></a>00304 <span class="comment">/*  ----------------------------------------------------------------------</span>
 <a name="l00305"></a>00305 <span class="comment">    Close</span>
 <a name="l00306"></a>00306 <span class="comment">    ---------------------------------------------------------------------- */</span>
-<a name="l00307"></a><a class="code" href="group__OBEX.html#g9111e19dc3fe2760963bb2bde67c29ad">00307</a> <a class="code" href="classObexResult.html">ObexResult</a>  <a class="code" href="group__OBEX.html#g9111e19dc3fe2760963bb2bde67c29ad">ObexOppDataSinkPushServer::Close</a>()
+<a name="l00307"></a><a class="code" href="group__Obex.html#g9111e19dc3fe2760963bb2bde67c29ad">00307</a> <a class="code" href="classObexResult.html">ObexResult</a>  <a class="code" href="group__Obex.html#g9111e19dc3fe2760963bb2bde67c29ad">ObexOppDataSinkPushServer::Close</a>()
 <a name="l00308"></a>00308 {
 <a name="l00309"></a>00309     <span class="keywordflow">return</span>  m_impl.CloseOppServer();
 <a name="l00310"></a>00310 }<span class="comment">// Close</span>
@@ -154,7 +154,7 @@
 <a name="l00312"></a>00312 <span class="comment">/*  ----------------------------------------------------------------------</span>
 <a name="l00313"></a>00313 <span class="comment">    Accept</span>
 <a name="l00314"></a>00314 <span class="comment">    ---------------------------------------------------------------------- */</span>
-<a name="l00315"></a><a class="code" href="group__OBEX.html#ge1bbec0e4c268a962efd1dab8c2059a5">00315</a> <a class="code" href="classObexResult.html">ObexResult</a>  <a class="code" href="group__OBEX.html#ge1bbec0e4c268a962efd1dab8c2059a5">ObexOppDataSinkPushServer::Accept</a>(<a class="code" href="classDataSink.html">DataSink</a> *    obj_sink_ptr,
+<a name="l00315"></a><a class="code" href="group__Obex.html#ge1bbec0e4c268a962efd1dab8c2059a5">00315</a> <a class="code" href="classObexResult.html">ObexResult</a>  <a class="code" href="group__Obex.html#ge1bbec0e4c268a962efd1dab8c2059a5">ObexOppDataSinkPushServer::Accept</a>(<a class="code" href="classDataSink.html">DataSink</a> *    obj_sink_ptr,
 <a name="l00316"></a>00316                                               <a class="code" href="NucInc_8hpp.html#69afa2e50b905f4eab1f2df8a3fd9f23">UINT32</a>        max_obj_size)
 <a name="l00317"></a>00317 {
 <a name="l00318"></a>00318     <span class="keywordflow">return</span>  m_impl.Accept(obj_sink_ptr, max_obj_size);
@@ -163,7 +163,7 @@
 <a name="l00321"></a>00321 <span class="comment">/*  ----------------------------------------------------------------------</span>
 <a name="l00322"></a>00322 <span class="comment">    Cancel</span>
 <a name="l00323"></a>00323 <span class="comment">    ---------------------------------------------------------------------- */</span>
-<a name="l00324"></a><a class="code" href="group__OBEX.html#ga4aec90e1d93de564571fee9a2f3c3ee">00324</a> <a class="code" href="classObexResult.html">ObexResult</a>  <a class="code" href="group__OBEX.html#ga4aec90e1d93de564571fee9a2f3c3ee">ObexOppDataSinkPushServer::Cancel</a>(<a class="code" href="classObexObject.html#106adb48f1cbc9d4b082f3b499c23ba5">ObexObject::ResponseCode</a>  resp_code,
+<a name="l00324"></a><a class="code" href="group__Obex.html#ga4aec90e1d93de564571fee9a2f3c3ee">00324</a> <a class="code" href="classObexResult.html">ObexResult</a>  <a class="code" href="group__Obex.html#ga4aec90e1d93de564571fee9a2f3c3ee">ObexOppDataSinkPushServer::Cancel</a>(<a class="code" href="classObexObject.html#106adb48f1cbc9d4b082f3b499c23ba5">ObexObject::ResponseCode</a>  resp_code,
 <a name="l00325"></a>00325                                               <span class="keyword">const</span> <a class="code" href="classWString.html">WString</a> &amp;           resp_desc)
 <a name="l00326"></a>00326 {
 <a name="l00327"></a>00327     <span class="keywordflow">return</span>  m_impl.CancelOperation(resp_code, resp_desc);
@@ -172,7 +172,7 @@
 <a name="l00330"></a>00330 <span class="comment">/*  ----------------------------------------------------------------------</span>
 <a name="l00331"></a>00331 <span class="comment">    Confirm</span>
 <a name="l00332"></a>00332 <span class="comment">    ---------------------------------------------------------------------- */</span>
-<a name="l00333"></a><a class="code" href="group__OBEX.html#g142e2ef42e8c1969ad841906571a2afd">00333</a> <a class="code" href="classObexResult.html">ObexResult</a>  <a class="code" href="group__OBEX.html#g142e2ef42e8c1969ad841906571a2afd">ObexOppDataSinkPushServer::Confirm</a>()
+<a name="l00333"></a><a class="code" href="group__Obex.html#g142e2ef42e8c1969ad841906571a2afd">00333</a> <a class="code" href="classObexResult.html">ObexResult</a>  <a class="code" href="group__Obex.html#g142e2ef42e8c1969ad841906571a2afd">ObexOppDataSinkPushServer::Confirm</a>()
 <a name="l00334"></a>00334 {
 <a name="l00335"></a>00335     <span class="comment">// Buffer still owned by ObexOppServer instance !</span>
 <a name="l00336"></a>00336     <span class="keywordflow">return</span>  m_impl.DataProcessed();
@@ -181,7 +181,7 @@
 <a name="l00339"></a>00339 <span class="comment">/*  ----------------------------------------------------------------------</span>
 <a name="l00340"></a>00340 <span class="comment">    GetProgressInBytes</span>
 <a name="l00341"></a>00341 <span class="comment">    ---------------------------------------------------------------------- */</span>
-<a name="l00342"></a><a class="code" href="group__OBEX.html#g64997482d57fc8a41752096b415e2686">00342</a> <a class="code" href="NucInc_8hpp.html#69afa2e50b905f4eab1f2df8a3fd9f23">UINT32</a>      <a class="code" href="group__OBEX.html#g64997482d57fc8a41752096b415e2686">ObexOppDataSinkPushServer::GetProgressInBytes</a>()<span class="keyword"></span>
+<a name="l00342"></a><a class="code" href="group__Obex.html#g64997482d57fc8a41752096b415e2686">00342</a> <a class="code" href="NucInc_8hpp.html#69afa2e50b905f4eab1f2df8a3fd9f23">UINT32</a>      <a class="code" href="group__Obex.html#g64997482d57fc8a41752096b415e2686">ObexOppDataSinkPushServer::GetProgressInBytes</a>()<span class="keyword"></span>
 <a name="l00343"></a>00343 <span class="keyword">const</span>
 <a name="l00344"></a>00344 <span class="keyword"></span>{
 <a name="l00345"></a>00345     <span class="keywordflow">return</span>  m_impl.GetProgressInBytes();

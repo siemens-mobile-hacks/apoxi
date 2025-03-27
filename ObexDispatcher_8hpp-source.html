@@ -63,7 +63,7 @@
 <a name="l00085"></a><a class="code" href="classObexDispatcher.html">00085</a> <span class="keyword">class </span><a class="code" href="classObexDispatcher.html">ObexDispatcher</a> : <span class="keyword">public</span> <a class="code" href="classMessageMapDispatcher.html">MessageMapDispatcher</a> {
 <a name="l00086"></a>00086 
 <a name="l00087"></a>00087     <span class="keyword">public</span>:
-<a name="l00091"></a>00091         <a class="code" href="classObexDispatcher.html#ed424293f9f767b372b16124471e3ab8">ObexDispatcher</a>(<a class="code" href="group__OBEX.html#g82470f6a9b902947df809854fe935d12">ObexProtocolId</a>   type_id);
+<a name="l00091"></a>00091         <a class="code" href="classObexDispatcher.html#ed424293f9f767b372b16124471e3ab8">ObexDispatcher</a>(<a class="code" href="group__Obex.html#g82470f6a9b902947df809854fe935d12">ObexProtocolId</a>   type_id);
 <a name="l00092"></a>00092 
 <a name="l00094"></a>00094         <span class="keyword">virtual</span> <a class="code" href="classObexDispatcher.html#30b5bd9a2cec93b82c2e722b2306df6c">~ObexDispatcher</a>();
 <a name="l00095"></a>00095 
@@ -76,11 +76,11 @@
 <a name="l00116"></a>00116 
 <a name="l00118"></a>00118         <a class="code" href="NucInc_8hpp.html#50168fdbaa52d4a0b1c287d476050f12">BOOLEAN</a>                     <a class="code" href="classObexDispatcher.html#58d1f5a4df9ef89e8e212b4328a855f2">IsInValidContext</a>() <span class="keyword">const</span>;
 <a name="l00119"></a>00119 
-<a name="l00120"></a>00120         <span class="keyword">inline</span>  <a class="code" href="group__OBEX.html#g82470f6a9b902947df809854fe935d12">ObexProtocolId</a>      <a class="code" href="group__OBEX.html#g802dbaa2900016314c04b9bd6e6d1d4a">GetTypeId</a>() <span class="keyword">const</span>;
+<a name="l00120"></a>00120         <span class="keyword">inline</span>  <a class="code" href="group__Obex.html#g82470f6a9b902947df809854fe935d12">ObexProtocolId</a>      <a class="code" href="group__Obex.html#g802dbaa2900016314c04b9bd6e6d1d4a">GetTypeId</a>() <span class="keyword">const</span>;
 <a name="l00121"></a>00121 
-<a name="l00124"></a>00124         <span class="keyword">inline</span>  <a class="code" href="classApplication.html">Application</a> *       <a class="code" href="group__OBEX.html#gff7509b8ff2fa649f4a7962b6bb28dae">GetAppPtr</a>() <span class="keyword">const</span>;
+<a name="l00124"></a>00124         <span class="keyword">inline</span>  <a class="code" href="classApplication.html">Application</a> *       <a class="code" href="group__Obex.html#gff7509b8ff2fa649f4a7962b6bb28dae">GetAppPtr</a>() <span class="keyword">const</span>;
 <a name="l00125"></a>00125 
-<a name="l00127"></a>00127         <span class="keyword">inline</span>  <a class="code" href="classExecutionContext.html">ExecutionContext</a> &amp;  <a class="code" href="group__OBEX.html#g45282d2947a641f1963773a3cb7d3daa">GetContext</a>() <span class="keyword">const</span>;
+<a name="l00127"></a>00127         <span class="keyword">inline</span>  <a class="code" href="classExecutionContext.html">ExecutionContext</a> &amp;  <a class="code" href="group__Obex.html#g45282d2947a641f1963773a3cb7d3daa">GetContext</a>() <span class="keyword">const</span>;
 <a name="l00128"></a>00128 
 <a name="l00129"></a>00129     <span class="keyword">private</span>:
 <a name="l00130"></a>00130         <span class="keyword">typedef</span> <a class="code" href="classMessageMapDispatcher.html">MessageMapDispatcher</a>                    <a class="code" href="classMessageMapDispatcher.html">Base</a>;
@@ -92,13 +92,13 @@
 <a name="l00136"></a>00136         <a class="code" href="classMessageMapContainer.html">ObexMsgMapContainer</a>                             m_msg_map_container;
 <a name="l00137"></a>00137         <a class="code" href="classExecutionContext.html">ExecutionContext</a> *                              m_ctx_ptr;
 <a name="l00138"></a>00138         <a class="code" href="classObexEventHandler.html">ObexEventHandler</a> *                              m_handler_ptr;
-<a name="l00139"></a>00139         <span class="keyword">const</span> <a class="code" href="group__OBEX.html#g82470f6a9b902947df809854fe935d12">ObexProtocolId</a>                            c_type_id;
+<a name="l00139"></a>00139         <span class="keyword">const</span> <a class="code" href="group__Obex.html#g82470f6a9b902947df809854fe935d12">ObexProtocolId</a>                            c_type_id;
 <a name="l00140"></a>00140 };
 <a name="l00141"></a>00141 
 <a name="l00142"></a>00142 <span class="comment">/*  ----------------------------------------------------------------------</span>
 <a name="l00143"></a>00143 <span class="comment">    GetTypeId</span>
 <a name="l00144"></a>00144 <span class="comment">    ---------------------------------------------------------------------- */</span>
-<a name="l00145"></a><a class="code" href="group__OBEX.html#g802dbaa2900016314c04b9bd6e6d1d4a">00145</a> <a class="code" href="group__OBEX.html#g82470f6a9b902947df809854fe935d12">ObexProtocolId</a>      <a class="code" href="group__OBEX.html#g802dbaa2900016314c04b9bd6e6d1d4a">ObexDispatcher::GetTypeId</a>()<span class="keyword"></span>
+<a name="l00145"></a><a class="code" href="group__Obex.html#g802dbaa2900016314c04b9bd6e6d1d4a">00145</a> <a class="code" href="group__Obex.html#g82470f6a9b902947df809854fe935d12">ObexProtocolId</a>      <a class="code" href="group__Obex.html#g802dbaa2900016314c04b9bd6e6d1d4a">ObexDispatcher::GetTypeId</a>()<span class="keyword"></span>
 <a name="l00146"></a>00146 <span class="keyword">const</span>
 <a name="l00147"></a>00147 <span class="keyword"></span>{
 <a name="l00148"></a>00148     <span class="keywordflow">return</span>  c_type_id;
@@ -107,7 +107,7 @@
 <a name="l00151"></a>00151 <span class="comment">/*  ----------------------------------------------------------------------</span>
 <a name="l00152"></a>00152 <span class="comment">    GetAppPtr</span>
 <a name="l00153"></a>00153 <span class="comment">    ---------------------------------------------------------------------- */</span>
-<a name="l00154"></a><a class="code" href="group__OBEX.html#gff7509b8ff2fa649f4a7962b6bb28dae">00154</a> <a class="code" href="classApplication.html">Application</a> *       <a class="code" href="group__OBEX.html#gff7509b8ff2fa649f4a7962b6bb28dae">ObexDispatcher::GetAppPtr</a>()<span class="keyword"></span>
+<a name="l00154"></a><a class="code" href="group__Obex.html#gff7509b8ff2fa649f4a7962b6bb28dae">00154</a> <a class="code" href="classApplication.html">Application</a> *       <a class="code" href="group__Obex.html#gff7509b8ff2fa649f4a7962b6bb28dae">ObexDispatcher::GetAppPtr</a>()<span class="keyword"></span>
 <a name="l00155"></a>00155 <span class="keyword">const</span>
 <a name="l00156"></a>00156 <span class="keyword"></span>{
 <a name="l00157"></a>00157     <span class="keywordflow">return</span>  (<a class="code" href="classApplication.html">Application</a> *) m_ctx_ptr;
@@ -116,7 +116,7 @@
 <a name="l00160"></a>00160 <span class="comment">/*  ----------------------------------------------------------------------</span>
 <a name="l00161"></a>00161 <span class="comment">    GetContext</span>
 <a name="l00162"></a>00162 <span class="comment">    ---------------------------------------------------------------------- */</span>
-<a name="l00163"></a><a class="code" href="group__OBEX.html#g45282d2947a641f1963773a3cb7d3daa">00163</a> <a class="code" href="classExecutionContext.html">ExecutionContext</a> &amp;  <a class="code" href="group__OBEX.html#g45282d2947a641f1963773a3cb7d3daa">ObexDispatcher::GetContext</a>()<span class="keyword"></span>
+<a name="l00163"></a><a class="code" href="group__Obex.html#g45282d2947a641f1963773a3cb7d3daa">00163</a> <a class="code" href="classExecutionContext.html">ExecutionContext</a> &amp;  <a class="code" href="group__Obex.html#g45282d2947a641f1963773a3cb7d3daa">ObexDispatcher::GetContext</a>()<span class="keyword"></span>
 <a name="l00164"></a>00164 <span class="keyword">const</span>
 <a name="l00165"></a>00165 <span class="keyword"></span>{
 <a name="l00166"></a>00166     <a class="code" href="group__Auxiliary.html#gf0f079cffe6a9de996135f9e74020775">ASSERT_DEBUG</a>(m_ctx_ptr != 0);

@@ -39,13 +39,13 @@ Inheritance diagram for BtObexTransport:<p><center><img src="classBtObexTranspor
 <center><font size="2">[<a href="graph_legend.html">legend</a>]</font></center><table border="0" cellpadding="0" cellspacing="0">
 <tr><td></td></tr>
 <tr><td colspan="2"><br><h2>Public Member Functions</h2></td></tr>
-<tr><td class="memItemLeft" nowrap align="right" valign="top">virtual <a class="el" href="classObexProtocol.html">ObexProtocol</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classBtObexTransport.html#64a0d514dd597b356202584e4c69fdb6">GetProtocol</a> (<a class="el" href="group__OBEX.html#g82470f6a9b902947df809854fe935d12">ObexProtocolId</a> level)</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">virtual <a class="el" href="classObexProtocol.html">ObexProtocol</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classBtObexTransport.html#64a0d514dd597b356202584e4c69fdb6">GetProtocol</a> (<a class="el" href="group__Obex.html#g82470f6a9b902947df809854fe935d12">ObexProtocolId</a> level)</td></tr>
 
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Return the proper protocol pointer.  <a href="#64a0d514dd597b356202584e4c69fdb6"></a><br></td></tr>
-<tr><td class="memItemLeft" nowrap align="right" valign="top">virtual void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classBtObexTransport.html#40005fb9bec2d04e348f95cf79163c6e">ResolveClientAddr</a> (const <a class="el" href="classString.html">String</a> &amp;client_url, <a class="el" href="group__OBEX.html#g82470f6a9b902947df809854fe935d12">ObexProtocolId</a> prot_id, <a class="el" href="classObexOperationId.html">ObexOperationId</a> job_id)</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">virtual void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classBtObexTransport.html#40005fb9bec2d04e348f95cf79163c6e">ResolveClientAddr</a> (const <a class="el" href="classString.html">String</a> &amp;client_url, <a class="el" href="group__Obex.html#g82470f6a9b902947df809854fe935d12">ObexProtocolId</a> prot_id, <a class="el" href="classObexOperationId.html">ObexOperationId</a> job_id)</td></tr>
 
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Extract infos from the client URL string and associate them to an <a class="el" href="classObexAddress.html">ObexAddress</a> object just created by this method.  <a href="#40005fb9bec2d04e348f95cf79163c6e"></a><br></td></tr>
-<tr><td class="memItemLeft" nowrap align="right" valign="top">virtual void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classBtObexTransport.html#6f355282608e33fd1e9c9beb5ccda6fd">ResolveServerAddr</a> (const <a class="el" href="classString.html">String</a> &amp;server_url, <a class="el" href="group__OBEX.html#g82470f6a9b902947df809854fe935d12">ObexProtocolId</a> prot_id, BOOLEAN sdb_autocreate, <a class="el" href="classObexOperationId.html">ObexOperationId</a> job_id)</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">virtual void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classBtObexTransport.html#6f355282608e33fd1e9c9beb5ccda6fd">ResolveServerAddr</a> (const <a class="el" href="classString.html">String</a> &amp;server_url, <a class="el" href="group__Obex.html#g82470f6a9b902947df809854fe935d12">ObexProtocolId</a> prot_id, BOOLEAN sdb_autocreate, <a class="el" href="classObexOperationId.html">ObexOperationId</a> job_id)</td></tr>
 
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Extract infos from the server URL string and associate them to an <a class="el" href="classObexAddress.html">ObexAddress</a> object just created by this method.  <a href="#6f355282608e33fd1e9c9beb5ccda6fd"></a><br></td></tr>
 <tr><td class="memItemLeft" nowrap align="right" valign="top">virtual&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classBtObexTransport.html#ae608847acbf722688b5382895092d25">~BtObexTransport</a> ()</td></tr>
@@ -191,7 +191,7 @@ Singleton accessor.
         <tr>
           <td class="md" nowrap valign="top"><a class="el" href="classObexProtocol.html">ObexProtocol</a> * BtObexTransport::GetProtocol           </td>
           <td class="md" valign="top">(&nbsp;</td>
-          <td class="md" nowrap valign="top"><a class="el" href="group__OBEX.html#g82470f6a9b902947df809854fe935d12">ObexProtocolId</a>&nbsp;</td>
+          <td class="md" nowrap valign="top"><a class="el" href="group__Obex.html#g82470f6a9b902947df809854fe935d12">ObexProtocolId</a>&nbsp;</td>
           <td class="mdname1" valign="top" nowrap> <em>level</em>          </td>
           <td class="md" valign="top">&nbsp;)&nbsp;</td>
           <td class="md" nowrap><code> [virtual]</code></td>
@@ -256,7 +256,7 @@ Implements <a class="el" href="classObexAbstractTransport.html#52d7ceb8181954cf2
         <tr>
           <td class="md" nowrap align="right"></td>
           <td class="md"></td>
-          <td class="md" nowrap><a class="el" href="group__OBEX.html#g82470f6a9b902947df809854fe935d12">ObexProtocolId</a>&nbsp;</td>
+          <td class="md" nowrap><a class="el" href="group__Obex.html#g82470f6a9b902947df809854fe935d12">ObexProtocolId</a>&nbsp;</td>
           <td class="mdname" nowrap> <em>prot_id</em>, </td>
         </tr>
         <tr>
@@ -310,7 +310,7 @@ Implements <a class="el" href="classObexAbstractTransport.html#80cb1bf257f9f690e
         <tr>
           <td class="md" nowrap align="right"></td>
           <td class="md"></td>
-          <td class="md" nowrap><a class="el" href="group__OBEX.html#g82470f6a9b902947df809854fe935d12">ObexProtocolId</a>&nbsp;</td>
+          <td class="md" nowrap><a class="el" href="group__Obex.html#g82470f6a9b902947df809854fe935d12">ObexProtocolId</a>&nbsp;</td>
           <td class="mdname" nowrap> <em>prot_id</em>, </td>
         </tr>
         <tr>

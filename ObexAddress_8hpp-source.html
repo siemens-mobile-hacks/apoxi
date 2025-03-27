@@ -44,19 +44,19 @@
 <a name="l00029"></a>00029     <span class="keyword">public</span>:
 <a name="l00030"></a><a class="code" href="classObexAddress.html#c320a799e1a3f1a70107acb15f8cd481">00030</a>         <span class="keyword">typedef</span> <a class="code" href="classReferableObject.html">ReferableObject</a> <a class="code" href="classReferableObject.html">Base</a>;
 <a name="l00031"></a>00031 
-<a name="l00033"></a>00033         <span class="keyword">virtual</span> <a class="code" href="group__OBEX.html#ge965b8b6ebcd235d3723fa7aebe1de09">ObexAddrTypeId</a>      <a class="code" href="classObexAddress.html#1311c1290085c86ca91d286122ef81e7">GetTypeId</a>() <span class="keyword">const </span>= 0;
+<a name="l00033"></a>00033         <span class="keyword">virtual</span> <a class="code" href="group__Obex.html#ge965b8b6ebcd235d3723fa7aebe1de09">ObexAddrTypeId</a>      <a class="code" href="classObexAddress.html#1311c1290085c86ca91d286122ef81e7">GetTypeId</a>() <span class="keyword">const </span>= 0;
 <a name="l00034"></a>00034 
 <a name="l00039"></a>00039         <span class="keyword">virtual</span> <a class="code" href="classObexResult.html">ObexResult</a>          <a class="code" href="classObexAddress.html#b7f295c50f219d48a2ebe3507d8b826f">ToString</a>(<a class="code" href="classString.html">String</a> &amp;  obex_url) <span class="keyword">const</span>;
 <a name="l00040"></a>00040 
-<a name="l00042"></a>00042         <span class="keyword">inline</span>  <a class="code" href="group__OBEX.html#g600b47b47493a092cb9f108f25077d5e">ObexTransportId</a>     <a class="code" href="group__OBEX.html#gdf993083428cbdab936c801340295630">GetTransportId</a>() <span class="keyword">const</span>;
+<a name="l00042"></a>00042         <span class="keyword">inline</span>  <a class="code" href="group__Obex.html#g600b47b47493a092cb9f108f25077d5e">ObexTransportId</a>     <a class="code" href="group__Obex.html#gdf993083428cbdab936c801340295630">GetTransportId</a>() <span class="keyword">const</span>;
 <a name="l00043"></a>00043 
 <a name="l00045"></a>00045         <a class="code" href="classObexAbstractTransport.html">ObexAbstractTransport</a> &amp;     <a class="code" href="classObexAddress.html#d564e910695e6567a27660ee31846caf">GetTransport</a>() <span class="keyword">const</span>;
 <a name="l00046"></a>00046 
 <a name="l00047"></a>00047     <span class="keyword">protected</span>:
-<a name="l00049"></a>00049         <a class="code" href="classObexAddress.html#ec7d71b46c05e44ac18e0e2f53d791bc">ObexAddress</a>(<a class="code" href="group__OBEX.html#g600b47b47493a092cb9f108f25077d5e">ObexTransportId</a>     transport_id);
+<a name="l00049"></a>00049         <a class="code" href="classObexAddress.html#ec7d71b46c05e44ac18e0e2f53d791bc">ObexAddress</a>(<a class="code" href="group__Obex.html#g600b47b47493a092cb9f108f25077d5e">ObexTransportId</a>     transport_id);
 <a name="l00050"></a>00050 
 <a name="l00051"></a>00051     <span class="keyword">private</span>:
-<a name="l00052"></a>00052         <span class="keyword">const</span> <a class="code" href="group__OBEX.html#g600b47b47493a092cb9f108f25077d5e">ObexTransportId</a>   c_transport_id;
+<a name="l00052"></a>00052         <span class="keyword">const</span> <a class="code" href="group__Obex.html#g600b47b47493a092cb9f108f25077d5e">ObexTransportId</a>   c_transport_id;
 <a name="l00053"></a>00053 };
 <a name="l00054"></a>00054 
 <a name="l00055"></a>00055 
@@ -65,10 +65,10 @@
 <a name="l00063"></a>00063     <span class="keyword">public</span>:
 <a name="l00064"></a><a class="code" href="classObexClientAddr.html#a5aeb3e57d67d22d0f67ef2cf57fd095">00064</a>         <span class="keyword">typedef</span> <a class="code" href="classObexAddress.html">ObexAddress</a> <a class="code" href="classObexAddress.html">Base</a>;
 <a name="l00065"></a>00065 
-<a name="l00067"></a>00067         <span class="keyword">virtual</span> <a class="code" href="group__OBEX.html#ge965b8b6ebcd235d3723fa7aebe1de09">ObexAddrTypeId</a>  <a class="code" href="classObexClientAddr.html#d499fb2088645f1cff60d0b7139856bf">GetTypeId</a>() <span class="keyword">const</span>;
+<a name="l00067"></a>00067         <span class="keyword">virtual</span> <a class="code" href="group__Obex.html#ge965b8b6ebcd235d3723fa7aebe1de09">ObexAddrTypeId</a>  <a class="code" href="classObexClientAddr.html#d499fb2088645f1cff60d0b7139856bf">GetTypeId</a>() <span class="keyword">const</span>;
 <a name="l00068"></a>00068 
 <a name="l00069"></a>00069     <span class="keyword">protected</span>:
-<a name="l00071"></a>00071         <a class="code" href="classObexClientAddr.html#f7095227dfa1589dc8ed46a64298d7a9">ObexClientAddr</a>(<a class="code" href="group__OBEX.html#g600b47b47493a092cb9f108f25077d5e">ObexTransportId</a>  transport_id);
+<a name="l00071"></a>00071         <a class="code" href="classObexClientAddr.html#f7095227dfa1589dc8ed46a64298d7a9">ObexClientAddr</a>(<a class="code" href="group__Obex.html#g600b47b47493a092cb9f108f25077d5e">ObexTransportId</a>  transport_id);
 <a name="l00072"></a>00072 };
 <a name="l00073"></a>00073 
 <a name="l00074"></a>00074 
@@ -77,7 +77,7 @@
 <a name="l00082"></a>00082     <span class="keyword">public</span>:
 <a name="l00083"></a><a class="code" href="classObexServerAddr.html#f836384b9a92cc14728c27407931d416">00083</a>         <span class="keyword">typedef</span> <a class="code" href="classObexAddress.html">ObexAddress</a> <a class="code" href="classObexAddress.html">Base</a>;
 <a name="l00084"></a>00084 
-<a name="l00086"></a>00086         <span class="keyword">virtual</span> <a class="code" href="group__OBEX.html#ge965b8b6ebcd235d3723fa7aebe1de09">ObexAddrTypeId</a>  <a class="code" href="classObexServerAddr.html#0d485cb75aaf89ade146ec7e62729b35">GetTypeId</a>() <span class="keyword">const</span>;
+<a name="l00086"></a>00086         <span class="keyword">virtual</span> <a class="code" href="group__Obex.html#ge965b8b6ebcd235d3723fa7aebe1de09">ObexAddrTypeId</a>  <a class="code" href="classObexServerAddr.html#0d485cb75aaf89ade146ec7e62729b35">GetTypeId</a>() <span class="keyword">const</span>;
 <a name="l00087"></a>00087 
 <a name="l00088"></a>00088         <span class="comment">/*  @brief  Tells whether address was auto - registered by transport.</span>
 <a name="l00089"></a>00089 <span class="comment"></span>
@@ -90,13 +90,13 @@
 <a name="l00096"></a>00096         <span class="keyword">virtual</span> <a class="code" href="NucInc_8hpp.html#50168fdbaa52d4a0b1c287d476050f12">BOOLEAN</a>         <a class="code" href="classObexServerAddr.html#a052e9fea1e2ed9797efb6a36c9d54ff">IsAutoRegistered</a>() <span class="keyword">const</span>;
 <a name="l00097"></a>00097 
 <a name="l00098"></a>00098     <span class="keyword">protected</span>:
-<a name="l00100"></a>00100         <a class="code" href="classObexServerAddr.html#d46356eb0cdb8191259b4b647b3803ee">ObexServerAddr</a>(<a class="code" href="group__OBEX.html#g600b47b47493a092cb9f108f25077d5e">ObexTransportId</a>  transport_id);
+<a name="l00100"></a>00100         <a class="code" href="classObexServerAddr.html#d46356eb0cdb8191259b4b647b3803ee">ObexServerAddr</a>(<a class="code" href="group__Obex.html#g600b47b47493a092cb9f108f25077d5e">ObexTransportId</a>  transport_id);
 <a name="l00101"></a>00101 };
 <a name="l00102"></a>00102 
 <a name="l00103"></a>00103 <span class="comment">/*  ----------------------------------------------------------------------</span>
 <a name="l00104"></a>00104 <span class="comment">    GetTransportId</span>
 <a name="l00105"></a>00105 <span class="comment">    ---------------------------------------------------------------------- */</span>
-<a name="l00106"></a><a class="code" href="group__OBEX.html#gdf993083428cbdab936c801340295630">00106</a> <a class="code" href="group__OBEX.html#g600b47b47493a092cb9f108f25077d5e">ObexTransportId</a>     <a class="code" href="group__OBEX.html#gdf993083428cbdab936c801340295630">ObexAddress::GetTransportId</a>()<span class="keyword"></span>
+<a name="l00106"></a><a class="code" href="group__Obex.html#gdf993083428cbdab936c801340295630">00106</a> <a class="code" href="group__Obex.html#g600b47b47493a092cb9f108f25077d5e">ObexTransportId</a>     <a class="code" href="group__Obex.html#gdf993083428cbdab936c801340295630">ObexAddress::GetTransportId</a>()<span class="keyword"></span>
 <a name="l00107"></a>00107 <span class="keyword">const</span>
 <a name="l00108"></a>00108 <span class="keyword"></span>{
 <a name="l00109"></a>00109     <span class="keywordflow">return</span>  c_transport_id;

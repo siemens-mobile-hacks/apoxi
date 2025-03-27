@@ -93,29 +93,29 @@
 <a name="l00230"></a>00230                        <a class="code" href="classObexOperationId.html">ObexOperationId</a>      oper_id,
 <a name="l00231"></a>00231                        <span class="keyword">const</span> <a class="code" href="classObexObject.html">ObexObject</a> &amp;   setp_req);
 <a name="l00232"></a>00232 
-<a name="l00258"></a>00258         <a class="code" href="group__OBEX.html#g07d01897a71cf1c5f8b7abe23ff0bc17">ObexServerId</a>    <a class="code" href="classObexLayer.html#26721afba60908df7b577319ac834dae">OnGet</a>(<span class="keyword">const</span> <a class="code" href="classObexChannel.html">ObexChannel</a> &amp;   server_chan,
+<a name="l00258"></a>00258         <a class="code" href="group__Obex.html#g07d01897a71cf1c5f8b7abe23ff0bc17">ObexServerId</a>    <a class="code" href="classObexLayer.html#26721afba60908df7b577319ac834dae">OnGet</a>(<span class="keyword">const</span> <a class="code" href="classObexChannel.html">ObexChannel</a> &amp;   server_chan,
 <a name="l00259"></a>00259                               <a class="code" href="classObexOperationId.html">ObexOperationId</a>       oper_id,
 <a name="l00260"></a>00260                               <span class="keyword">const</span> <a class="code" href="classObexObject.html">ObexObject</a> &amp;    get_req);
 <a name="l00261"></a>00261 
-<a name="l00287"></a>00287         <a class="code" href="group__OBEX.html#g07d01897a71cf1c5f8b7abe23ff0bc17">ObexServerId</a>    <a class="code" href="classObexLayer.html#a1b60b5d89df012cf6fa9aebf29cd012">OnPut</a>(<span class="keyword">const</span> <a class="code" href="classObexChannel.html">ObexChannel</a> &amp;   server_chan,
+<a name="l00287"></a>00287         <a class="code" href="group__Obex.html#g07d01897a71cf1c5f8b7abe23ff0bc17">ObexServerId</a>    <a class="code" href="classObexLayer.html#a1b60b5d89df012cf6fa9aebf29cd012">OnPut</a>(<span class="keyword">const</span> <a class="code" href="classObexChannel.html">ObexChannel</a> &amp;   server_chan,
 <a name="l00288"></a>00288                               <a class="code" href="classObexOperationId.html">ObexOperationId</a>       oper_id,
 <a name="l00289"></a>00289                               <span class="keyword">const</span> <a class="code" href="classObexObject.html">ObexObject</a> &amp;    put_req);
 <a name="l00290"></a>00290 
 <a name="l00313"></a>00313         <span class="keywordtype">void</span> <a class="code" href="classObexLayer.html#4d0f5d866124ba1bfed499672328a17b">OnAbort</a>(<span class="keyword">const</span> <a class="code" href="classObexChannel.html">ObexChannel</a> &amp;    server_chan,
 <a name="l00314"></a>00314                      <a class="code" href="classObexOperationId.html">ObexOperationId</a>        oper_id,
 <a name="l00315"></a>00315                      <span class="keyword">const</span> <a class="code" href="classObexObject.html">ObexObject</a> &amp;     abort_req,
-<a name="l00316"></a>00316                      <a class="code" href="group__OBEX.html#g07d01897a71cf1c5f8b7abe23ff0bc17">ObexServerId</a>           server_id = <a class="code" href="classObexServerInfo.html#5e61c86e62e95fe09b2afd2a97ab6c438a2bf84ff2144da2f6d1024db62d8222">ObexServerInfo::NoServerId</a>);
+<a name="l00316"></a>00316                      <a class="code" href="group__Obex.html#g07d01897a71cf1c5f8b7abe23ff0bc17">ObexServerId</a>           server_id = <a class="code" href="classObexServerInfo.html#5e61c86e62e95fe09b2afd2a97ab6c438a2bf84ff2144da2f6d1024db62d8222">ObexServerInfo::NoServerId</a>);
 <a name="l00317"></a>00317 
 <a name="l00330"></a>00330         <span class="keywordtype">void</span> <a class="code" href="classObexLayer.html#addb002060f872b14f596b0084f5cf8f">OnDataProcessed</a>(<span class="keyword">const</span> <a class="code" href="classObexChannel.html">ObexChannel</a> &amp;  channel,
 <a name="l00331"></a>00331                              <a class="code" href="classObexOperationId.html">ObexOperationId</a>      oper_id,
 <a name="l00332"></a>00332                              <a class="code" href="classObexBuffer.html">ObexBuffer</a> &amp;         app_buffer);
 <a name="l00333"></a>00333 
 <a name="l00334"></a>00334     <span class="keyword">private</span>:
-<a name="l00335"></a>00335         <a class="code" href="group__OBEX.html#g07d01897a71cf1c5f8b7abe23ff0bc17">ObexServerId</a>    DispatchByTarget(<a class="code" href="NucInc_8hpp.html#50168fdbaa52d4a0b1c287d476050f12">BOOLEAN</a> &amp;              has_target,
+<a name="l00335"></a>00335         <a class="code" href="group__Obex.html#g07d01897a71cf1c5f8b7abe23ff0bc17">ObexServerId</a>    DispatchByTarget(<a class="code" href="NucInc_8hpp.html#50168fdbaa52d4a0b1c287d476050f12">BOOLEAN</a> &amp;              has_target,
 <a name="l00336"></a>00336                                          <span class="keyword">const</span> <a class="code" href="classObexChannel.html">ObexChannel</a> &amp;    server_chan,
 <a name="l00337"></a>00337                                          <span class="keyword">const</span> <a class="code" href="classObexHeaderList.html">ObexHeaderList</a> &amp; headers);
 <a name="l00338"></a>00338 
-<a name="l00339"></a>00339         <a class="code" href="group__OBEX.html#g07d01897a71cf1c5f8b7abe23ff0bc17">ObexServerId</a>    DispatchRequest(<span class="keyword">const</span> <a class="code" href="classObexChannel.html">ObexChannel</a> &amp;     server_chan,
+<a name="l00339"></a>00339         <a class="code" href="group__Obex.html#g07d01897a71cf1c5f8b7abe23ff0bc17">ObexServerId</a>    DispatchRequest(<span class="keyword">const</span> <a class="code" href="classObexChannel.html">ObexChannel</a> &amp;     server_chan,
 <a name="l00340"></a>00340                                         <span class="keyword">const</span> <a class="code" href="classObexObject.html">ObexObject</a> &amp;      request,
 <a name="l00341"></a>00341                                         <a class="code" href="NucInc_8hpp.html#50168fdbaa52d4a0b1c287d476050f12">BOOLEAN</a>                 is_disc);
 <a name="l00342"></a>00342 

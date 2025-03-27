@@ -23,7 +23,7 @@
   </ul></div>
 <h1>ObexLayer Class Reference<br>
 <small>
-[<a class="el" href="group__OBEX.html">OBEX</a>]</small>
+[<a class="el" href="group__Obex.html">OBEX</a>]</small>
 </h1><!-- doxytag: class="ObexLayer" --><!-- doxytag: inherits="ObexProtocol" -->Internal interface base class for direct access to the OBEX layer.  
 <a href="#_details">More...</a>
 <p>
@@ -72,7 +72,7 @@ Inheritance diagram for ObexLayer:<p><center><img src="classObexLayer__inherit__
 <tr><td colspan="2"><br><h2>Protected Member Functions</h2></td></tr>
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classObexLayer.html#a169bdf8739b0017289422f1dd38a69e">ObexLayer</a> ()</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classObexLayer.html#4d0f5d866124ba1bfed499672328a17b">OnAbort</a> (const <a class="el" href="classObexChannel.html">ObexChannel</a> &amp;server_chan, <a class="el" href="classObexOperationId.html">ObexOperationId</a> oper_id, const <a class="el" href="classObexObject.html">ObexObject</a> &amp;abort_req, <a class="el" href="group__OBEX.html#g07d01897a71cf1c5f8b7abe23ff0bc17">ObexServerId</a> server_id=ObexServerInfo::NoServerId)</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classObexLayer.html#4d0f5d866124ba1bfed499672328a17b">OnAbort</a> (const <a class="el" href="classObexChannel.html">ObexChannel</a> &amp;server_chan, <a class="el" href="classObexOperationId.html">ObexOperationId</a> oper_id, const <a class="el" href="classObexObject.html">ObexObject</a> &amp;abort_req, <a class="el" href="group__Obex.html#g07d01897a71cf1c5f8b7abe23ff0bc17">ObexServerId</a> server_id=ObexServerInfo::NoServerId)</td></tr>
 
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Indicates abort of an ongoing OBEX operation to a server.  <a href="#4d0f5d866124ba1bfed499672328a17b"></a><br></td></tr>
 <tr><td class="memItemLeft" nowrap align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classObexLayer.html#f94c014cc62fd8d4ad8d8a57c42d8854">OnConnect</a> (const <a class="el" href="classObexChannel.html">ObexChannel</a> &amp;server_chan, <a class="el" href="classObexOperationId.html">ObexOperationId</a> oper_id, const <a class="el" href="classObexObject.html">ObexObject</a> &amp;conn_req)</td></tr>
@@ -84,10 +84,10 @@ Inheritance diagram for ObexLayer:<p><center><img src="classObexLayer__inherit__
 <tr><td class="memItemLeft" nowrap align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classObexLayer.html#720f201d44657a6007fc6bf0342da014">OnDisconnect</a> (const <a class="el" href="classObexChannel.html">ObexChannel</a> &amp;server_chan, <a class="el" href="classObexOperationId.html">ObexOperationId</a> oper_id, const <a class="el" href="classObexObject.html">ObexObject</a> &amp;disc_req)</td></tr>
 
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Forwards an incoming <em>OBEX DISCONNECT</em> request to a server.  <a href="#720f201d44657a6007fc6bf0342da014"></a><br></td></tr>
-<tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="el" href="group__OBEX.html#g07d01897a71cf1c5f8b7abe23ff0bc17">ObexServerId</a>&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classObexLayer.html#26721afba60908df7b577319ac834dae">OnGet</a> (const <a class="el" href="classObexChannel.html">ObexChannel</a> &amp;server_chan, <a class="el" href="classObexOperationId.html">ObexOperationId</a> oper_id, const <a class="el" href="classObexObject.html">ObexObject</a> &amp;get_req)</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="el" href="group__Obex.html#g07d01897a71cf1c5f8b7abe23ff0bc17">ObexServerId</a>&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classObexLayer.html#26721afba60908df7b577319ac834dae">OnGet</a> (const <a class="el" href="classObexChannel.html">ObexChannel</a> &amp;server_chan, <a class="el" href="classObexOperationId.html">ObexOperationId</a> oper_id, const <a class="el" href="classObexObject.html">ObexObject</a> &amp;get_req)</td></tr>
 
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Forwards an incoming <em>OBEX GET</em> request to a server.  <a href="#26721afba60908df7b577319ac834dae"></a><br></td></tr>
-<tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="el" href="group__OBEX.html#g07d01897a71cf1c5f8b7abe23ff0bc17">ObexServerId</a>&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classObexLayer.html#a1b60b5d89df012cf6fa9aebf29cd012">OnPut</a> (const <a class="el" href="classObexChannel.html">ObexChannel</a> &amp;server_chan, <a class="el" href="classObexOperationId.html">ObexOperationId</a> oper_id, const <a class="el" href="classObexObject.html">ObexObject</a> &amp;put_req)</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="el" href="group__Obex.html#g07d01897a71cf1c5f8b7abe23ff0bc17">ObexServerId</a>&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classObexLayer.html#a1b60b5d89df012cf6fa9aebf29cd012">OnPut</a> (const <a class="el" href="classObexChannel.html">ObexChannel</a> &amp;server_chan, <a class="el" href="classObexOperationId.html">ObexOperationId</a> oper_id, const <a class="el" href="classObexObject.html">ObexObject</a> &amp;put_req)</td></tr>
 
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Forwards an incoming <em>OBEX PUT</em> request to a server.  <a href="#a1b60b5d89df012cf6fa9aebf29cd012"></a><br></td></tr>
 <tr><td class="memItemLeft" nowrap align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classObexLayer.html#8f7c9c6485fa1acc31d1bc24266d78e0">OnResponse</a> (const <a class="el" href="classObexChannel.html">ObexChannel</a> &amp;client_chan, <a class="el" href="classObexOperationId.html">ObexOperationId</a> oper_id, const <a class="el" href="classObexObject.html">ObexObject</a> &amp;server_resp)</td></tr>
@@ -433,7 +433,7 @@ Implemented in <a class="el" href="classStreamObexImpl.html#c82471fc2bb4f7f87f2a
         <tr>
           <td class="md" nowrap align="right"></td>
           <td class="md"></td>
-          <td class="md" nowrap><a class="el" href="group__OBEX.html#g07d01897a71cf1c5f8b7abe23ff0bc17">ObexServerId</a>&nbsp;</td>
+          <td class="md" nowrap><a class="el" href="group__Obex.html#g07d01897a71cf1c5f8b7abe23ff0bc17">ObexServerId</a>&nbsp;</td>
           <td class="mdname" nowrap> <em>server_id</em> = <code>ObexServerInfo::NoServerId</code></td>
         </tr>
         <tr>
@@ -511,7 +511,7 @@ This method must be called by the protocol implementation to indicate that the r
 Forwards an incoming <em>OBEX CONNECT</em> request to a server. 
 <p>
 This method must be called by the protocol implementation to indicate an incoming <em>CONNECT</em> request to a server. The channel must be a valid server channel.<dl compact><dt><b>See also:</b></dt><dd>OpenServerChannel(). The result of the operation is delivered asynchronously by means of a call to <code><a class="el" href="classObexLayer.html#dc10fcfd490c1ef90d406fe71e9cbafd">ReturnResponse()</a></code>.<p>
-<a class="el" href="classObexLayer.html#dc10fcfd490c1ef90d406fe71e9cbafd">ReturnResponse()</a> An <a class="el" href="classObexOperationId.html">ObexOperationId</a> must be assigned using <a class="el" href="group__OBEX.html#g1cbb825c97875226c87c5ee743e5f716">ObexOperationId::Create()</a> !</dd></dl>
+<a class="el" href="classObexLayer.html#dc10fcfd490c1ef90d406fe71e9cbafd">ReturnResponse()</a> An <a class="el" href="classObexOperationId.html">ObexOperationId</a> must be assigned using <a class="el" href="group__Obex.html#g1cbb825c97875226c87c5ee743e5f716">ObexOperationId::Create()</a> !</dd></dl>
 <dl compact><dt><b>Parameters:</b></dt><dd>
   <table border="0" cellspacing="2" cellpadding="0">
     <tr><td valign="top"></td><td valign="top"><em>server_chan</em>&nbsp;</td><td><a class="el" href="classServer.html">Server</a> channel associated with the request. </td></tr>
@@ -618,7 +618,7 @@ By calling this method the protocol implementation returns the ownership of a bu
 Forwards an incoming <em>OBEX DISCONNECT</em> request to a server. 
 <p>
 This method must be called by the protocol implementation to indicate an incoming <em>DISCONNECT</em> request to a server. The channel must be a valid server channel.<dl compact><dt><b>See also:</b></dt><dd>OpenServerChannel(). The result of the operation is delivered asynchronously by means of a call to <code><a class="el" href="classObexLayer.html#dc10fcfd490c1ef90d406fe71e9cbafd">ReturnResponse()</a></code>.<p>
-<a class="el" href="classObexLayer.html#dc10fcfd490c1ef90d406fe71e9cbafd">ReturnResponse()</a> An <a class="el" href="classObexOperationId.html">ObexOperationId</a> must be assigned using <a class="el" href="group__OBEX.html#g1cbb825c97875226c87c5ee743e5f716">ObexOperationId::Create()</a> !</dd></dl>
+<a class="el" href="classObexLayer.html#dc10fcfd490c1ef90d406fe71e9cbafd">ReturnResponse()</a> An <a class="el" href="classObexOperationId.html">ObexOperationId</a> must be assigned using <a class="el" href="group__Obex.html#g1cbb825c97875226c87c5ee743e5f716">ObexOperationId::Create()</a> !</dd></dl>
 <dl compact><dt><b>Parameters:</b></dt><dd>
   <table border="0" cellspacing="2" cellpadding="0">
     <tr><td valign="top"></td><td valign="top"><em>server_chan</em>&nbsp;</td><td><a class="el" href="classServer.html">Server</a> channel associated with the request. </td></tr>
@@ -635,7 +635,7 @@ This method must be called by the protocol implementation to indicate an incomin
     <td class="mdRow">
       <table cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td class="md" nowrap valign="top"><a class="el" href="group__OBEX.html#g07d01897a71cf1c5f8b7abe23ff0bc17">ObexServerId</a> ObexLayer::OnGet           </td>
+          <td class="md" nowrap valign="top"><a class="el" href="group__Obex.html#g07d01897a71cf1c5f8b7abe23ff0bc17">ObexServerId</a> ObexLayer::OnGet           </td>
           <td class="md" valign="top">(&nbsp;</td>
           <td class="md" nowrap valign="top">const <a class="el" href="classObexChannel.html">ObexChannel</a> &amp;&nbsp;</td>
           <td class="mdname" nowrap> <em>server_chan</em>, </td>
@@ -673,7 +673,7 @@ Forwards an incoming <em>OBEX GET</em> request to a server.
 <p>
 This method must be called by the protocol implementation to indicate an incoming <em>GET</em> request to a server. The channel must be a valid server channel.<dl compact><dt><b>See also:</b></dt><dd>OpenServerChannel(). The result of the operation is delivered asynchronously by means of a call to <code><a class="el" href="classObexLayer.html#dc10fcfd490c1ef90d406fe71e9cbafd">ReturnResponse()</a></code>.<p>
 <a class="el" href="classObexLayer.html#dc10fcfd490c1ef90d406fe71e9cbafd">ReturnResponse()</a></dd></dl>
-For each <em>GET</em> operation, an <code><a class="el" href="classObexOperationId.html">ObexOperationId</a></code> must be assigned using <a class="el" href="group__OBEX.html#g1cbb825c97875226c87c5ee743e5f716">ObexOperationId::Create()</a> !. If one <em>GET</em> operation comprises multiple requests, the following requests must use the same operation id as the first one (therefore it seems wise to save the operation id until the operation is complete !).<p>
+For each <em>GET</em> operation, an <code><a class="el" href="classObexOperationId.html">ObexOperationId</a></code> must be assigned using <a class="el" href="group__Obex.html#g1cbb825c97875226c87c5ee743e5f716">ObexOperationId::Create()</a> !. If one <em>GET</em> operation comprises multiple requests, the following requests must use the same operation id as the first one (therefore it seems wise to save the operation id until the operation is complete !).<p>
 <dl compact><dt><b>Parameters:</b></dt><dd>
   <table border="0" cellspacing="2" cellpadding="0">
     <tr><td valign="top"></td><td valign="top"><em>server_chan</em>&nbsp;</td><td><a class="el" href="classServer.html">Server</a> channel associated with the request. </td></tr>
@@ -691,7 +691,7 @@ For each <em>GET</em> operation, an <code><a class="el" href="classObexOperation
     <td class="mdRow">
       <table cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td class="md" nowrap valign="top"><a class="el" href="group__OBEX.html#g07d01897a71cf1c5f8b7abe23ff0bc17">ObexServerId</a> ObexLayer::OnPut           </td>
+          <td class="md" nowrap valign="top"><a class="el" href="group__Obex.html#g07d01897a71cf1c5f8b7abe23ff0bc17">ObexServerId</a> ObexLayer::OnPut           </td>
           <td class="md" valign="top">(&nbsp;</td>
           <td class="md" nowrap valign="top">const <a class="el" href="classObexChannel.html">ObexChannel</a> &amp;&nbsp;</td>
           <td class="mdname" nowrap> <em>server_chan</em>, </td>
@@ -729,7 +729,7 @@ Forwards an incoming <em>OBEX PUT</em> request to a server.
 <p>
 This method must be called by the protocol implementation to indicate an incoming <em>PUT</em> request to a server. The channel must be a valid server channel.<dl compact><dt><b>See also:</b></dt><dd>OpenServerChannel(). The result of the operation is delivered asynchronously by means of a call to <code><a class="el" href="classObexLayer.html#dc10fcfd490c1ef90d406fe71e9cbafd">ReturnResponse()</a></code>.<p>
 <a class="el" href="classObexLayer.html#dc10fcfd490c1ef90d406fe71e9cbafd">ReturnResponse()</a></dd></dl>
-For each <em>PUT</em> operation, an <code><a class="el" href="classObexOperationId.html">ObexOperationId</a></code> must be assigned using <a class="el" href="group__OBEX.html#g1cbb825c97875226c87c5ee743e5f716">ObexOperationId::Create()</a> !. If one <em>PUT</em> operation comprises multiple requests, the following requests must use the same operation id as the first one (therefore it seems wise to save the operation id until the operation is complete !).<p>
+For each <em>PUT</em> operation, an <code><a class="el" href="classObexOperationId.html">ObexOperationId</a></code> must be assigned using <a class="el" href="group__Obex.html#g1cbb825c97875226c87c5ee743e5f716">ObexOperationId::Create()</a> !. If one <em>PUT</em> operation comprises multiple requests, the following requests must use the same operation id as the first one (therefore it seems wise to save the operation id until the operation is complete !).<p>
 <dl compact><dt><b>Parameters:</b></dt><dd>
   <table border="0" cellspacing="2" cellpadding="0">
     <tr><td valign="top"></td><td valign="top"><em>server_chan</em>&nbsp;</td><td><a class="el" href="classServer.html">Server</a> channel associated with the request. </td></tr>
@@ -837,7 +837,7 @@ This method is used by protocol implementations for specific transports which de
 Forwards an incoming <em>OBEX SETPATH</em> request to a server. 
 <p>
 This method must be called by the protocol implementation to indicate an incoming <em>SETPATH</em> request to a server. The channel must be a valid server channel.<dl compact><dt><b>See also:</b></dt><dd>OpenServerChannel(). The result of the operation is delivered asynchronously by means of a call to <code><a class="el" href="classObexLayer.html#dc10fcfd490c1ef90d406fe71e9cbafd">ReturnResponse()</a></code>.<p>
-<a class="el" href="classObexLayer.html#dc10fcfd490c1ef90d406fe71e9cbafd">ReturnResponse()</a> An <a class="el" href="classObexOperationId.html">ObexOperationId</a> must be assigned using <a class="el" href="group__OBEX.html#g1cbb825c97875226c87c5ee743e5f716">ObexOperationId::Create()</a> !</dd></dl>
+<a class="el" href="classObexLayer.html#dc10fcfd490c1ef90d406fe71e9cbafd">ReturnResponse()</a> An <a class="el" href="classObexOperationId.html">ObexOperationId</a> must be assigned using <a class="el" href="group__Obex.html#g1cbb825c97875226c87c5ee743e5f716">ObexOperationId::Create()</a> !</dd></dl>
 <dl compact><dt><b>Parameters:</b></dt><dd>
   <table border="0" cellspacing="2" cellpadding="0">
     <tr><td valign="top"></td><td valign="top"><em>server_chan</em>&nbsp;</td><td><a class="el" href="classServer.html">Server</a> channel associated with the request. </td></tr>

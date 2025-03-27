@@ -85,13 +85,13 @@
 <a name="l00086"></a><a class="code" href="classObexHeader.html#2ec5ae5c9570e00f7796db89ec1cecc65401047dbe0bc4e872b5a353a7914f78">00086</a>             <a class="code" href="classObexHeader.html#2ec5ae5c9570e00f7796db89ec1cecc65401047dbe0bc4e872b5a353a7914f78">ObexByteOrder</a>   
 <a name="l00087"></a>00087         };
 <a name="l00088"></a>00088 
-<a name="l00090"></a>00090         <span class="keyword">inline</span>  <span class="keyword">static</span>  <a class="code" href="classObexHeader.html#606947f01c4af4746c9e4f522a95a1e2">HeaderType</a>  <a class="code" href="group__OBEX.html#ge9ca5d51eee574bbbf8fe72ef1b546c0">TypeOfId</a>(<a class="code" href="NucInc_8hpp.html#feeffe52c8fd59db7c61cf8b02042dbf">INT</a> <span class="keywordtype">id</span>);
+<a name="l00090"></a>00090         <span class="keyword">inline</span>  <span class="keyword">static</span>  <a class="code" href="classObexHeader.html#606947f01c4af4746c9e4f522a95a1e2">HeaderType</a>  <a class="code" href="group__Obex.html#ge9ca5d51eee574bbbf8fe72ef1b546c0">TypeOfId</a>(<a class="code" href="NucInc_8hpp.html#feeffe52c8fd59db7c61cf8b02042dbf">INT</a> <span class="keywordtype">id</span>);
 <a name="l00091"></a>00091 
-<a name="l00093"></a>00093         <span class="keyword">inline</span>  <a class="code" href="NucInc_8hpp.html#50168fdbaa52d4a0b1c287d476050f12">BOOLEAN</a>     <a class="code" href="group__OBEX.html#ga2e9704e018d0e22f386c5a9001ce883">IsValid</a>() <span class="keyword">const</span>;
+<a name="l00093"></a>00093         <span class="keyword">inline</span>  <a class="code" href="NucInc_8hpp.html#50168fdbaa52d4a0b1c287d476050f12">BOOLEAN</a>     <a class="code" href="group__Obex.html#ga2e9704e018d0e22f386c5a9001ce883">IsValid</a>() <span class="keyword">const</span>;
 <a name="l00094"></a>00094 
-<a name="l00096"></a>00096         <span class="keyword">inline</span>  <a class="code" href="classObexHeader.html#606947f01c4af4746c9e4f522a95a1e2">HeaderType</a>  <a class="code" href="group__OBEX.html#gc1677fc93b9e91953e0608b46c2c7a1f">GetType</a>() <span class="keyword">const</span>;
+<a name="l00096"></a>00096         <span class="keyword">inline</span>  <a class="code" href="classObexHeader.html#606947f01c4af4746c9e4f522a95a1e2">HeaderType</a>  <a class="code" href="group__Obex.html#gc1677fc93b9e91953e0608b46c2c7a1f">GetType</a>() <span class="keyword">const</span>;
 <a name="l00097"></a>00097 
-<a name="l00099"></a>00099         <span class="keyword">inline</span>  <a class="code" href="NucInc_8hpp.html#d8ce12d83f204245685f98caf9d03944">UINT8</a>       <a class="code" href="group__OBEX.html#g11a3bdf12f1d7a7dfbdbac4094adcc57">GetId</a>() <span class="keyword">const</span>;
+<a name="l00099"></a>00099         <span class="keyword">inline</span>  <a class="code" href="NucInc_8hpp.html#d8ce12d83f204245685f98caf9d03944">UINT8</a>       <a class="code" href="group__Obex.html#g11a3bdf12f1d7a7dfbdbac4094adcc57">GetId</a>() <span class="keyword">const</span>;
 <a name="l00100"></a>00100 
 <a name="l00102"></a>00102         <a class="code" href="NucInc_8hpp.html#b1922c2d8643eb7da964d427604e992e">UINT16</a>              <a class="code" href="classObexHeader.html#fffb9869eae24590cad4f0a9f8e09324">GetSize</a>() <span class="keyword">const</span>;
 <a name="l00103"></a>00103 
@@ -150,7 +150,7 @@
 <a name="l00242"></a>00242 <span class="comment">/*  ----------------------------------------------------------------------</span>
 <a name="l00243"></a>00243 <span class="comment">    IsValid</span>
 <a name="l00244"></a>00244 <span class="comment">    ---------------------------------------------------------------------- */</span>
-<a name="l00245"></a><a class="code" href="group__OBEX.html#ga2e9704e018d0e22f386c5a9001ce883">00245</a> <a class="code" href="NucInc_8hpp.html#50168fdbaa52d4a0b1c287d476050f12">BOOLEAN</a> <a class="code" href="group__OBEX.html#ga2e9704e018d0e22f386c5a9001ce883">ObexHeader::IsValid</a>()<span class="keyword"></span>
+<a name="l00245"></a><a class="code" href="group__Obex.html#ga2e9704e018d0e22f386c5a9001ce883">00245</a> <a class="code" href="NucInc_8hpp.html#50168fdbaa52d4a0b1c287d476050f12">BOOLEAN</a> <a class="code" href="group__Obex.html#ga2e9704e018d0e22f386c5a9001ce883">ObexHeader::IsValid</a>()<span class="keyword"></span>
 <a name="l00246"></a>00246 <span class="keyword">const</span>
 <a name="l00247"></a>00247 <span class="keyword"></span>{
 <a name="l00248"></a>00248     <span class="keywordflow">return</span> ( m_hi != <a class="code" href="classObexHeader.html#cb62c3f2ed799bec035976095b42ffee8c3b7d8200721eb36d321c3537cf6779">Invalid</a> );
@@ -159,16 +159,16 @@
 <a name="l00251"></a>00251 <span class="comment">/*  ----------------------------------------------------------------------</span>
 <a name="l00252"></a>00252 <span class="comment">    GetType</span>
 <a name="l00253"></a>00253 <span class="comment">    ---------------------------------------------------------------------- */</span>
-<a name="l00254"></a><a class="code" href="group__OBEX.html#gc1677fc93b9e91953e0608b46c2c7a1f">00254</a> <a class="code" href="classObexHeader.html#606947f01c4af4746c9e4f522a95a1e2">ObexHeader::HeaderType</a>  <a class="code" href="group__OBEX.html#gc1677fc93b9e91953e0608b46c2c7a1f">ObexHeader::GetType</a>()<span class="keyword"></span>
+<a name="l00254"></a><a class="code" href="group__Obex.html#gc1677fc93b9e91953e0608b46c2c7a1f">00254</a> <a class="code" href="classObexHeader.html#606947f01c4af4746c9e4f522a95a1e2">ObexHeader::HeaderType</a>  <a class="code" href="group__Obex.html#gc1677fc93b9e91953e0608b46c2c7a1f">ObexHeader::GetType</a>()<span class="keyword"></span>
 <a name="l00255"></a>00255 <span class="keyword">const</span>
 <a name="l00256"></a>00256 <span class="keyword"></span>{
-<a name="l00257"></a>00257     <span class="keywordflow">return</span>  <a class="code" href="group__OBEX.html#ge9ca5d51eee574bbbf8fe72ef1b546c0">TypeOfId</a>(m_hi);
+<a name="l00257"></a>00257     <span class="keywordflow">return</span>  <a class="code" href="group__Obex.html#ge9ca5d51eee574bbbf8fe72ef1b546c0">TypeOfId</a>(m_hi);
 <a name="l00258"></a>00258 }<span class="comment">// GetType</span>
 <a name="l00259"></a>00259 
 <a name="l00260"></a>00260 <span class="comment">/*  ----------------------------------------------------------------------</span>
 <a name="l00261"></a>00261 <span class="comment">    GetId</span>
 <a name="l00262"></a>00262 <span class="comment">    ---------------------------------------------------------------------- */</span>
-<a name="l00263"></a><a class="code" href="group__OBEX.html#g11a3bdf12f1d7a7dfbdbac4094adcc57">00263</a> <a class="code" href="NucInc_8hpp.html#d8ce12d83f204245685f98caf9d03944">UINT8</a>   <a class="code" href="group__OBEX.html#g11a3bdf12f1d7a7dfbdbac4094adcc57">ObexHeader::GetId</a>()<span class="keyword"></span>
+<a name="l00263"></a><a class="code" href="group__Obex.html#g11a3bdf12f1d7a7dfbdbac4094adcc57">00263</a> <a class="code" href="NucInc_8hpp.html#d8ce12d83f204245685f98caf9d03944">UINT8</a>   <a class="code" href="group__Obex.html#g11a3bdf12f1d7a7dfbdbac4094adcc57">ObexHeader::GetId</a>()<span class="keyword"></span>
 <a name="l00264"></a>00264 <span class="keyword">const</span>
 <a name="l00265"></a>00265 <span class="keyword"></span>{
 <a name="l00266"></a>00266     <span class="keywordflow">return</span> m_hi;
@@ -177,7 +177,7 @@
 <a name="l00269"></a>00269 <span class="comment">/*  ----------------------------------------------------------------------</span>
 <a name="l00270"></a>00270 <span class="comment">    TypeOfId</span>
 <a name="l00271"></a>00271 <span class="comment">    ---------------------------------------------------------------------- */</span>
-<a name="l00272"></a><a class="code" href="group__OBEX.html#ge9ca5d51eee574bbbf8fe72ef1b546c0">00272</a> <a class="code" href="classObexHeader.html#606947f01c4af4746c9e4f522a95a1e2">ObexHeader::HeaderType</a>  <a class="code" href="group__OBEX.html#ge9ca5d51eee574bbbf8fe72ef1b546c0">ObexHeader::TypeOfId</a>(<a class="code" href="NucInc_8hpp.html#feeffe52c8fd59db7c61cf8b02042dbf">INT</a> <span class="keywordtype">id</span>)
+<a name="l00272"></a><a class="code" href="group__Obex.html#ge9ca5d51eee574bbbf8fe72ef1b546c0">00272</a> <a class="code" href="classObexHeader.html#606947f01c4af4746c9e4f522a95a1e2">ObexHeader::HeaderType</a>  <a class="code" href="group__Obex.html#ge9ca5d51eee574bbbf8fe72ef1b546c0">ObexHeader::TypeOfId</a>(<a class="code" href="NucInc_8hpp.html#feeffe52c8fd59db7c61cf8b02042dbf">INT</a> <span class="keywordtype">id</span>)
 <a name="l00273"></a>00273 {
 <a name="l00274"></a>00274     <span class="keywordflow">return</span> <a class="code" href="classObexHeader.html#606947f01c4af4746c9e4f522a95a1e2">HeaderType</a>( (<span class="keywordtype">id</span> &amp; 0xC0) );
 <a name="l00275"></a>00275 }<span class="comment">// TypeOfId</span>

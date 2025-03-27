@@ -377,7 +377,7 @@ Reimplemented from <a class="el" href="classObexFtpServer.html#53d3c692eaa0d075f
 <p>
 Indicates an incoming CONNECT request. 
 <p>
-When a TARGET was specified as part of the server's OBEX URL it will accept only CONNECT requests with a matching TARGET header. Therefore this does not need to be checked by application SW. When the server was opened specifying a TARGET, a CONNECTION ID is assigned and the pre-build response will contain the following headers: CONNECTION_ID=&lt;set_by_server&gt;}, TARGET=&lt;client's WHO&gt;, WHO=&lt;server's TARGET&gt;. In order to continue the ongoing operation, the request has to be either accepted or rejected. To accept the request <code><a class="el" href="group__OBEX.html#g42c2976b00f079802bfb36a53b25a1c6">AcceptConnectRequest()</a></code>, to reject the request <code>RejectConnectRequest(resp_code)</code> must be called.<p>
+When a TARGET was specified as part of the server's OBEX URL it will accept only CONNECT requests with a matching TARGET header. Therefore this does not need to be checked by application SW. When the server was opened specifying a TARGET, a CONNECTION ID is assigned and the pre-build response will contain the following headers: CONNECTION_ID=&lt;set_by_server&gt;}, TARGET=&lt;client's WHO&gt;, WHO=&lt;server's TARGET&gt;. In order to continue the ongoing operation, the request has to be either accepted or rejected. To accept the request <code><a class="el" href="group__Obex.html#g42c2976b00f079802bfb36a53b25a1c6">AcceptConnectRequest()</a></code>, to reject the request <code>RejectConnectRequest(resp_code)</code> must be called.<p>
 <dl compact><dt><b>Parameters:</b></dt><dd>
   <table border="0" cellspacing="2" cellpadding="0">
     <tr><td valign="top"></td><td valign="top"><em>headers</em>&nbsp;</td><td>Header list which contains the headers of the CONNECT request sent by the remote client, for example TARGET and WHO. </td></tr>
@@ -424,7 +424,7 @@ Implements <a class="el" href="classObexFtpServer.html#78e20556a6217c14b279c8177
 <p>
 Indicates an incoming object delete request. 
 <p>
-When this method is called, the client requests to delete an object in the current directory. In order to continue the ongoing operation, the request has to be either accepted or rejected. To accept this request the method <code><a class="el" href="group__OBEX.html#gdacd5bb96bc73010a445ce8d74c06491">AcceptDeleteObjectRequest()</a></code> must be called, to reject the request the method <code><a class="el" href="group__OBEX.html#g7b6d6a6b536fbfebd24c0d098f23bb3f">RejectDeleteObjectRequest()</a></code> has to be invoked.<p>
+When this method is called, the client requests to delete an object in the current directory. In order to continue the ongoing operation, the request has to be either accepted or rejected. To accept this request the method <code><a class="el" href="group__Obex.html#gdacd5bb96bc73010a445ce8d74c06491">AcceptDeleteObjectRequest()</a></code> must be called, to reject the request the method <code><a class="el" href="group__Obex.html#g7b6d6a6b536fbfebd24c0d098f23bb3f">RejectDeleteObjectRequest()</a></code> has to be invoked.<p>
 <dl compact><dt><b>Parameters:</b></dt><dd>
   <table border="0" cellspacing="2" cellpadding="0">
     <tr><td valign="top"></td><td valign="top"><em>current_folder</em>&nbsp;</td><td>The current folder (absolute, e.g. "/UserData/MyMusic/"). </td></tr>
@@ -510,7 +510,7 @@ Implements <a class="el" href="classObexFtpServer.html#a9c7081f763717255edf60bdd
 <p>
 Indicates an incoming file pull request. 
 <p>
-When this method is called, the client requests to pull a file from the current directory. In order to continue the ongoing operation, the request has to be either accepted or rejected. To accept this request the method <code><a class="el" href="group__OBEX.html#g94f8315ba44c61285470372f95b3447d">AcceptFilePullRequest()</a></code> must be called, to reject the request the method <code><a class="el" href="group__OBEX.html#gc53e91928a8faa3cd8864f31f939e927">RejectFilePullRequest()</a></code> has to be invoked.<p>
+When this method is called, the client requests to pull a file from the current directory. In order to continue the ongoing operation, the request has to be either accepted or rejected. To accept this request the method <code><a class="el" href="group__Obex.html#g94f8315ba44c61285470372f95b3447d">AcceptFilePullRequest()</a></code> must be called, to reject the request the method <code><a class="el" href="group__Obex.html#gc53e91928a8faa3cd8864f31f939e927">RejectFilePullRequest()</a></code> has to be invoked.<p>
 <dl compact><dt><b>Parameters:</b></dt><dd>
   <table border="0" cellspacing="2" cellpadding="0">
     <tr><td valign="top"></td><td valign="top"><em>current_folder</em>&nbsp;</td><td>The current folder (absolute, e.g "/UserData/MyMusic/"). </td></tr>
@@ -602,7 +602,7 @@ Implements <a class="el" href="classObexFtpServer.html#5b48ae024d984aa1bc87363d7
 <p>
 Indicates an incoming file push request. 
 <p>
-When this method is called, the client requests to push a file to the current directory. In order to continue the ongoing operation, the request has to be either accepted or rejected. To accept this request the method <code><a class="el" href="group__OBEX.html#g19990f69130f2b88d17343ef31c603e6">AcceptFilePushRequest()</a></code> must be called, to reject the request the method <code><a class="el" href="group__OBEX.html#gd7c51f8528b89fa78b438f8fe428a38a">RejectFilePushRequest()</a></code> has to be invoked.<p>
+When this method is called, the client requests to push a file to the current directory. In order to continue the ongoing operation, the request has to be either accepted or rejected. To accept this request the method <code><a class="el" href="group__Obex.html#g19990f69130f2b88d17343ef31c603e6">AcceptFilePushRequest()</a></code> must be called, to reject the request the method <code><a class="el" href="group__Obex.html#gd7c51f8528b89fa78b438f8fe428a38a">RejectFilePushRequest()</a></code> has to be invoked.<p>
 <dl compact><dt><b>Parameters:</b></dt><dd>
   <table border="0" cellspacing="2" cellpadding="0">
     <tr><td valign="top"></td><td valign="top"><em>current_folder</em>&nbsp;</td><td>The current folder (absolute, e.g "/UserData/MyMusic/"). </td></tr>
@@ -680,7 +680,7 @@ Implements <a class="el" href="classObexFtpServer.html#f9312700727023894844ad7d5
 <p>
 Indicates an incoming folder listing request. 
 <p>
-When this method is called, the client requests the folder listing of the current folder. In order to continue the ongoing operation, the request has to be either accepted or rejected. To accept this request the method <code><a class="el" href="group__OBEX.html#g8fd145ba9cac73d075b5c0c3006857b6">AcceptFolderListingRequest()</a></code> has to be invoked. To reject this folder listing request <code>RejectFolderListingRequest(resp_code)</code> has to be called.<p>
+When this method is called, the client requests the folder listing of the current folder. In order to continue the ongoing operation, the request has to be either accepted or rejected. To accept this request the method <code><a class="el" href="group__Obex.html#g8fd145ba9cac73d075b5c0c3006857b6">AcceptFolderListingRequest()</a></code> has to be invoked. To reject this folder listing request <code>RejectFolderListingRequest(resp_code)</code> has to be called.<p>
 <dl compact><dt><b>Parameters:</b></dt><dd>
   <table border="0" cellspacing="2" cellpadding="0">
     <tr><td valign="top"></td><td valign="top"><em>current_folder</em>&nbsp;</td><td>The current folder (absolute, e.g "/UserData/MyMusic/") the client requests the folder listing of. </td></tr>
@@ -718,7 +718,7 @@ Implements <a class="el" href="classObexFtpServer.html#4cc9d3c11b81d7573ad79b961
 <p>
 Indicates that folder entries have to be provided now. 
 <p>
-This method is invoked by the server to indicate that the server is now ready to transfer the the requested folder listing to the client and that the folder listing entries have to be provided now. In order to continue the ongoing operation, the folder listing entries have to be provided by calling <code>ProvideFolderListingEntry</code>(...) for each entry and by finally calling <code><a class="el" href="group__OBEX.html#g224fe72f09b9d2586a8e3dc2e7992b28">ProvideFolderListingEntriesFinished()</a></code> when all entries have been provided.<p>
+This method is invoked by the server to indicate that the server is now ready to transfer the the requested folder listing to the client and that the folder listing entries have to be provided now. In order to continue the ongoing operation, the folder listing entries have to be provided by calling <code>ProvideFolderListingEntry</code>(...) for each entry and by finally calling <code><a class="el" href="group__Obex.html#g224fe72f09b9d2586a8e3dc2e7992b28">ProvideFolderListingEntriesFinished()</a></code> when all entries have been provided.<p>
 <dl compact><dt><b>Parameters:</b></dt><dd>
   <table border="0" cellspacing="2" cellpadding="0">
     <tr><td valign="top"></td><td valign="top"><em>current_folder</em>&nbsp;</td><td>The current folder (absolute, e.g "/UserData/MyMusic/") the client requests the folder listing of. </td></tr>
@@ -771,7 +771,7 @@ Implements <a class="el" href="classObexFtpServer.html#83d508be4a4982ffc792ad1bb
 <p>
 Indicates an incoming current-folder change request. 
 <p>
-When this method is called, the client requests a change of the current folder. The current folder and the requested current folder are passed to this method. In order to continue the ongoing operation, the request has to be either accepted or rejected. To accept this request the method <code><a class="el" href="group__OBEX.html#ge53d8b93548577900f31b2dc4a52bf3a">AcceptSetCurrentFolderRequest()</a></code> has to be invoked, to reject the folder change request the method <code>RejectFolderListingRequest(resp_code)</code> has to be invoked.<p>
+When this method is called, the client requests a change of the current folder. The current folder and the requested current folder are passed to this method. In order to continue the ongoing operation, the request has to be either accepted or rejected. To accept this request the method <code><a class="el" href="group__Obex.html#ge53d8b93548577900f31b2dc4a52bf3a">AcceptSetCurrentFolderRequest()</a></code> has to be invoked, to reject the folder change request the method <code>RejectFolderListingRequest(resp_code)</code> has to be invoked.<p>
 <dl compact><dt><b>Parameters:</b></dt><dd>
   <table border="0" cellspacing="2" cellpadding="0">
     <tr><td valign="top"></td><td valign="top"><em>current_folder</em>&nbsp;</td><td>The current folder (absolute, e.g "/UserData/MyMusic/"). </td></tr>

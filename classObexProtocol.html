@@ -23,7 +23,7 @@
   </ul></div>
 <h1>ObexProtocol Class Reference<br>
 <small>
-[<a class="el" href="group__OBEX.html">OBEX</a>]</small>
+[<a class="el" href="group__Obex.html">OBEX</a>]</small>
 </h1><!-- doxytag: class="ObexProtocol" --><!-- doxytag: inherits="NonCloneable" -->Internal interface base class for protocol layer abstractions.  
 <a href="#_details">More...</a>
 <p>
@@ -44,7 +44,7 @@ Inheritance diagram for ObexProtocol:<p><center><img src="classObexProtocol__inh
 <center><font size="2">[<a href="graph_legend.html">legend</a>]</font></center><table border="0" cellpadding="0" cellspacing="0">
 <tr><td></td></tr>
 <tr><td colspan="2"><br><h2>Public Types</h2></td></tr>
-<tr><td class="memItemLeft" nowrap align="right" valign="top">typedef <a class="el" href="group__OBEX.html#g82470f6a9b902947df809854fe935d12">ObexProtocolId</a>&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classObexProtocol.html#d637abd91ec318f37c9b0df411f56902">TypeId</a></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">typedef <a class="el" href="group__Obex.html#g82470f6a9b902947df809854fe935d12">ObexProtocolId</a>&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classObexProtocol.html#d637abd91ec318f37c9b0df411f56902">TypeId</a></td></tr>
 
 <tr><td colspan="2"><br><h2>Public Member Functions</h2></td></tr>
 <tr><td class="memItemLeft" nowrap align="right" valign="top">virtual <a class="el" href="classObexResult.html">ObexResult</a>&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classObexProtocol.html#f27520cab5365171b3b8c8fce2c3310b">AcquireClientChannel</a> (<a class="el" href="classObexChannel.html">ObexChannel</a> &amp;result, const <a class="el" href="classSharedPtr.html">ObexAddrPtr</a> &amp;addr_ptr, BOOLEAN reserve)=0</td></tr>
@@ -59,9 +59,9 @@ Inheritance diagram for ObexProtocol:<p><center><img src="classObexProtocol__inh
 <tr><td class="memItemLeft" nowrap align="right" valign="top">virtual void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classObexProtocol.html#69af167832348c445d9d4833840aff80">CloseChannel</a> (const <a class="el" href="classObexChannel.html">ObexChannel</a> &amp;channel, <a class="el" href="classObexOperationId.html">ObexOperationId</a> oper_id)=0</td></tr>
 
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Closes a transport channel.  <a href="#69af167832348c445d9d4833840aff80"></a><br></td></tr>
-<tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="el" href="group__OBEX.html#g82470f6a9b902947df809854fe935d12">TypeId</a>&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__OBEX.html#g6505405df3ed90752405da32581a2f86">GetTypeId</a> () const </td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="el" href="group__Obex.html#g82470f6a9b902947df809854fe935d12">TypeId</a>&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Obex.html#g6505405df3ed90752405da32581a2f86">GetTypeId</a> () const </td></tr>
 
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Returns the protocol type identifier.  <a href="group__OBEX.html#g6505405df3ed90752405da32581a2f86"></a><br></td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Returns the protocol type identifier.  <a href="group__Obex.html#g6505405df3ed90752405da32581a2f86"></a><br></td></tr>
 <tr><td class="memItemLeft" nowrap align="right" valign="top">virtual void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classObexProtocol.html#0418702d1edbb7d1552254676f0f636d">OpenClientChannel</a> (const <a class="el" href="classObexChannel.html">ObexChannel</a> &amp;client_chan, <a class="el" href="classObexOperationId.html">ObexOperationId</a> oper_id, const <a class="el" href="classSharedPtr.html">ObexAddrPtr</a> &amp;addr_ptr)=0</td></tr>
 
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Opens an OBEX client transport channel.  <a href="#0418702d1edbb7d1552254676f0f636d"></a><br></td></tr>
@@ -69,7 +69,7 @@ Inheritance diagram for ObexProtocol:<p><center><img src="classObexProtocol__inh
 
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Releases an <a class="el" href="classObexChannel.html">ObexChannel</a>.  <a href="#65e26aebe277d600b946f78e9b92aab0"></a><br></td></tr>
 <tr><td colspan="2"><br><h2>Protected Member Functions</h2></td></tr>
-<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classObexProtocol.html#59d7a022d3c1bc0bf048e9b455d7acb5">ObexProtocol</a> (<a class="el" href="group__OBEX.html#g82470f6a9b902947df809854fe935d12">TypeId</a> type_id)</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classObexProtocol.html#59d7a022d3c1bc0bf048e9b455d7acb5">ObexProtocol</a> (<a class="el" href="group__Obex.html#g82470f6a9b902947df809854fe935d12">TypeId</a> type_id)</td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classObexProtocol.html#45c34daa539f5794603eb2ed4b249792">OnComplete</a> (const <a class="el" href="classObexChannel.html">ObexChannel</a> &amp;channel, <a class="el" href="classObexOperationId.html">ObexOperationId</a> oper_id, <a class="el" href="classObexResult.html">ObexResult</a> result)</td></tr>
 
@@ -94,7 +94,7 @@ All public members which take a parameter of type <code><a class="el" href="clas
     <td class="mdRow">
       <table cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td class="md" nowrap valign="top">typedef <a class="el" href="group__OBEX.html#g82470f6a9b902947df809854fe935d12">ObexProtocolId</a> <a class="el" href="group__OBEX.html#g82470f6a9b902947df809854fe935d12">ObexProtocol::TypeId</a>          </td>
+          <td class="md" nowrap valign="top">typedef <a class="el" href="group__Obex.html#g82470f6a9b902947df809854fe935d12">ObexProtocolId</a> <a class="el" href="group__Obex.html#g82470f6a9b902947df809854fe935d12">ObexProtocol::TypeId</a>          </td>
         </tr>
       </table>
     </td>
@@ -120,7 +120,7 @@ All public members which take a parameter of type <code><a class="el" href="clas
         <tr>
           <td class="md" nowrap valign="top">ObexProtocol::ObexProtocol           </td>
           <td class="md" valign="top">(&nbsp;</td>
-          <td class="md" nowrap valign="top"><a class="el" href="group__OBEX.html#g82470f6a9b902947df809854fe935d12">TypeId</a>&nbsp;</td>
+          <td class="md" nowrap valign="top"><a class="el" href="group__Obex.html#g82470f6a9b902947df809854fe935d12">TypeId</a>&nbsp;</td>
           <td class="mdname1" valign="top" nowrap> <em>type_id</em>          </td>
           <td class="md" valign="top">&nbsp;)&nbsp;</td>
           <td class="md" nowrap><code> [protected]</code></td>

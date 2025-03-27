@@ -108,11 +108,11 @@
 <a name="l00180"></a>00180         <a class="code" href="classObexResult.html">ObexResult</a>          <a class="code" href="classObexObject.html#ed865272318674384df59b4e71efc772">Init</a>(<a class="code" href="classObexObject.html#106adb48f1cbc9d4b082f3b499c23ba5">ResponseCode</a>   response_code,
 <a name="l00181"></a>00181                                  <a class="code" href="classObexBuffer.html">ObexBuffer</a> &amp;   source_buffer);
 <a name="l00182"></a>00182 
-<a name="l00184"></a>00184         <span class="keyword">inline</span>  <a class="code" href="NucInc_8hpp.html#50168fdbaa52d4a0b1c287d476050f12">BOOLEAN</a>     <a class="code" href="group__OBEX.html#gf6b90b406e7d7a84421a60b2f93a755e">IsValid</a>() <span class="keyword">const</span>;
+<a name="l00184"></a>00184         <span class="keyword">inline</span>  <a class="code" href="NucInc_8hpp.html#50168fdbaa52d4a0b1c287d476050f12">BOOLEAN</a>     <a class="code" href="group__Obex.html#gf6b90b406e7d7a84421a60b2f93a755e">IsValid</a>() <span class="keyword">const</span>;
 <a name="l00185"></a>00185 
 <a name="l00192"></a>00192         <a class="code" href="NucInc_8hpp.html#50168fdbaa52d4a0b1c287d476050f12">BOOLEAN</a>             <a class="code" href="classObexObject.html#35925c5a8e45918a1e2b9675796df5a5">IsWritable</a>() <span class="keyword">const</span>;
 <a name="l00193"></a>00193 
-<a name="l00195"></a>00195         <span class="keyword">inline</span>  <a class="code" href="NucInc_8hpp.html#50168fdbaa52d4a0b1c287d476050f12">BOOLEAN</a>     <a class="code" href="group__OBEX.html#gb70c04a8b1c3eb9a9d4a6f2ca2a3ee16">IsSuccessResponse</a>() <span class="keyword">const</span>;
+<a name="l00195"></a>00195         <span class="keyword">inline</span>  <a class="code" href="NucInc_8hpp.html#50168fdbaa52d4a0b1c287d476050f12">BOOLEAN</a>     <a class="code" href="group__Obex.html#gb70c04a8b1c3eb9a9d4a6f2ca2a3ee16">IsSuccessResponse</a>() <span class="keyword">const</span>;
 <a name="l00196"></a>00196 
 <a name="l00198"></a>00198         <a class="code" href="classObexHeaderList.html">ObexHeaderList</a> &amp;    <a class="code" href="classObexObject.html#67d8650198cdcd3c3f8f1c69eb37c85f">GetHeaderList</a>() <span class="keyword">const</span>;
 <a name="l00199"></a>00199 
@@ -145,7 +145,7 @@
 <a name="l00281"></a>00281 <span class="comment">/*  ----------------------------------------------------------------------</span>
 <a name="l00282"></a>00282 <span class="comment">    IsValid</span>
 <a name="l00283"></a>00283 <span class="comment">    ---------------------------------------------------------------------- */</span>
-<a name="l00284"></a><a class="code" href="group__OBEX.html#gf6b90b406e7d7a84421a60b2f93a755e">00284</a> <a class="code" href="NucInc_8hpp.html#50168fdbaa52d4a0b1c287d476050f12">BOOLEAN</a>     <a class="code" href="group__OBEX.html#gf6b90b406e7d7a84421a60b2f93a755e">ObexObject::IsValid</a>()<span class="keyword"> const</span>
+<a name="l00284"></a><a class="code" href="group__Obex.html#gf6b90b406e7d7a84421a60b2f93a755e">00284</a> <a class="code" href="NucInc_8hpp.html#50168fdbaa52d4a0b1c287d476050f12">BOOLEAN</a>     <a class="code" href="group__Obex.html#gf6b90b406e7d7a84421a60b2f93a755e">ObexObject::IsValid</a>()<span class="keyword"> const</span>
 <a name="l00285"></a>00285 <span class="keyword"></span>{
 <a name="l00286"></a>00286     <span class="keywordflow">return</span> ( m_data_ptr != 0 );
 <a name="l00287"></a>00287 }<span class="comment">// IsValid</span>
@@ -153,7 +153,7 @@
 <a name="l00289"></a>00289 <span class="comment">/*  ----------------------------------------------------------------------</span>
 <a name="l00290"></a>00290 <span class="comment">    IsSuccessResponse</span>
 <a name="l00291"></a>00291 <span class="comment">    ---------------------------------------------------------------------- */</span>
-<a name="l00292"></a><a class="code" href="group__OBEX.html#gb70c04a8b1c3eb9a9d4a6f2ca2a3ee16">00292</a> <a class="code" href="NucInc_8hpp.html#50168fdbaa52d4a0b1c287d476050f12">BOOLEAN</a>     <a class="code" href="group__OBEX.html#gb70c04a8b1c3eb9a9d4a6f2ca2a3ee16">ObexObject::IsSuccessResponse</a>()<span class="keyword"> const</span>
+<a name="l00292"></a><a class="code" href="group__Obex.html#gb70c04a8b1c3eb9a9d4a6f2ca2a3ee16">00292</a> <a class="code" href="NucInc_8hpp.html#50168fdbaa52d4a0b1c287d476050f12">BOOLEAN</a>     <a class="code" href="group__Obex.html#gb70c04a8b1c3eb9a9d4a6f2ca2a3ee16">ObexObject::IsSuccessResponse</a>()<span class="keyword"> const</span>
 <a name="l00293"></a>00293 <span class="keyword"></span>{
 <a name="l00294"></a>00294     <span class="keywordflow">return</span> ( <a class="code" href="classObexObject.html#a61b456a06eb37cc1e41390e732c94dd">GetResponseCode</a>() == <a class="code" href="classObexObject.html#106adb48f1cbc9d4b082f3b499c23ba5dfde92e999e343da53d08e322335f73b">RespOk</a> );
 <a name="l00295"></a>00295 }<span class="comment">// IsSuccessResponse</span>
@@ -161,7 +161,7 @@
 <a name="l00297"></a>00297 <span class="comment">/*  ----------------------------------------------------------------------</span>
 <a name="l00298"></a>00298 <span class="comment">    Init</span>
 <a name="l00299"></a>00299 <span class="comment">    ---------------------------------------------------------------------- */</span>
-<a name="l00300"></a><a class="code" href="group__OBEX.html#g00ef16350557a0f39a9ec3be9c36015e">00300</a> <a class="code" href="classObexResult.html">ObexResult</a>  <a class="code" href="classObexObject.html#ed865272318674384df59b4e71efc772">ObexObject::Init</a>(<a class="code" href="classObexBuffer.html">ObexBuffer</a> &amp;   source_buffer)
+<a name="l00300"></a><a class="code" href="group__Obex.html#g00ef16350557a0f39a9ec3be9c36015e">00300</a> <a class="code" href="classObexResult.html">ObexResult</a>  <a class="code" href="classObexObject.html#ed865272318674384df59b4e71efc772">ObexObject::Init</a>(<a class="code" href="classObexBuffer.html">ObexBuffer</a> &amp;   source_buffer)
 <a name="l00301"></a>00301 {
 <a name="l00302"></a>00302     <span class="keywordflow">return</span>  <a class="code" href="classObexObject.html#ed865272318674384df59b4e71efc772">Init</a>(<a class="code" href="classObexObject.html#106adb48f1cbc9d4b082f3b499c23ba59bc47e1b02e3573eac335dc552ee9114">Request</a>, source_buffer);
 <a name="l00303"></a>00303 }<span class="comment">// Init                                                #</span>

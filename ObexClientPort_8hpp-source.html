@@ -45,7 +45,7 @@
 <a name="l00058"></a>00058                        <a class="code" href="classObexProtocol.html">ObexProtocol</a> &amp;           protocol,
 <a name="l00059"></a>00059                        <a class="code" href="classObexClientDispatcher.html">ObexClientDispatcher</a> &amp;   client);
 <a name="l00060"></a>00060 
-<a name="l00062"></a>00062         <span class="keyword">inline</span>  <a class="code" href="NucInc_8hpp.html#50168fdbaa52d4a0b1c287d476050f12">BOOLEAN</a>     <a class="code" href="group__OBEX.html#g4bdd1f62515ede65469074a6ea8cf3f8">IsConnected</a>() <span class="keyword">const</span>;
+<a name="l00062"></a>00062         <span class="keyword">inline</span>  <a class="code" href="NucInc_8hpp.html#50168fdbaa52d4a0b1c287d476050f12">BOOLEAN</a>     <a class="code" href="group__Obex.html#g4bdd1f62515ede65469074a6ea8cf3f8">IsConnected</a>() <span class="keyword">const</span>;
 <a name="l00063"></a>00063 
 <a name="l00064"></a>00064     <span class="keyword">protected</span>:
 <a name="l00065"></a>00065         <span class="keyword">virtual</span> <span class="keywordtype">void</span>        <a class="code" href="classObexClientPort.html#cc1d078bf732ebb845d29f39ca5840a1">StartAddrResolution</a>();
@@ -87,10 +87,10 @@
 <a name="l00101"></a>00101 <span class="comment">/*  ----------------------------------------------------------------------</span>
 <a name="l00102"></a>00102 <span class="comment">    IsConnected</span>
 <a name="l00103"></a>00103 <span class="comment">    ---------------------------------------------------------------------- */</span>
-<a name="l00104"></a><a class="code" href="group__OBEX.html#g4bdd1f62515ede65469074a6ea8cf3f8">00104</a> <a class="code" href="NucInc_8hpp.html#50168fdbaa52d4a0b1c287d476050f12">BOOLEAN</a>     <a class="code" href="group__OBEX.html#g4bdd1f62515ede65469074a6ea8cf3f8">ObexClientPort::IsConnected</a>()<span class="keyword"></span>
+<a name="l00104"></a><a class="code" href="group__Obex.html#g4bdd1f62515ede65469074a6ea8cf3f8">00104</a> <a class="code" href="NucInc_8hpp.html#50168fdbaa52d4a0b1c287d476050f12">BOOLEAN</a>     <a class="code" href="group__Obex.html#g4bdd1f62515ede65469074a6ea8cf3f8">ObexClientPort::IsConnected</a>()<span class="keyword"></span>
 <a name="l00105"></a>00105 <span class="keyword">const</span>
 <a name="l00106"></a>00106 <span class="keyword"></span>{
-<a name="l00107"></a>00107     <span class="keywordflow">return</span>  <a class="code" href="group__OBEX.html#g5104b84222ac985ccf59c4948120643c">IsInState</a>( FSM_STATE_FROM_NAME(s1_connected) );
+<a name="l00107"></a>00107     <span class="keywordflow">return</span>  <a class="code" href="group__Obex.html#g5104b84222ac985ccf59c4948120643c">IsInState</a>( FSM_STATE_FROM_NAME(s1_connected) );
 <a name="l00108"></a>00108 }<span class="comment">// IsConnected</span>
 <a name="l00109"></a>00109 
 <a name="l00111"></a>00111 <span class="preprocessor">#endif  // Apoxi_ObexClientPort_hpp</span>

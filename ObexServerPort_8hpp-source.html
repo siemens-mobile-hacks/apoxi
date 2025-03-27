@@ -45,7 +45,7 @@
 <a name="l00059"></a>00059                        <a class="code" href="classObexProtocol.html">ObexProtocol</a> &amp;           protocol,
 <a name="l00060"></a>00060                        <a class="code" href="classObexServerDispatcher.html">ObexServerDispatcher</a> &amp;   server);
 <a name="l00061"></a>00061 
-<a name="l00063"></a>00063         <span class="keyword">inline</span>  <a class="code" href="NucInc_8hpp.html#50168fdbaa52d4a0b1c287d476050f12">BOOLEAN</a>     <a class="code" href="group__OBEX.html#gd002bd6c3358bf0451e234109e560140">IsListening</a>() <span class="keyword">const</span>;
+<a name="l00063"></a>00063         <span class="keyword">inline</span>  <a class="code" href="NucInc_8hpp.html#50168fdbaa52d4a0b1c287d476050f12">BOOLEAN</a>     <a class="code" href="group__Obex.html#gd002bd6c3358bf0451e234109e560140">IsListening</a>() <span class="keyword">const</span>;
 <a name="l00064"></a>00064 
 <a name="l00069"></a>00069         <span class="keywordtype">void</span>                <a class="code" href="classObexServerPort.html#bb73249a2670a7894305aa5bec960992">Reset</a>();
 <a name="l00070"></a>00070 
@@ -82,10 +82,10 @@
 <a name="l00104"></a>00104         <a class="code" href="classObexServerDispatcher.html">ObexServerDispatcher</a> &amp;      m_server;
 <a name="l00105"></a>00105 };
 <a name="l00106"></a>00106 
-<a name="l00107"></a><a class="code" href="group__OBEX.html#gd002bd6c3358bf0451e234109e560140">00107</a> <a class="code" href="NucInc_8hpp.html#50168fdbaa52d4a0b1c287d476050f12">BOOLEAN</a>     <a class="code" href="group__OBEX.html#gd002bd6c3358bf0451e234109e560140">ObexServerPort::IsListening</a>()<span class="keyword"></span>
+<a name="l00107"></a><a class="code" href="group__Obex.html#gd002bd6c3358bf0451e234109e560140">00107</a> <a class="code" href="NucInc_8hpp.html#50168fdbaa52d4a0b1c287d476050f12">BOOLEAN</a>     <a class="code" href="group__Obex.html#gd002bd6c3358bf0451e234109e560140">ObexServerPort::IsListening</a>()<span class="keyword"></span>
 <a name="l00108"></a>00108 <span class="keyword">const</span>
 <a name="l00109"></a>00109 <span class="keyword"></span>{
-<a name="l00110"></a>00110     <span class="keywordflow">return</span>  <a class="code" href="group__OBEX.html#g5104b84222ac985ccf59c4948120643c">IsInState</a>( FSM_STATE_FROM_NAME(s1_listening) );
+<a name="l00110"></a>00110     <span class="keywordflow">return</span>  <a class="code" href="group__Obex.html#g5104b84222ac985ccf59c4948120643c">IsInState</a>( FSM_STATE_FROM_NAME(s1_listening) );
 <a name="l00111"></a>00111 }
 <a name="l00112"></a>00112 
 <a name="l00114"></a>00114 <span class="preprocessor">#endif  // Apoxi_ObexServerPort_hpp</span>

@@ -23,7 +23,7 @@
   </ul></div>
 <h1>ObexServerDispatcher Class Reference<br>
 <small>
-[<a class="el" href="group__OBEX.html">OBEX</a>]</small>
+[<a class="el" href="group__Obex.html">OBEX</a>]</small>
 </h1><!-- doxytag: class="ObexServerDispatcher" --><!-- doxytag: inherits="ObexEventHandler" -->Internal abstraction of an OBEX server at transport level.  
 <a href="#_details">More...</a>
 <p>
@@ -59,9 +59,9 @@ Inheritance diagram for ObexServerDispatcher:<p><center><img src="classObexServe
 <tr><td class="memItemLeft" nowrap align="right" valign="top">virtual <a class="el" href="classObexResult.html">ObexResult</a>&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classObexServerDispatcher.html#61087b7d76ef496d054bef71d3183b1f">Close</a> ()</td></tr>
 
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Deactivates the server and releases its bindings.  <a href="#61087b7d76ef496d054bef71d3183b1f"></a><br></td></tr>
-<tr><td class="memItemLeft" nowrap align="right" valign="top">UINT8&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__OBEX.html#gce5780f6320d9cbdadf263196e1c974a">GetNrOfOpenedTransports</a> () const </td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">UINT8&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Obex.html#gce5780f6320d9cbdadf263196e1c974a">GetNrOfOpenedTransports</a> () const </td></tr>
 
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Returns the number of transports opened by <code><a class="el" href="classObexServerDispatcher.html#cec23e386c493bb0bbeeaea5857dbe3c">Open()</a></code>.  <a href="group__OBEX.html#gce5780f6320d9cbdadf263196e1c974a"></a><br></td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Returns the number of transports opened by <code><a class="el" href="classObexServerDispatcher.html#cec23e386c493bb0bbeeaea5857dbe3c">Open()</a></code>.  <a href="group__Obex.html#gce5780f6320d9cbdadf263196e1c974a"></a><br></td></tr>
 <tr><td class="memItemLeft" nowrap align="right" valign="top">virtual void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classObexServerDispatcher.html#a4d2143d870c8d1218fc46d8a88436f7">Init</a> (<a class="el" href="classExecutionContext.html">ExecutionContext</a> *ctx_ptr)</td></tr>
 
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Initializes a default-constructed object.  <a href="#a4d2143d870c8d1218fc46d8a88436f7"></a><br></td></tr>
@@ -83,24 +83,24 @@ Inheritance diagram for ObexServerDispatcher:<p><center><img src="classObexServe
 <tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="el" href="classNiSharedPtr.html">ServerPortPtr</a>&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classObexServerDispatcher.html#f1376864577480e4320a96856d7ef82f">GetActivePortPtr</a> () const </td></tr>
 
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Returns a smartpointer to the active port.  <a href="#f1376864577480e4320a96856d7ef82f"></a><br></td></tr>
-<tr><td class="memItemLeft" nowrap align="right" valign="top">const <a class="el" href="classString.html">String</a> &amp;&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__OBEX.html#g9536d1a0a465bd827b3aa5e6c1995db6">GetUrlStr</a> () const </td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">const <a class="el" href="classString.html">String</a> &amp;&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Obex.html#g9536d1a0a465bd827b3aa5e6c1995db6">GetUrlStr</a> () const </td></tr>
 
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Returns the OBEX URL string which was passed to <code><a class="el" href="classObexServerDispatcher.html#cec23e386c493bb0bbeeaea5857dbe3c">Open()</a></code>.  <a href="group__OBEX.html#g9536d1a0a465bd827b3aa5e6c1995db6"></a><br></td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Returns the OBEX URL string which was passed to <code><a class="el" href="classObexServerDispatcher.html#cec23e386c493bb0bbeeaea5857dbe3c">Open()</a></code>.  <a href="group__Obex.html#g9536d1a0a465bd827b3aa5e6c1995db6"></a><br></td></tr>
 <tr><td class="memItemLeft" nowrap align="right" valign="top">virtual void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classObexServerDispatcher.html#c6ea813c1bafc1f125044274d4c5cf83">HangUp</a> ()</td></tr>
 
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Forces a disconnection at transport layer level.  <a href="#c6ea813c1bafc1f125044274d4c5cf83"></a><br></td></tr>
 <tr><td class="memItemLeft" nowrap align="right" valign="top">BOOLEAN&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classObexServerDispatcher.html#e14f37e23065390a4bbbbc4668ff9a84">IsAcceptable</a> (const <a class="el" href="classNiSharedPtr.html">ServerPortPtr</a> &amp;port_ptr) const </td></tr>
 
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Tells whether 'port_ptr' can be accepted as active port.  <a href="#e14f37e23065390a4bbbbc4668ff9a84"></a><br></td></tr>
-<tr><td class="memItemLeft" nowrap align="right" valign="top">BOOLEAN&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__OBEX.html#ga4f58115b579cffb4706688180e4709f">IsActive</a> (const <a class="el" href="classNiSharedPtr.html">ServerPortPtr</a> &amp;port_ptr) const </td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">BOOLEAN&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Obex.html#ga4f58115b579cffb4706688180e4709f">IsActive</a> (const <a class="el" href="classNiSharedPtr.html">ServerPortPtr</a> &amp;port_ptr) const </td></tr>
 
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Tells whether a port is currently active.  <a href="group__OBEX.html#ga4f58115b579cffb4706688180e4709f"></a><br></td></tr>
-<tr><td class="memItemLeft" nowrap align="right" valign="top">BOOLEAN&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__OBEX.html#g2b52f31f49682b060704093d19c57ebd">IsActive</a> () const </td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Tells whether a port is currently active.  <a href="group__Obex.html#ga4f58115b579cffb4706688180e4709f"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">BOOLEAN&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Obex.html#g2b52f31f49682b060704093d19c57ebd">IsActive</a> () const </td></tr>
 
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Tells whether any port is currently active.  <a href="group__OBEX.html#g2b52f31f49682b060704093d19c57ebd"></a><br></td></tr>
-<tr><td class="memItemLeft" nowrap align="right" valign="top">BOOLEAN&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__OBEX.html#g4a344b3b1d6f9083b53d273ce36a4c57">IsShuttingDown</a> () const </td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Tells whether any port is currently active.  <a href="group__Obex.html#g2b52f31f49682b060704093d19c57ebd"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">BOOLEAN&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Obex.html#g4a344b3b1d6f9083b53d273ce36a4c57">IsShuttingDown</a> () const </td></tr>
 
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Tells whether the server is currently being shut down.  <a href="group__OBEX.html#g4a344b3b1d6f9083b53d273ce36a4c57"></a><br></td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Tells whether the server is currently being shut down.  <a href="group__Obex.html#g4a344b3b1d6f9083b53d273ce36a4c57"></a><br></td></tr>
 <tr><td class="memItemLeft" nowrap align="right" valign="top">virtual BOOLEAN&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classObexServerDispatcher.html#ffa52e4799572ac8d49c3840d1338d95">IsValidContext</a> () const </td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classObexServerDispatcher.html#9b65f91da86aad49a855760a1b51ed0f">ObexServerDispatcher</a> ()</td></tr>
@@ -134,9 +134,9 @@ Inheritance diagram for ObexServerDispatcher:<p><center><img src="classObexServe
 
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Clears the active port so a new one can be accepted.  <a href="#562e80a691a0ba73f7ebd624caffe831"></a><br></td></tr>
 <tr><td colspan="2"><br><h2>Static Protected Member Functions</h2></td></tr>
-<tr><td class="memItemLeft" nowrap align="right" valign="top">static BOOLEAN&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__OBEX.html#gbea87e7da2e172a05dcf3f33b92f228e">IsPortPtrValid</a> (const <a class="el" href="classNiSharedPtr.html">ServerPortPtr</a> &amp;port_ptr)</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">static BOOLEAN&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Obex.html#gbea87e7da2e172a05dcf3f33b92f228e">IsPortPtrValid</a> (const <a class="el" href="classNiSharedPtr.html">ServerPortPtr</a> &amp;port_ptr)</td></tr>
 
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Tells whether the passed pointer is valid or not.  <a href="group__OBEX.html#gbea87e7da2e172a05dcf3f33b92f228e"></a><br></td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Tells whether the passed pointer is valid or not.  <a href="group__Obex.html#gbea87e7da2e172a05dcf3f33b92f228e"></a><br></td></tr>
 <tr><td colspan="2"><br><h2>Friends</h2></td></tr>
 <tr><td class="memItemLeft" nowrap align="right" valign="top">class&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classObexServerDispatcher.html#e1c585db16f111f55aa3ac9d92d23650">ObexServerPort</a></td></tr>
 
@@ -837,7 +837,7 @@ Activates the server and binds its address to one or more transport channels.
 <a class="el" href="classObexServerDispatcher.html#cec23e386c493bb0bbeeaea5857dbe3c">Open()</a> must be called on the server in order to resolve the specified address in URL format and bind it to one or more transport channels. For each transport channel bound <a class="el" href="classObexServerDispatcher.html#aeb837a7ae20f867cfe2b0e43e81de27">OnBind()</a> is called once.<p>
 <dl compact><dt><b>Parameters:</b></dt><dd>
   <table border="0" cellspacing="2" cellpadding="0">
-    <tr><td valign="top"></td><td valign="top"><em>obex_addr_url</em>&nbsp;</td><td>OBEX address in URL format incl. Target. Please see <a class="el" href="group__OBEX.html#ObexUrls">OBEX URL's</a> for more information. </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>obex_addr_url</em>&nbsp;</td><td>OBEX address in URL format incl. Target. Please see <a class="el" href="group__Obex.html#ObexUrls">OBEX URL's</a> for more information. </td></tr>
     <tr><td valign="top"></td><td valign="top"><em>open_flags</em>&nbsp;</td><td>Flags used to customize server behaviour. </td></tr>
     <tr><td valign="top"></td><td valign="top"><em>excl_xport_set</em>&nbsp;</td><td>Set of transports not to be bound by the server </td></tr>
   </table>

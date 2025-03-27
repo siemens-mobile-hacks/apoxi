@@ -64,13 +64,13 @@
 <a name="l00287"></a>00287 
 <a name="l00297"></a>00297         <a class="code" href="classObexAbstractTransport.html">ObexAbstractTransport</a> &amp; <a class="code" href="classObexMngr.html#59f17748a529466bf76b8a22015be9f5">GetTransport</a>(<span class="keyword">const</span> <a class="code" href="classObexChannel.html">ObexChannel</a> &amp;  channel) <span class="keyword">const</span>;
 <a name="l00298"></a>00298 
-<a name="l00308"></a>00308         <a class="code" href="classObexAbstractTransport.html">ObexAbstractTransport</a> &amp; <a class="code" href="classObexMngr.html#59f17748a529466bf76b8a22015be9f5">GetTransport</a>(<a class="code" href="group__OBEX.html#g600b47b47493a092cb9f108f25077d5e">ObexTransportId</a>    transport_id) <span class="keyword">const</span>;
+<a name="l00308"></a>00308         <a class="code" href="classObexAbstractTransport.html">ObexAbstractTransport</a> &amp; <a class="code" href="classObexMngr.html#59f17748a529466bf76b8a22015be9f5">GetTransport</a>(<a class="code" href="group__Obex.html#g600b47b47493a092cb9f108f25077d5e">ObexTransportId</a>    transport_id) <span class="keyword">const</span>;
 <a name="l00309"></a>00309 
 <a name="l00320"></a>00320         <a class="code" href="classObexProtocol.html">ObexProtocol</a> &amp;          <a class="code" href="classObexMngr.html#1397a959d3041cc6b1726fdb172e9354">GetProtocol</a>(<span class="keyword">const</span> <a class="code" href="classObexChannel.html">ObexChannel</a> &amp;  channel) <span class="keyword">const</span>;
 <a name="l00321"></a>00321 
 <a name="l00329"></a>00329         <span class="keywordtype">void</span>                        <a class="code" href="classObexMngr.html#476407d94a0599417f748c36527254bf">RegisterObexApp</a>(<a class="code" href="classApplication.html">Application</a> &amp;   obex_app);
 <a name="l00330"></a>00330 
-<a name="l00334"></a>00334         <span class="keyword">inline</span>  <a class="code" href="classObexTransportSet.html">ObexTransportSet</a>    <a class="code" href="group__OBEX.html#g2173f7427f65350192382c84ad3b26a1">EnumTransports</a>(<span class="keyword">const</span> <a class="code" href="classString.html">String</a> &amp;   filter_url = <a class="code" href="classObexMngr.html#c7f3ad1fa9e02ce4c22e6f2fa589bb2e">c_any_url</a>) <span class="keyword">const</span>;
+<a name="l00334"></a>00334         <span class="keyword">inline</span>  <a class="code" href="classObexTransportSet.html">ObexTransportSet</a>    <a class="code" href="group__Obex.html#g2173f7427f65350192382c84ad3b26a1">EnumTransports</a>(<span class="keyword">const</span> <a class="code" href="classString.html">String</a> &amp;   filter_url = <a class="code" href="classObexMngr.html#c7f3ad1fa9e02ce4c22e6f2fa589bb2e">c_any_url</a>) <span class="keyword">const</span>;
 <a name="l00335"></a>00335 
 <a name="l00348"></a>00348         <a class="code" href="classObexResult.html">ObexResult</a>              <a class="code" href="classObexMngr.html#dc58a406b7cd13390d944b0eafa6ea16">SelectTransport</a>(<a class="code" href="classObexAbstractTransport.html">ObexAbstractTransport</a> *  selected);
 <a name="l00349"></a>00349 
@@ -87,9 +87,9 @@
 <a name="l00365"></a>00365 
 <a name="l00367"></a>00367                 <span class="keywordtype">void</span>                        Init();
 <a name="l00368"></a>00368 
-<a name="l00374"></a>00374                 <a class="code" href="group__OBEX.html#g600b47b47493a092cb9f108f25077d5e">ObexTransportId</a>             Register(<a class="code" href="classObexAbstractTransport.html">ObexAbstractTransport</a> &amp;  t);
+<a name="l00374"></a>00374                 <a class="code" href="group__Obex.html#g600b47b47493a092cb9f108f25077d5e">ObexTransportId</a>             Register(<a class="code" href="classObexAbstractTransport.html">ObexAbstractTransport</a> &amp;  t);
 <a name="l00375"></a>00375 
-<a name="l00380"></a>00380                 <a class="code" href="classObexAbstractTransport.html">ObexAbstractTransport</a> *     Get(<a class="code" href="group__OBEX.html#g600b47b47493a092cb9f108f25077d5e">ObexTransportId</a>  <span class="keywordtype">id</span>) <span class="keyword">const</span>;
+<a name="l00380"></a>00380                 <a class="code" href="classObexAbstractTransport.html">ObexAbstractTransport</a> *     Get(<a class="code" href="group__Obex.html#g600b47b47493a092cb9f108f25077d5e">ObexTransportId</a>  <span class="keywordtype">id</span>) <span class="keyword">const</span>;
 <a name="l00381"></a>00381 
 <a name="l00386"></a>00386                 <a class="code" href="classObexAbstractTransport.html">ObexAbstractTransport</a> *     Get(<span class="keyword">const</span> <a class="code" href="classString.html">String</a> &amp;  scheme_url) <span class="keyword">const</span>;
 <a name="l00387"></a>00387 
@@ -97,7 +97,7 @@
 <a name="l00392"></a>00392 
 <a name="l00393"></a>00393             <span class="keyword">private</span>:
 <a name="l00394"></a>00394                 <a class="code" href="classObexAbstractTransport.html">ObexAbstractTransport</a> *     m_xport_arr[<a class="code" href="group__Currently__Undocumented__Defines.html#gdad3e8cb0ec317056162aa2cd8677658">APOXI_OBEX_MAX_NO_TRANSPORTS</a>];
-<a name="l00395"></a>00395                 <a class="code" href="group__OBEX.html#g600b47b47493a092cb9f108f25077d5e">ObexTransportId</a>             m_first_id_available;
+<a name="l00395"></a>00395                 <a class="code" href="group__Obex.html#g600b47b47493a092cb9f108f25077d5e">ObexTransportId</a>             m_first_id_available;
 <a name="l00396"></a>00396 
 <a name="l00398"></a>00398                 TransportMngr(<span class="keyword">const</span> TransportMngr &amp;);
 <a name="l00399"></a>00399 
@@ -138,7 +138,7 @@
 <a name="l00445"></a>00445 
 <a name="l00447"></a>00447                 <span class="keywordtype">void</span>    Execute(<a class="code" href="classApplication.html">Application</a> *       obex_app_ptr);
 <a name="l00448"></a>00448 
-<a name="l00450"></a>00450                 <span class="keywordtype">void</span>    Complete(<a class="code" href="group__OBEX.html#g600b47b47493a092cb9f108f25077d5e">ObexTransportId</a>    transport_id);
+<a name="l00450"></a>00450                 <span class="keywordtype">void</span>    Complete(<a class="code" href="group__Obex.html#g600b47b47493a092cb9f108f25077d5e">ObexTransportId</a>    transport_id);
 <a name="l00451"></a>00451 
 <a name="l00452"></a>00452             <span class="keyword">private</span>:
 <a name="l00453"></a>00453                 <a class="code" href="classObexTransportSet.html">ObexTransportSet</a>    m_from_ts;
@@ -162,7 +162,7 @@
 <a name="l00474"></a>00474 
 <a name="l00476"></a>00476         <span class="keywordtype">void</span>                Init();
 <a name="l00477"></a>00477 
-<a name="l00482"></a>00482         <span class="keyword">inline</span>  <a class="code" href="group__OBEX.html#g600b47b47493a092cb9f108f25077d5e">ObexTransportId</a>     RegisterTransport(<a class="code" href="classObexAbstractTransport.html">ObexAbstractTransport</a> &amp;  t);
+<a name="l00482"></a>00482         <span class="keyword">inline</span>  <a class="code" href="group__Obex.html#g600b47b47493a092cb9f108f25077d5e">ObexTransportId</a>     RegisterTransport(<a class="code" href="classObexAbstractTransport.html">ObexAbstractTransport</a> &amp;  t);
 <a name="l00483"></a>00483 
 <a name="l00484"></a>00484         <a class="code" href="classObexServerMngr.html">ObexServerMngr</a> &amp;            GetServerMngr();
 <a name="l00485"></a>00485 };
@@ -170,7 +170,7 @@
 <a name="l00487"></a>00487 <span class="comment">/*  ----------------------------------------------------------------------</span>
 <a name="l00488"></a>00488 <span class="comment">    SelectCommand::GetOperationId</span>
 <a name="l00489"></a>00489 <span class="comment">    ---------------------------------------------------------------------- */</span>
-<a name="l00490"></a><a class="code" href="group__OBEX.html#ga96d60b562601c3374248ec4b64d4539">00490</a> <span class="keyword">const</span> <a class="code" href="classObexOperationId.html">ObexOperationId</a> &amp;     ObexMngr::SelectCommand::GetOperationId()<span class="keyword"></span>
+<a name="l00490"></a><a class="code" href="group__Obex.html#ga96d60b562601c3374248ec4b64d4539">00490</a> <span class="keyword">const</span> <a class="code" href="classObexOperationId.html">ObexOperationId</a> &amp;     ObexMngr::SelectCommand::GetOperationId()<span class="keyword"></span>
 <a name="l00491"></a>00491 <span class="keyword">const</span>
 <a name="l00492"></a>00492 <span class="keyword"></span>{
 <a name="l00493"></a>00493     <span class="keywordflow">return</span>  m_oper_id;
@@ -179,7 +179,7 @@
 <a name="l00496"></a>00496 <span class="comment">/*  ----------------------------------------------------------------------</span>
 <a name="l00497"></a>00497 <span class="comment">    SelectCommand::IsPending</span>
 <a name="l00498"></a>00498 <span class="comment">    ---------------------------------------------------------------------- */</span>
-<a name="l00499"></a><a class="code" href="group__OBEX.html#g243e014b63cd630ffb956c08e684d26a">00499</a> <a class="code" href="NucInc_8hpp.html#50168fdbaa52d4a0b1c287d476050f12">BOOLEAN</a>     ObexMngr::SelectCommand::IsPending()<span class="keyword"></span>
+<a name="l00499"></a><a class="code" href="group__Obex.html#g243e014b63cd630ffb956c08e684d26a">00499</a> <a class="code" href="NucInc_8hpp.html#50168fdbaa52d4a0b1c287d476050f12">BOOLEAN</a>     ObexMngr::SelectCommand::IsPending()<span class="keyword"></span>
 <a name="l00500"></a>00500 <span class="keyword">const</span>
 <a name="l00501"></a>00501 <span class="keyword"></span>{
 <a name="l00502"></a>00502     <span class="keywordflow">return</span>  m_oper_id.IsValid();
@@ -188,7 +188,7 @@
 <a name="l00505"></a>00505 <span class="comment">/*  ----------------------------------------------------------------------</span>
 <a name="l00506"></a>00506 <span class="comment">    EnumTransports</span>
 <a name="l00507"></a>00507 <span class="comment">    ---------------------------------------------------------------------- */</span>
-<a name="l00508"></a><a class="code" href="group__OBEX.html#g2173f7427f65350192382c84ad3b26a1">00508</a> <a class="code" href="classObexTransportSet.html">ObexTransportSet</a>    <a class="code" href="group__OBEX.html#g2173f7427f65350192382c84ad3b26a1">ObexMngr::EnumTransports</a>(<span class="keyword">const</span> <a class="code" href="classString.html">String</a> &amp;     filter_url)<span class="keyword"></span>
+<a name="l00508"></a><a class="code" href="group__Obex.html#g2173f7427f65350192382c84ad3b26a1">00508</a> <a class="code" href="classObexTransportSet.html">ObexTransportSet</a>    <a class="code" href="group__Obex.html#g2173f7427f65350192382c84ad3b26a1">ObexMngr::EnumTransports</a>(<span class="keyword">const</span> <a class="code" href="classString.html">String</a> &amp;     filter_url)<span class="keyword"></span>
 <a name="l00509"></a>00509 <span class="keyword">const</span>
 <a name="l00510"></a>00510 <span class="keyword"></span>{
 <a name="l00511"></a>00511     <span class="keywordflow">return</span>  m_xport_mngr.Enum(filter_url);
@@ -197,7 +197,7 @@
 <a name="l00514"></a>00514 <span class="comment">/*  ----------------------------------------------------------------------</span>
 <a name="l00515"></a>00515 <span class="comment">    RegisterTransport</span>
 <a name="l00516"></a>00516 <span class="comment">    ---------------------------------------------------------------------- */</span>
-<a name="l00517"></a>00517 <a class="code" href="group__OBEX.html#g600b47b47493a092cb9f108f25077d5e">ObexTransportId</a>     ObexMngr::RegisterTransport(<a class="code" href="classObexAbstractTransport.html">ObexAbstractTransport</a> &amp;  t)
+<a name="l00517"></a>00517 <a class="code" href="group__Obex.html#g600b47b47493a092cb9f108f25077d5e">ObexTransportId</a>     ObexMngr::RegisterTransport(<a class="code" href="classObexAbstractTransport.html">ObexAbstractTransport</a> &amp;  t)
 <a name="l00518"></a>00518 {
 <a name="l00519"></a>00519     <span class="keywordflow">return</span>  m_xport_mngr.Register(t);
 <a name="l00520"></a>00520 }<span class="comment">// RegisterTransport</span>

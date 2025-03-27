@@ -48,11 +48,11 @@
 <a name="l00043"></a>00043     <span class="keyword">public</span>:
 <a name="l00045"></a>00045         <span class="keyword">virtual</span> <a class="code" href="classObexAbstractPort.html#a98beb6dc5977058e131916f0c3c1205">~ObexAbstractPort</a>();
 <a name="l00046"></a>00046 
-<a name="l00048"></a>00048         <span class="keyword">inline</span>  <span class="keyword">const</span> <a class="code" href="classObexChannel.html">ObexChannel</a> &amp;     <a class="code" href="group__OBEX.html#g58468f68ec6a36f404f9926de47446e6">GetChannel</a>() <span class="keyword">const</span>;
+<a name="l00048"></a>00048         <span class="keyword">inline</span>  <span class="keyword">const</span> <a class="code" href="classObexChannel.html">ObexChannel</a> &amp;     <a class="code" href="group__Obex.html#g58468f68ec6a36f404f9926de47446e6">GetChannel</a>() <span class="keyword">const</span>;
 <a name="l00049"></a>00049 
-<a name="l00051"></a>00051         <span class="keyword">inline</span>  <a class="code" href="NucInc_8hpp.html#50168fdbaa52d4a0b1c287d476050f12">BOOLEAN</a>                 <a class="code" href="group__OBEX.html#g0abd65829266550d015cdb18e92bc3f7">IsBoundTo</a>(<span class="keyword">const</span> <a class="code" href="classObexChannel.html">ObexChannel</a> &amp;  ch) <span class="keyword">const</span>;
+<a name="l00051"></a>00051         <span class="keyword">inline</span>  <a class="code" href="NucInc_8hpp.html#50168fdbaa52d4a0b1c287d476050f12">BOOLEAN</a>                 <a class="code" href="group__Obex.html#g0abd65829266550d015cdb18e92bc3f7">IsBoundTo</a>(<span class="keyword">const</span> <a class="code" href="classObexChannel.html">ObexChannel</a> &amp;  ch) <span class="keyword">const</span>;
 <a name="l00052"></a>00052 
-<a name="l00054"></a>00054         <span class="keyword">inline</span>  <a class="code" href="classObexProtocol.html">ObexProtocol</a> &amp;          <a class="code" href="group__OBEX.html#g869dda966d79b6016cde15c836a6dcf7">GetProtocol</a>();
+<a name="l00054"></a>00054         <span class="keyword">inline</span>  <a class="code" href="classObexProtocol.html">ObexProtocol</a> &amp;          <a class="code" href="group__Obex.html#g869dda966d79b6016cde15c836a6dcf7">GetProtocol</a>();
 <a name="l00055"></a>00055 
 <a name="l00060"></a>00060         <span class="keywordtype">void</span>                            <a class="code" href="classObexAbstractPort.html#a5629ba8bd84ccdffa1d58f717b11892">Open</a>();
 <a name="l00061"></a>00061 
@@ -126,16 +126,16 @@
 <a name="l00153"></a>00153                          <a class="code" href="classObexProtocol.html">ObexProtocol</a> &amp;                 protocol,
 <a name="l00154"></a>00154                          <span class="keyword">const</span> FsmEngine::StateInfo &amp;   initial_state);
 <a name="l00155"></a>00155 
-<a name="l00156"></a>00156         <span class="keyword">inline</span>  <a class="code" href="classObexAbstractTransport.html">ObexAbstractTransport</a> &amp;     <a class="code" href="group__OBEX.html#g260876f56145794b80d90d2a26d0952a">GetTransport</a>();
-<a name="l00157"></a>00157         <span class="keyword">inline</span>  <span class="keyword">const</span> <a class="code" href="classObexOperationId.html">ObexOperationId</a> &amp;     <a class="code" href="group__OBEX.html#g2f3b1e42916fc167bbaccb1df7a616ed">GetTransportOperId</a>() <span class="keyword">const</span>;
-<a name="l00158"></a>00158         <span class="keyword">inline</span>  <span class="keyword">const</span> <a class="code" href="classSharedPtr.html">ObexAddrPtr</a> &amp;         <a class="code" href="group__OBEX.html#g907506f1364784380ef17ced89cdb1e2">GetAddress</a>();
+<a name="l00156"></a>00156         <span class="keyword">inline</span>  <a class="code" href="classObexAbstractTransport.html">ObexAbstractTransport</a> &amp;     <a class="code" href="group__Obex.html#g260876f56145794b80d90d2a26d0952a">GetTransport</a>();
+<a name="l00157"></a>00157         <span class="keyword">inline</span>  <span class="keyword">const</span> <a class="code" href="classObexOperationId.html">ObexOperationId</a> &amp;     <a class="code" href="group__Obex.html#g2f3b1e42916fc167bbaccb1df7a616ed">GetTransportOperId</a>() <span class="keyword">const</span>;
+<a name="l00158"></a>00158         <span class="keyword">inline</span>  <span class="keyword">const</span> <a class="code" href="classSharedPtr.html">ObexAddrPtr</a> &amp;         <a class="code" href="group__Obex.html#g907506f1364784380ef17ced89cdb1e2">GetAddress</a>();
 <a name="l00159"></a>00159 
-<a name="l00160"></a>00160         <span class="keyword">inline</span>  <span class="keywordtype">void</span>        <a class="code" href="group__OBEX.html#gea7e5a7b4ceaf29439f7e662a77ad04a">SetAddress</a>(<span class="keyword">const</span> <a class="code" href="classSharedPtr.html">ObexAddrPtr</a> &amp;  addr_ptr);
-<a name="l00161"></a>00161         <span class="keyword">inline</span>  <span class="keywordtype">void</span>        <a class="code" href="group__OBEX.html#g959e53da7981740ec143cd0a286d94aa">ReleaseAddress</a>();
+<a name="l00160"></a>00160         <span class="keyword">inline</span>  <span class="keywordtype">void</span>        <a class="code" href="group__Obex.html#gea7e5a7b4ceaf29439f7e662a77ad04a">SetAddress</a>(<span class="keyword">const</span> <a class="code" href="classSharedPtr.html">ObexAddrPtr</a> &amp;  addr_ptr);
+<a name="l00161"></a>00161         <span class="keyword">inline</span>  <span class="keywordtype">void</span>        <a class="code" href="group__Obex.html#g959e53da7981740ec143cd0a286d94aa">ReleaseAddress</a>();
 <a name="l00162"></a>00162 
-<a name="l00163"></a>00163         <span class="keyword">inline</span>  <a class="code" href="NucInc_8hpp.html#50168fdbaa52d4a0b1c287d476050f12">BOOLEAN</a>     <a class="code" href="group__OBEX.html#g5104b84222ac985ccf59c4948120643c">IsInState</a>(<span class="keyword">const</span> FsmEngine::StateInfo &amp;  state) <span class="keyword">const</span>;
+<a name="l00163"></a>00163         <span class="keyword">inline</span>  <a class="code" href="NucInc_8hpp.html#50168fdbaa52d4a0b1c287d476050f12">BOOLEAN</a>     <a class="code" href="group__Obex.html#g5104b84222ac985ccf59c4948120643c">IsInState</a>(<span class="keyword">const</span> FsmEngine::StateInfo &amp;  state) <span class="keyword">const</span>;
 <a name="l00164"></a>00164 
-<a name="l00165"></a>00165         <span class="keyword">inline</span>  <span class="keywordtype">void</span>        <a class="code" href="group__OBEX.html#g0c465420fb364912b66783952d96f3c6">ExternalEvent</a>(<a class="code" href="classObexAbstractPort.html#850d0087a8e55b506761f440c864d950">EventType</a>             ev_type,
+<a name="l00165"></a>00165         <span class="keyword">inline</span>  <span class="keywordtype">void</span>        <a class="code" href="group__Obex.html#g0c465420fb364912b66783952d96f3c6">ExternalEvent</a>(<a class="code" href="classObexAbstractPort.html#850d0087a8e55b506761f440c864d950">EventType</a>             ev_type,
 <a name="l00166"></a>00166                                           <a class="code" href="classObtainableObject.html">ObtainableObject</a> *    ev_data_ptr);
 <a name="l00167"></a>00167 
 <a name="l00169"></a>00169         <a class="code" href="classObexOperationId.html">ObexOperationId</a> &amp;       <a class="code" href="classObexAbstractPort.html#ef92ecff7b741d0173d354836b0171e1">StartOperation</a>();
@@ -187,7 +187,7 @@
 <a name="l00227"></a>00227 <span class="comment">/*  ----------------------------------------------------------------------</span>
 <a name="l00228"></a>00228 <span class="comment">    GetChannel</span>
 <a name="l00229"></a>00229 <span class="comment">    ---------------------------------------------------------------------- */</span>
-<a name="l00230"></a><a class="code" href="group__OBEX.html#g58468f68ec6a36f404f9926de47446e6">00230</a> <span class="keyword">const</span> <a class="code" href="classObexChannel.html">ObexChannel</a> &amp;     <a class="code" href="group__OBEX.html#g58468f68ec6a36f404f9926de47446e6">ObexAbstractPort::GetChannel</a>()<span class="keyword"></span>
+<a name="l00230"></a><a class="code" href="group__Obex.html#g58468f68ec6a36f404f9926de47446e6">00230</a> <span class="keyword">const</span> <a class="code" href="classObexChannel.html">ObexChannel</a> &amp;     <a class="code" href="group__Obex.html#g58468f68ec6a36f404f9926de47446e6">ObexAbstractPort::GetChannel</a>()<span class="keyword"></span>
 <a name="l00231"></a>00231 <span class="keyword">const</span>
 <a name="l00232"></a>00232 <span class="keyword"></span>{
 <a name="l00233"></a>00233     <span class="keywordflow">return</span>  m_channel;
@@ -196,7 +196,7 @@
 <a name="l00236"></a>00236 <span class="comment">/*  ----------------------------------------------------------------------</span>
 <a name="l00237"></a>00237 <span class="comment">    IsAssociated</span>
 <a name="l00238"></a>00238 <span class="comment">    ---------------------------------------------------------------------- */</span>
-<a name="l00239"></a><a class="code" href="group__OBEX.html#g0abd65829266550d015cdb18e92bc3f7">00239</a> <a class="code" href="NucInc_8hpp.html#50168fdbaa52d4a0b1c287d476050f12">BOOLEAN</a>     <a class="code" href="group__OBEX.html#g0abd65829266550d015cdb18e92bc3f7">ObexAbstractPort::IsBoundTo</a>(<span class="keyword">const</span> <a class="code" href="classObexChannel.html">ObexChannel</a> &amp;     channel)<span class="keyword"></span>
+<a name="l00239"></a><a class="code" href="group__Obex.html#g0abd65829266550d015cdb18e92bc3f7">00239</a> <a class="code" href="NucInc_8hpp.html#50168fdbaa52d4a0b1c287d476050f12">BOOLEAN</a>     <a class="code" href="group__Obex.html#g0abd65829266550d015cdb18e92bc3f7">ObexAbstractPort::IsBoundTo</a>(<span class="keyword">const</span> <a class="code" href="classObexChannel.html">ObexChannel</a> &amp;     channel)<span class="keyword"></span>
 <a name="l00240"></a>00240 <span class="keyword">const</span>
 <a name="l00241"></a>00241 <span class="keyword"></span>{
 <a name="l00242"></a>00242     <span class="keywordflow">return</span> ( m_channel == channel );
@@ -205,7 +205,7 @@
 <a name="l00245"></a>00245 <span class="comment">/*  ----------------------------------------------------------------------</span>
 <a name="l00246"></a>00246 <span class="comment">    GetProtocol</span>
 <a name="l00247"></a>00247 <span class="comment">    ---------------------------------------------------------------------- */</span>
-<a name="l00248"></a><a class="code" href="group__OBEX.html#g869dda966d79b6016cde15c836a6dcf7">00248</a> <a class="code" href="classObexProtocol.html">ObexProtocol</a> &amp;  <a class="code" href="group__OBEX.html#g869dda966d79b6016cde15c836a6dcf7">ObexAbstractPort::GetProtocol</a>()
+<a name="l00248"></a><a class="code" href="group__Obex.html#g869dda966d79b6016cde15c836a6dcf7">00248</a> <a class="code" href="classObexProtocol.html">ObexProtocol</a> &amp;  <a class="code" href="group__Obex.html#g869dda966d79b6016cde15c836a6dcf7">ObexAbstractPort::GetProtocol</a>()
 <a name="l00249"></a>00249 
 <a name="l00250"></a>00250 {
 <a name="l00251"></a>00251     <span class="keywordflow">return</span>  m_protocol;
@@ -214,7 +214,7 @@
 <a name="l00254"></a>00254 <span class="comment">/*  ----------------------------------------------------------------------</span>
 <a name="l00255"></a>00255 <span class="comment">    GetTransport</span>
 <a name="l00256"></a>00256 <span class="comment">    ---------------------------------------------------------------------- */</span>
-<a name="l00257"></a><a class="code" href="group__OBEX.html#g260876f56145794b80d90d2a26d0952a">00257</a> <a class="code" href="classObexAbstractTransport.html">ObexAbstractTransport</a> &amp;     <a class="code" href="group__OBEX.html#g260876f56145794b80d90d2a26d0952a">ObexAbstractPort::GetTransport</a>()
+<a name="l00257"></a><a class="code" href="group__Obex.html#g260876f56145794b80d90d2a26d0952a">00257</a> <a class="code" href="classObexAbstractTransport.html">ObexAbstractTransport</a> &amp;     <a class="code" href="group__Obex.html#g260876f56145794b80d90d2a26d0952a">ObexAbstractPort::GetTransport</a>()
 <a name="l00258"></a>00258 {
 <a name="l00259"></a>00259     <span class="keywordflow">return</span>  m_transport;
 <a name="l00260"></a>00260 }<span class="comment">// GetTransport</span>
@@ -222,7 +222,7 @@
 <a name="l00262"></a>00262 <span class="comment">/*  ----------------------------------------------------------------------</span>
 <a name="l00263"></a>00263 <span class="comment">    GetTransportOperId</span>
 <a name="l00264"></a>00264 <span class="comment">    ---------------------------------------------------------------------- */</span>
-<a name="l00265"></a><a class="code" href="group__OBEX.html#g2f3b1e42916fc167bbaccb1df7a616ed">00265</a> <span class="keyword">const</span> <a class="code" href="classObexOperationId.html">ObexOperationId</a> &amp;     <a class="code" href="group__OBEX.html#g2f3b1e42916fc167bbaccb1df7a616ed">ObexAbstractPort::GetTransportOperId</a>()<span class="keyword"></span>
+<a name="l00265"></a><a class="code" href="group__Obex.html#g2f3b1e42916fc167bbaccb1df7a616ed">00265</a> <span class="keyword">const</span> <a class="code" href="classObexOperationId.html">ObexOperationId</a> &amp;     <a class="code" href="group__Obex.html#g2f3b1e42916fc167bbaccb1df7a616ed">ObexAbstractPort::GetTransportOperId</a>()<span class="keyword"></span>
 <a name="l00266"></a>00266 <span class="keyword">const</span>
 <a name="l00267"></a>00267 <span class="keyword"></span>{
 <a name="l00268"></a>00268     <span class="keywordflow">return</span>  m_oper_id;
@@ -231,7 +231,7 @@
 <a name="l00271"></a>00271 <span class="comment">/*  ----------------------------------------------------------------------</span>
 <a name="l00272"></a>00272 <span class="comment">    IsInState</span>
 <a name="l00273"></a>00273 <span class="comment">    ---------------------------------------------------------------------- */</span>
-<a name="l00274"></a><a class="code" href="group__OBEX.html#g5104b84222ac985ccf59c4948120643c">00274</a> <a class="code" href="NucInc_8hpp.html#50168fdbaa52d4a0b1c287d476050f12">BOOLEAN</a>     <a class="code" href="group__OBEX.html#g5104b84222ac985ccf59c4948120643c">ObexAbstractPort::IsInState</a>(<span class="keyword">const</span> FsmEngine::StateInfo &amp;     state)<span class="keyword"></span>
+<a name="l00274"></a><a class="code" href="group__Obex.html#g5104b84222ac985ccf59c4948120643c">00274</a> <a class="code" href="NucInc_8hpp.html#50168fdbaa52d4a0b1c287d476050f12">BOOLEAN</a>     <a class="code" href="group__Obex.html#g5104b84222ac985ccf59c4948120643c">ObexAbstractPort::IsInState</a>(<span class="keyword">const</span> FsmEngine::StateInfo &amp;     state)<span class="keyword"></span>
 <a name="l00275"></a>00275 <span class="keyword">const</span>
 <a name="l00276"></a>00276 <span class="keyword"></span>{
 <a name="l00277"></a>00277     <span class="keywordflow">return</span>  m_fsm.IsInState(state);
@@ -240,7 +240,7 @@
 <a name="l00280"></a>00280 <span class="comment">/*  ----------------------------------------------------------------------</span>
 <a name="l00281"></a>00281 <span class="comment">    ExternalEvent</span>
 <a name="l00282"></a>00282 <span class="comment">    ---------------------------------------------------------------------- */</span>
-<a name="l00283"></a><a class="code" href="group__OBEX.html#g0c465420fb364912b66783952d96f3c6">00283</a> <span class="keywordtype">void</span>    <a class="code" href="group__OBEX.html#g0c465420fb364912b66783952d96f3c6">ObexAbstractPort::ExternalEvent</a>(<a class="code" href="classObexAbstractPort.html#850d0087a8e55b506761f440c864d950">EventType</a>           event_type,
+<a name="l00283"></a><a class="code" href="group__Obex.html#g0c465420fb364912b66783952d96f3c6">00283</a> <span class="keywordtype">void</span>    <a class="code" href="group__Obex.html#g0c465420fb364912b66783952d96f3c6">ObexAbstractPort::ExternalEvent</a>(<a class="code" href="classObexAbstractPort.html#850d0087a8e55b506761f440c864d950">EventType</a>           event_type,
 <a name="l00284"></a>00284                                         <a class="code" href="classObtainableObject.html">ObtainableObject</a> *  event_data_ptr)
 <a name="l00285"></a>00285 {
 <a name="l00286"></a>00286     m_fsm.ExternalEvent( event_type, event_data_ptr );
@@ -249,7 +249,7 @@
 <a name="l00289"></a>00289 <span class="comment">/*  ----------------------------------------------------------------------</span>
 <a name="l00290"></a>00290 <span class="comment">    GetAddress</span>
 <a name="l00291"></a>00291 <span class="comment">    ---------------------------------------------------------------------- */</span>
-<a name="l00292"></a><a class="code" href="group__OBEX.html#g907506f1364784380ef17ced89cdb1e2">00292</a> <span class="keyword">const</span> <a class="code" href="classSharedPtr.html">ObexAddrPtr</a> &amp;     <a class="code" href="group__OBEX.html#g907506f1364784380ef17ced89cdb1e2">ObexAbstractPort::GetAddress</a>()
+<a name="l00292"></a><a class="code" href="group__Obex.html#g907506f1364784380ef17ced89cdb1e2">00292</a> <span class="keyword">const</span> <a class="code" href="classSharedPtr.html">ObexAddrPtr</a> &amp;     <a class="code" href="group__Obex.html#g907506f1364784380ef17ced89cdb1e2">ObexAbstractPort::GetAddress</a>()
 <a name="l00293"></a>00293 {
 <a name="l00294"></a>00294     <span class="keywordflow">return</span>  m_addr_ptr;
 <a name="l00295"></a>00295 }<span class="comment">// GetAddress</span>
@@ -257,7 +257,7 @@
 <a name="l00297"></a>00297 <span class="comment">/*  ----------------------------------------------------------------------</span>
 <a name="l00298"></a>00298 <span class="comment">    SetAddress</span>
 <a name="l00299"></a>00299 <span class="comment">    ---------------------------------------------------------------------- */</span>
-<a name="l00300"></a><a class="code" href="group__OBEX.html#gea7e5a7b4ceaf29439f7e662a77ad04a">00300</a> <span class="keywordtype">void</span>    <a class="code" href="group__OBEX.html#gea7e5a7b4ceaf29439f7e662a77ad04a">ObexAbstractPort::SetAddress</a>(<span class="keyword">const</span> <a class="code" href="classSharedPtr.html">ObexAddrPtr</a> &amp;    addr_ptr)
+<a name="l00300"></a><a class="code" href="group__Obex.html#gea7e5a7b4ceaf29439f7e662a77ad04a">00300</a> <span class="keywordtype">void</span>    <a class="code" href="group__Obex.html#gea7e5a7b4ceaf29439f7e662a77ad04a">ObexAbstractPort::SetAddress</a>(<span class="keyword">const</span> <a class="code" href="classSharedPtr.html">ObexAddrPtr</a> &amp;    addr_ptr)
 <a name="l00301"></a>00301 {
 <a name="l00302"></a>00302     m_addr_ptr = addr_ptr;
 <a name="l00303"></a>00303 }<span class="comment">// SetAddress</span>
@@ -265,7 +265,7 @@
 <a name="l00305"></a>00305 <span class="comment">/*  ----------------------------------------------------------------------</span>
 <a name="l00306"></a>00306 <span class="comment">    ReleaseAddress</span>
 <a name="l00307"></a>00307 <span class="comment">    ---------------------------------------------------------------------- */</span>
-<a name="l00308"></a><a class="code" href="group__OBEX.html#g959e53da7981740ec143cd0a286d94aa">00308</a> <span class="keywordtype">void</span>    <a class="code" href="group__OBEX.html#g959e53da7981740ec143cd0a286d94aa">ObexAbstractPort::ReleaseAddress</a>()
+<a name="l00308"></a><a class="code" href="group__Obex.html#g959e53da7981740ec143cd0a286d94aa">00308</a> <span class="keywordtype">void</span>    <a class="code" href="group__Obex.html#g959e53da7981740ec143cd0a286d94aa">ObexAbstractPort::ReleaseAddress</a>()
 <a name="l00309"></a>00309 {
 <a name="l00310"></a>00310     m_addr_ptr.<a class="code" href="group__Devices.html#g75327d940701077895b21c6768b932eb">Clear</a>();
 <a name="l00311"></a>00311 }<span class="comment">// ReleaseAddress</span>
